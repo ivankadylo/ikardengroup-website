@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 300" width="600" height="300">
+  <!-- Outer frame -->
+  <rect x="85" y="30" width="150" height="180" fill="none" stroke="#6FAB9E" stroke-width="4" rx="2"/>
+  
+  <!-- Inner frame -->
+  <rect x="95" y="40" width="130" height="160" fill="none" stroke="#6FAB9E" stroke-width="3" rx="2"/>
+  
+  <!-- IK text in frame -->
+  <text x="160" y="140" font-family="serif" font-size="90" font-weight="bold" fill="#6FAB9E" text-anchor="middle">IK</text>
+  
+  <!-- IK ARDEN GROUP text below -->
+  <text x="300" y="260" font-family="serif" font-size="42" font-weight="300" fill="#6FAB9E" text-anchor="middle" letter-spacing="8">IK ARDEN GROUP</text>
+</svg>
