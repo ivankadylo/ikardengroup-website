@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upravit projekt - IKarden Admin</title>
+    <link rel="stylesheet" href="css/style.css">
+    
+    <style>
+        /* Admin Project Edit Page - Beautiful Design */
+        body {
+            background: var(--bg-primary);
+            min-height: 100vh;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .admin-edit-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .admin-edit-header {
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            color: white;
+            padding: 30px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .admin-edit-header h1 {
+            margin: 0;
+            font-size: 32px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .back-btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            margin-top: 15px;
+        }
+        
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateX(-5px);
+        }
+        
+        .admin-edit-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+        
+        .edit-section {
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .edit-section h2 {
+            color: var(--accent-primary);
+            margin-top: 0;
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+        }
+        
+        .form-group input[type="text"],
+        .form-group input[type="date"],
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 16px;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+        }
+        
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
+        }
+        
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        /* Media Gallery */
+        .media-gallery {
+            margin-top: 30px;
+        }
+        
+        .media-upload-zone {
+            border: 3px dashed var(--accent-primary);
+            border-radius: 12px;
+            padding: 40px;
+            text-align: center;
+            background: var(--bg-primary);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 20px;
+        }
+        
+        .media-upload-zone:hover {
+            background: rgba(76, 175, 80, 0.05);
+            border-color: var(--accent-secondary);
+        }
+        
+        .media-upload-zone.dragover {
+            background: rgba(76, 175, 80, 0.1);
+            border-color: var(--accent-secondary);
+            transform: scale(1.02);
+        }
+        
+        .upload-icon {
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
+        
+        .media-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .media-item {
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+            cursor: move;
+            background: var(--bg-primary);
+            border: 2px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+        
+        .media-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .media-item.dragging {
+            opacity: 0.5;
+        }
+        
+        .media-item img,
+        .media-item video {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            display: block;
+        }
+        
+        .media-item-actions {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            display: flex;
+            gap: 5px;
+        }
+        
+        .media-item-btn {
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            transition: all 0.2s ease;
+        }
+        
+        .media-item-btn:hover {
+            background: var(--accent-danger);
+            transform: scale(1.1);
+        }
+        
+        .media-badge {
+            position: absolute;
+            bottom: 5px;
+            left: 5px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+        }
+        
+        /* Preview Section */
+        .preview-gallery {
+            background: var(--bg-primary);
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            overflow: hidden;
+            padding: 20px;
+        }
+        
+        .preview-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: var(--text-primary);
+        }
+        
+        .preview-meta {
+            color: var(--text-muted);
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+        
+        .preview-description {
+            color: var(--text-primary);
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+        
+        .preview-media-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+        
+        .preview-media-item {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+        
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+            padding-top: 30px;
+            border-top: 2px solid var(--border-color);
+        }
+        
+        .btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            color: white;
+            flex: 1;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(76, 175, 80, 0.3);
+        }
+        
+        .btn-danger {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(239, 68, 68, 0.3);
+        }
+        
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .admin-edit-content {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-edit-container">
+        <!-- Header -->
+        <div class="admin-edit-header">
+            <h1 id="pageTitle">📸 Nový projekt</h1>
+            <button class="back-btn" onclick="goBack()">
+                ← Zpět na hlavní stránku
+            </button>
+        </div>
+        
+        <!-- Content -->
+        <div class="admin-edit-content">
+            <!-- Left: Edit Form -->
+            <div class="edit-section">
+                <h2>📝 Informace o projektu</h2>
+                
+                <form id="editForm">
+                    <div class="form-group">
+                        <label>Název projektu:</label>
+                        <input type="text" id="projectTitle" placeholder="např. Moderní kuchyně v Praze" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Popis projektu:</label>
+                        <textarea id="projectDescription" placeholder="Popište projekt, materiály, rozměry..."></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Lokace:</label>
+                        <input type="text" id="projectLocation" placeholder="např. Praha, Brno, Ostrava">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Datum realizace:</label>
+                        <input type="date" id="projectDate">
+                    </div>
+                </form>
+                
+                <!-- Media Gallery -->
+                <div class="media-gallery">
+                    <h2>🖼️ Fotky a videa projektu</h2>
+                    
+                    <div class="media-upload-zone" id="uploadZone">
+                        <div class="upload-icon">📁</div>
+                        <p><strong>Přetáhněte sem soubory</strong></p>
+                        <p>nebo klikněte pro výběr</p>
+                        <p style="font-size: 14px; color: var(--text-muted);">
+                            Podporované formáty: JPG, PNG, GIF, WEBP, MP4, WEBM
+                        </p>
+                        <input type="file" id="fileInput" multiple accept="image/*,video/*" style="display: none;">
+                    </div>
+                    
+                    <div class="media-grid" id="mediaGrid">
+                        <!-- Media items will be added here -->
+                    </div>
+                </div>
+                
+                <!-- Action Buttons -->
+                <div class="action-buttons">
+                    <button class="btn btn-primary" onclick="saveProject()">
+                        💾 Uložit projekt
+                    </button>
+                    <button class="btn btn-danger" onclick="deleteProject()" id="deleteBtn" style="display: none;">
+                        🗑️ Smazat projekt
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Right: Live Preview -->
+            <div class="edit-section">
+                <h2>👁️ Náhled v galerii</h2>
+                
+                <div class="preview-gallery">
+                    <h3 class="preview-title" id="previewTitle">Název projektu</h3>
+                    <div class="preview-meta" id="previewMeta">Lokace • Datum</div>
+                    <div class="preview-description" id="previewDescription">Popis projektu se zobrazí zde...</div>
+                    
+                    <div class="preview-media-grid" id="previewMediaGrid">
+                        <div style="grid-column: 1/-1; text-align: center; padding: 40px; color: var(--text-muted);">
+                            📸 Zatím žádné obrázky
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 20px; padding: 15px; background: var(--bg-primary); border-radius: 8px;">
+                    <p style="margin: 0; color: var(--text-muted); font-size: 14px;">
+                        ℹ️ Preview se automaticky aktualizuje při změnách
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="js/admin-project-edit.js"></script>
+</body>
+</html>

@@ -1,0 +1,17 @@
+ПОСИЛАННЯ НА САЙТ:
+
+file:///C:/Users/ivank/muscle-diary/ikarden-website/index.html
+
+
+ІНСТРУКЦІЯ:
+
+1. Скопіюйте посилання вище (Ctrl+C)
+2. Відкрийте ІНКОГНІТО вікно (Ctrl+Shift+N)
+3. Вставте посилання (Ctrl+V)
+4. Натисніть Enter
+5. Увійдіть в Admin: admin / admin123
+6. Натисніть на продукт → Upravit
+7. ГОТОВО!
+
+
+ВСЕ ПРАЦЮЄ!

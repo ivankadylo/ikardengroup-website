@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🚀 IKarden - Інструкція для ivankadylo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a2e1a 0%, #0d1f1f 100%);
+            color: #ffffff;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: rgba(45, 62, 55, 0.95);
+            border-radius: 20px;
+            padding: 50px;
+            box-shadow: 0 10px 50px rgba(0, 0, 0, 0.6);
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 30px;
+            border-bottom: 3px solid #4ade80;
+        }
+        
+        .header h1 {
+            color: #4ade80;
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+        
+        .username {
+            background: linear-gradient(135deg, #4ade80, #22c55e);
+            color: #000;
+            padding: 10px 25px;
+            border-radius: 10px;
+            font-size: 24px;
+            font-weight: bold;
+            display: inline-block;
+            margin-top: 10px;
+        }
+        
+        .step-container {
+            background: rgba(26, 26, 26, 0.7);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 25px 0;
+            border-left: 6px solid #4ade80;
+        }
+        
+        .step-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .step-number {
+            background: linear-gradient(135deg, #4ade80, #22c55e);
+            color: #000;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            font-weight: bold;
+            margin-right: 20px;
+            flex-shrink: 0;
+        }
+        
+        .step-title {
+            color: #4ade80;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        
+        .button {
+            background: linear-gradient(135deg, #4ade80, #22c55e);
+            color: #000;
+            padding: 18px 35px;
+            border: none;
+            border-radius: 12px;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            margin: 15px 10px;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(74, 222, 128, 0.4);
+        }
+        
+        .button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(74, 222, 128, 0.6);
+        }
+        
+        .button-secondary {
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+        }
+        
+        .url-box {
+            background: #1a1a1a;
+            padding: 20px;
+            border-radius: 10px;
+            border: 2px solid #4ade80;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            color: #4ade80;
+            font-size: 16px;
+            word-break: break-all;
+        }
+        
+        .success {
+            background: rgba(74, 222, 128, 0.2);
+            border: 3px solid #4ade80;
+            padding: 25px;
+            border-radius: 12px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        
+        .success h3 {
+            color: #4ade80;
+            font-size: 32px;
+            margin-bottom: 15px;
+        }
+        
+        .warning {
+            background: rgba(239, 68, 68, 0.2);
+            border: 3px solid #ef4444;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 15px 0;
+        }
+        
+        .info {
+            background: rgba(59, 130, 246, 0.2);
+            border: 3px solid #3b82f6;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 15px 0;
+        }
+        
+        .checklist {
+            background: rgba(26, 26, 26, 0.6);
+            padding: 25px;
+            border-radius: 12px;
+            margin: 25px 0;
+        }
+        
+        .checklist h3 {
+            color: #4ade80;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+        
+        .checklist-item {
+            padding: 12px;
+            margin: 8px 0;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .checklist input[type="checkbox"] {
+            width: 24px;
+            height: 24px;
+            margin-right: 15px;
+            cursor: pointer;
+        }
+        
+        .checklist label {
+            font-size: 18px;
+            cursor: pointer;
+            flex: 1;
+        }
+        
+        ol, ul {
+            margin-left: 25px;
+            margin-top: 15px;
+        }
+        
+        li {
+            margin: 12px 0;
+            font-size: 17px;
+        }
+        
+        .final-url {
+            background: linear-gradient(135deg, #4ade80, #22c55e);
+            color: #000;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            margin: 30px 0;
+            font-size: 24px;
+            font-weight: bold;
+            box-shadow: 0 8px 30px rgba(74, 222, 128, 0.5);
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 50px;
+            padding-top: 30px;
+            border-top: 3px solid #2a2a2a;
+            color: #888888;
+        }
+        
+        .emoji {
+            font-size: 32px;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- HEADER -->
+        <div class="header">
+            <h1>🚀 IKarden Website</h1>
+            <p style="font-size: 20px; color: #cccccc;">Деплой на GitHub Pages</p>
+            <div class="username">👤 ivankadylo</div>
+        </div>
+        
+        <!-- ІНФО -->
+        <div class="info">
+            <strong style="font-size: 20px;">✅ ВАШ GITHUB ГОТОВИЙ!</strong><br><br>
+            <strong>Username:</strong> ivankadylo<br>
+            <strong>Email:</strong> ikardengroup@gmail.com<br>
+            <strong>⏱️ Час:</strong> ~3 хвилини
+        </div>
+        
+        <!-- КРОК 1 -->
+        <div class="step-container">
+            <div class="step-header">
+                <div class="step-number">1</div>
+                <div class="step-title">Створіть Репозиторій</div>
+            </div>
+            
+            <p style="font-size: 18px; margin-bottom: 20px;">Відкрийте GitHub і створіть новий репозиторій:</p>
+            
+            <a href="https://github.com/new" target="_blank" class="button">
+                ➕ Створити Репозиторій
+            </a>
+            
+            <div style="margin-top: 20px;">
+                <strong>Заповніть форму:</strong>
+                <ul style="font-size: 17px;">
+                    <li><strong>Repository name:</strong> ikarden-website</li>
+                    <li><strong>Description:</strong> Сайт виробника меблів IKarden</li>
+                    <li>☑ <strong>Public</strong> (публічний)</li>
+                    <li>☐ БЕЗ README</li>
+                    <li>☐ БЕЗ .gitignore</li>
+                </ul>
+            </div>
+            
+            <div class="warning">
+                <strong>⚠️ Важливо!</strong><br>
+                Назва має бути ТОЧНО: <code style="color: #4ade80;">ikarden-website</code>
+            </div>
+        </div>
+        
+        <!-- КРОК 2 -->
+        <div class="step-container">
+            <div class="step-header">
+                <div class="step-number">2</div>
+                <div class="step-title">Завантажте Код</div>
+            </div>
+            
+            <p style="font-size: 18px; margin-bottom: 20px;">Знайдіть файл і двічі клікніть на нього:</p>
+            
+            <div class="url-box">
+                📁 C:\Users\ivank\muscle-diary\ikarden-website\DEPLOY-IVANKADYLO.bat
+            </div>
+            
+            <div class="info">
+                <strong>💡 Що робить скрипт:</strong>
+                <ul>
+                    <li>✅ Додає файли до Git</li>
+                    <li>✅ Створює commit</li>
+                    <li>✅ Підключає GitHub</li>
+                    <li>✅ Завантажує код</li>
+                </ul>
+            </div>
+            
+            <div class="warning">
+                <strong>🔐 Якщо попросить логін/пароль:</strong><br>
+                <strong>Username:</strong> ivankadylo<br>
+                <strong>Password:</strong> Personal Access Token<br>
+                (див. інструкцію нижче)
+            </div>
+        </div>
+        
+        <!-- КРОК 3 -->
+        <div class="step-container">
+            <div class="step-header">
+                <div class="step-number">3</div>
+                <div class="step-title">Увімкніть GitHub Pages</div>
+            </div>
+            
+            <p style="font-size: 18px; margin-bottom: 20px;">Відкрийте налаштування репозиторію:</p>
+            
+            <a href="https://github.com/ivankadylo/ikarden-website/settings/pages" target="_blank" class="button button-secondary">
+                ⚙️ Відкрити Settings → Pages
+            </a>
+            
+            <div style="margin-top: 25px;">
+                <strong style="font-size: 19px;">Налаштуйте:</strong>
+                <ol style="font-size: 17px;">
+                    <li><strong>Source:</strong> Deploy from a branch</li>
+                    <li><strong>Branch:</strong> виберіть <code style="color: #4ade80;">main</code></li>
+                    <li><strong>Folder:</strong> виберіть <code style="color: #4ade80;">/ (root)</code></li>
+                    <li>Натисніть <strong>Save</strong></li>
+                </ol>
+            </div>
+        </div>
+        
+        <!-- ГОТОВО -->
+        <div class="success">
+            <h3>🎉 ГОТОВО! САЙТ ОНЛАЙН!</h3>
+            <p style="font-size: 18px; margin: 20px 0;">Через 1-2 хвилини ваш сайт буде доступний на:</p>
+            <div class="final-url">
+                🌐 https://ivankadylo.github.io/ikarden-website/
+            </div>
+            <a href="https://ivankadylo.github.io/ikarden-website/" target="_blank" class="button">
+                🚀 Відкрити Сайт
+            </a>
+        </div>
+        
+        <!-- ТОКЕН -->
+        <div class="step-container" style="border-left-color: #f59e0b;">
+            <h3 style="color: #f59e0b; font-size: 24px; margin-bottom: 20px;">🔐 Personal Access Token</h3>
+            <p style="font-size: 17px; margin-bottom: 15px;">Якщо Git просить пароль:</p>
+            
+            <a href="https://github.com/settings/tokens/new" target="_blank" class="button" style="background: linear-gradient(135deg, #f59e0b, #d97706);">
+                🔑 Створити Token
+            </a>
+            
+            <div style="margin-top: 20px;">
+                <strong>Налаштування:</strong>
+                <ul>
+                    <li><strong>Note:</strong> ikarden-deploy</li>
+                    <li><strong>Expiration:</strong> No expiration</li>
+                    <li>☑ <strong>repo</strong> (всі галочки)</li>
+                </ul>
+            </div>
+            
+            <div class="warning">
+                <strong>⚠️ ВАЖЛИВО!</strong><br>
+                Після створення token з'явиться ТІЛЬКИ РАЗ!<br>
+                СКОПІЮЙТЕ його і збережіть!
+            </div>
+        </div>
+        
+        <!-- ЧЕКЛИСТ -->
+        <div class="checklist">
+            <h3>✅ Чеклист Виконання</h3>
+            <div class="checklist-item">
+                <input type="checkbox" id="c1">
+                <label for="c1">Створено репозиторій ikarden-website</label>
+            </div>
+            <div class="checklist-item">
+                <input type="checkbox" id="c2">
+                <label for="c2">Запущено DEPLOY-IVANKADYLO.bat</label>
+            </div>
+            <div class="checklist-item">
+                <input type="checkbox" id="c3">
+                <label for="c3">Код завантажено на GitHub</label>
+            </div>
+            <div class="checklist-item">
+                <input type="checkbox" id="c4">
+                <label for="c4">GitHub Pages увімкнено</label>
+            </div>
+            <div class="checklist-item">
+                <input type="checkbox" id="c5">
+                <label for="c5">Сайт відкривається в браузері</label>
+            </div>
+            <div class="checklist-item">
+                <input type="checkbox" id="c6">
+                <label for="c6">Перевірено на телефоні</label>
+            </div>
+        </div>
+        
+        <!-- КОРИСНІ ПОСИЛАННЯ -->
+        <div class="step-container" style="border-left-color: #3b82f6;">
+            <h3 style="color: #3b82f6; font-size: 24px; margin-bottom: 20px;">🔗 Ваші Посилання</h3>
+            
+            <div style="display: grid; gap: 15px;">
+                <a href="https://github.com/ivankadylo" target="_blank" class="button button-secondary">
+                    👤 Мій Профіль
+                </a>
+                <a href="https://github.com/ivankadylo/ikarden-website" target="_blank" class="button button-secondary">
+                    📁 Репозиторій
+                </a>
+                <a href="https://github.com/ivankadylo/ikarden-website/settings" target="_blank" class="button button-secondary">
+                    ⚙️ Settings
+                </a>
+                <a href="https://ivankadylo.github.io/ikarden-website/" target="_blank" class="button">
+                    🌐 Мій Сайт
+                </a>
+            </div>
+        </div>
+        
+        <!-- FOOTER -->
+        <div class="footer">
+            <p style="font-size: 20px; margin-bottom: 15px;"><strong>💚 Успіхів з вашим сайтом!</strong></p>
+            <p>Email: ikardengroup@gmail.com</p>
+            <p style="margin-top: 20px; font-size: 14px;">
+                Створено з ❤️ за допомогою Claude AI<br>
+                Березень 2026
+            </p>
+        </div>
+    </div>
+    
+    <script>
+        // Зберігання стану чекліста
+        document.querySelectorAll('.checklist input[type="checkbox"]').forEach(checkbox => {
+            const key = 'checklist_' + checkbox.id;
+            checkbox.checked = localStorage.getItem(key) === 'true';
+            
+            checkbox.addEventListener('change', function() {
+                localStorage.setItem(key, this.checked);
+            });
+        });
+    </script>
+</body>
+</html>

@@ -3,228 +3,533 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="IK Arden Group - Od nápadu ke skutečnosti. Přírodní materiály, individuální design, bezchybné provedení.">
-    <title>IK Arden Group - Od nápadu ke skutečnosti</title>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="icon" type="image/svg+xml" href="logo.svg">
+    
+    <!-- Primary Meta Tags -->
+    <title>IKarden - Ručně vyráběný nábytek z masivu | Stoly, Police, Skříně</title>
+    <meta name="title" content="IKarden - Ručně vyráběný nábytek z masivu | Stoly, Police, Skříně">
+    <meta name="description" content="Kvalitní dřevěný nábytek vyrobený s láskou a precizností. Stoly, police, skříně a kuchyně na míru. 100% přírodní dřevo, 2 roky záruka, doprava po celé ČR.">
+    <meta name="keywords" content="nábytek z masivu, dřevěný nábytek, stoly z dubu, police na míru, skříně, kuchyně, ruční výroba, Česká republika">
+    <meta name="author" content="IKarden">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://ikarden.cz/">
+    <meta property="og:title" content="IKarden - Ručně vyráběný nábytek z masivu">
+    <meta property="og:description" content="Kvalitní dřevěný nábytek vyrobený s láskou a precizností. 100% přírodní dřevo, 2 roky záruka.">
+    <meta property="og:image" content="https://ikarden.cz/images/og-image.jpg">
+    <meta property="og:locale" content="cs_CZ">
+    <meta property="og:site_name" content="IKarden">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://ikarden.cz/">
+    <meta property="twitter:title" content="IKarden - Ručně vyráběný nábytek z masivu">
+    <meta property="twitter:description" content="Kvalitní dřevěný nábytek vyrobený s láskou a precizností.">
+    <meta property="twitter:image" content="https://ikarden.cz/images/og-image.jpg">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    
+    <!-- Schema.org markup for Google -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "LocalBusiness",
+      "name": "IKarden",
+      "image": "https://ikarden.cz/images/logo.jpg",
+      "@id": "https://ikarden.cz",
+      "url": "https://ikarden.cz",
+      "telephone": "+420XXXXXXXXX",
+      "priceRange": "2000-20000 Kč",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "[Vaše adresa]",
+        "addressLocality": "Praha",
+        "addressCountry": "CZ"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": 50.0755,
+        "longitude": 14.4378
+      },
+      "openingHoursSpecification": {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": [
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday"
+        ],
+        "opens": "09:00",
+        "closes": "17:00"
+      },
+      "sameAs": [
+        "https://www.facebook.com/ikarden",
+        "https://www.instagram.com/ikarden"
+      ]
+    }
+    </script>
+    
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/admin-controls.css">
+    
+    <!-- ADMIN CONTROLS - BEAUTIFUL STYLES -->
+    <style>
+        /* Admin Controls - Beautiful Design */
+        body.admin-mode .admin-controls {
+            opacity: 1 !important;
+            pointer-events: all !important;
+        }
+        
+        .admin-controls {
+            position: absolute !important;
+            top: 10px !important;
+            right: 10px !important;
+            display: none !important;
+            gap: 8px !important;
+            transition: opacity 0.3s ease !important;
+            z-index: 10 !important;
+        }
+        
+        /* Show ONLY in admin mode */
+        body.admin-mode .admin-controls {
+            display: flex !important;
+            opacity: 0 !important;
+            pointer-events: none !important;
+        }
+        
+        /* Show on hover ONLY in admin mode */
+        body.admin-mode .product-card:hover .admin-controls {
+            opacity: 1 !important;
+            pointer-events: all !important;
+        }
+        
+        .admin-edit-btn,
+        .admin-delete-btn {
+            padding: 8px 16px !important;
+            border: none !important;
+            border-radius: 8px !important;
+            font-size: 13px !important;
+            font-weight: 600 !important;
+            cursor: pointer !important;
+            display: flex !important;
+            align-items: center !important;
+            gap: 6px !important;
+            transition: all 0.2s ease !important;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+            backdrop-filter: blur(10px) !important;
+            color: white !important;
+        }
+        
+        .admin-edit-btn {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%) !important;
+        }
+        
+        .admin-edit-btn:hover {
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%) !important;
+            transform: translateY(-2px) !important;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4) !important;
+        }
+        
+        .admin-delete-btn {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%) !important;
+        }
+        
+        .admin-delete-btn:hover {
+            background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%) !important;
+            transform: translateY(-2px) !important;
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4) !important;
+        }
+        
+        .admin-edit-btn::before {
+            content: "✏️" !important;
+            font-size: 14px !important;
+        }
+        
+        .admin-delete-btn::before {
+            content: "🗑️" !important;
+            font-size: 14px !important;
+        }
+        
+        /* Placeholder - Beautiful Gradient */
+        .product-image-placeholder {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+            color: white !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            font-size: 18px !important;
+            font-weight: 600 !important;
+            text-align: center !important;
+            padding: 20px !important;
+            min-height: 200px !important;
+            position: relative !important;
+            overflow: hidden !important;
+        }
+        
+        .product-image-placeholder::before {
+            content: "📦" !important;
+            font-size: 48px !important;
+            position: absolute !important;
+            opacity: 0.2 !important;
+            top: 50% !important;
+            left: 50% !important;
+            transform: translate(-50%, -50%) !important;
+        }
+        
+        .gallery-placeholder {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%) !important;
+            color: white !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            min-height: 250px !important;
+            position: relative !important;
+        }
+        
+        body.admin-mode .product-card {
+            border: 2px solid transparent !important;
+            transition: border-color 0.3s ease !important;
+        }
+        
+        body.admin-mode .product-card:hover {
+            border-color: rgba(59, 130, 246, 0.5) !important;
+        }
+    </style>
 </head>
 <body>
-    <!-- Navigation -->
-    <nav class="navbar">
+    <!-- Admin Mode Indicator -->
+    <div class="admin-mode-indicator">
+        🔧 ADMIN REŽIM AKTIVNÍ
+    </div>
+    
+    <!-- Header -->
+    <header class="header">
         <div class="container">
-            <div class="nav-wrapper">
-                <a href="#home" class="logo-link">
-                    <img src="logo.svg" alt="IK Arden Group" class="logo-image">
+            <div class="header-content">
+                <a href="#" class="logo-link">
+                    <div class="header-logo-animated">
+                        <div class="header-logo-mark">
+                            <svg viewBox="0 0 130 130">
+                                <rect class="sq-outer" x="2" y="2" width="126" height="126" rx="4"></rect>
+                                <rect class="sq-inner" x="14" y="14" width="102" height="102" rx="3"></rect>
+                            </svg>
+                            <div class="header-ik-text">IK</div>
+                        </div>
+                        <div class="header-logo-text-block">
+                            <div class="header-logo-arden">ARDEN</div>
+                            <div class="header-logo-rule"></div>
+                            <div class="header-logo-group">GROUP</div>
+                        </div>
+                    </div>
                 </a>
-                
-                <div class="nav-menu" id="navMenu">
-                    <a href="#home" class="nav-link active" data-section="home">Domů</a>
-                    <a href="#about" class="nav-link" data-section="about">O nás</a>
-                    <a href="#services" class="nav-link" data-section="services">Služby</a>
-                    <a href="#products" class="nav-link" data-section="products">Produkty</a>
-                    <a href="#gallery" class="nav-link" data-section="gallery">Galerie</a>
-                    <a href="#contact" class="nav-link" data-section="contact">Kontakt</a>
-                </div>
-                
-                <div class="nav-right-buttons">
-                    <button class="cart-button" id="cartButton" onclick="openCart()">
-                        🛒 Košík
-                        <span class="cart-badge" id="cartBadge">0</span>
+                <nav class="nav">
+                    <a href="#" class="nav-link">Domů</a>
+                    <a href="#produkty" class="nav-link">Produkty</a>
+                    <a href="#galerie" class="nav-link">Realizace</a>
+                    <a href="#faq" class="nav-link">FAQ</a>
+                    <a href="#kontakt" class="nav-link">Kontakt</a>
+                </nav>
+                <div class="header-right">
+                    <button class="theme-toggle-btn" id="themeToggle" onclick="toggleTheme()" title="Přepnout vzhled">
+                        <span class="theme-icon" id="themeIcon">🌙</span>
                     </button>
-                    <button class="admin-button" id="adminButton" onclick="openAdmin()" title="Admin">⚙️</button>
+                    <button class="admin-btn" onclick="showAdminLogin()" title="Přihlásit jako administrátor">
+                        <span id="adminBtnText">🔧 Admin</span>
+                    </button>
+                    <button class="reload-btn" onclick="location.reload()" title="Оновити сторінку">
+                        🔄 Оновити
+                    </button>
+                    <div class="cart-icon" id="cartIcon">
+                        🛒
+                        <span class="cart-badge" id="cartBadge">0</span>
+                    </div>
                 </div>
-                
-                <button class="mobile-toggle" id="mobileToggle">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </button>
             </div>
         </div>
-    </nav>
+    </header>
 
     <!-- Hero Section -->
-    <section id="home" class="hero">
-        <div class="hero-bg"></div>
+    <section class="hero">
         <div class="container">
-            <div class="hero-content">
-                <div class="hero-badge">Přírodní materiály</div>
-                <h1 class="hero-title">Od nápadu ke skutečnosti</h1>
-                <p class="hero-subtitle">Váš prostor si zaslouží víc. Měníme nejasné představy v elegantní řešení, která proměňují atmosféru.</p>
-                <div class="hero-buttons">
-                    <a href="#products" class="btn btn-primary">Naše produkty</a>
-                    <a href="#contact" class="btn btn-secondary">Kontaktovat nás</a>
+            <div class="hero-grid">
+                <!-- Left Column - Logo -->
+                <div class="hero-logo-column">
+                    <div class="hero-logo-animated">
+                <div class="logo-mark">
+                    <svg viewBox="0 0 130 130">
+                        <rect class="sq-outer" x="2" y="2" width="126" height="126" rx="4"></rect>
+                        <rect class="sq-inner" x="14" y="14" width="102" height="102" rx="3"></rect>
+                    </svg>
+                    <div class="ik-text">IK</div>
                 </div>
-            </div>
-        </div>
-        <div class="scroll-indicator">
-            <span></span>
-        </div>
-    </section>
-
-    <!-- About Section -->
-    <section id="about" class="about">
-        <div class="container">
-            <div class="section-header">
-                <span class="section-tag">Naše historie</span>
-                <h2 class="section-title">O nás</h2>
-                <p class="section-desc">Vyplňujeme mezeru na trhu kvalitními řešeními z přírodních materiálů</p>
+                <div class="logo-text-block">
+                    <div class="logo-arden">ARDEN</div>
+                    <div class="logo-rule"></div>
+                    <div class="logo-group">GROUP</div>
+                </div>
             </div>
             
-            <div class="about-grid">
-                <div class="about-text">
-                    <p>
-                        Ikarden Group vznikl z prosté myšlenky – vyplnit mezeru na trhu, kterou jsme sami dlouho pociťovali. Hledali jsme kvalitní designové prvky z přírodního dřeva pro výjimečné interiéry. A když jsme je nenašli, rozhodli jsme se je vytvořit.
-                    </p>
-                    <p>
-                        Dnes nabízíme řešení, která spojují funkčnost s estetikou. Každý projekt vytváříme přesně podle vašich představ a rozměrů prostoru. Pracujeme s přírodními materiály nejvyšší kvality a každý detail dokončujeme s péčí.
-                    </p>
-                    <div class="stats-grid">
-                        <div class="stat-item">
-                            <div class="stat-number">100%</div>
-                            <div class="stat-label">Přírodní materiály</div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="stat-number">∞</div>
-                            <div class="stat-label">Možnosti designu</div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="about-image">
-                    <div class="image-placeholder">
-                        <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-                            <path fill="#5A9B8E" d="M45.3,-57.8C58.6,-49.2,69.4,-35.3,73.8,-19.2C78.2,-3.1,76.2,15.1,68.5,29.4C60.8,43.7,47.4,54.1,32.6,60.1C17.8,66.1,1.7,67.7,-14.7,66.3C-31.1,64.9,-47.8,60.5,-58.7,50.3C-69.6,40.1,-74.7,24.1,-75.3,7.8C-75.9,-8.5,-72,-25.1,-62.5,-37.1C-53,-49.1,-38,-56.5,-22.6,-64.3C-7.2,-72.1,8.6,-80.3,23.3,-79.7C38,-79.1,51.6,-69.7,45.3,-57.8Z" transform="translate(100 100)" />
-                        </svg>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Services Section -->
-    <section id="services" class="services">
-        <div class="container">
-            <div class="section-header">
-                <span class="section-tag">Co nabízíme</span>
-                <h2 class="section-title">Naše služby</h2>
-            </div>
-            
-            <div class="services-grid">
-                <div class="service-card featured">
-                    <div class="featured-badge">Nejoblíbenější</div>
-                    <div class="service-icon">🎨</div>
-                    <h3>Zakázková výroba nábytku</h3>
-                    <p>Ruční výroba dřevěných stolů, designových prvků a nábytku přesně podle vašich požadavků.</p>
-                </div>
-                
-                <div class="service-card">
-                    <div class="service-icon">✨</div>
-                    <h3>Designové řešení interiérů</h3>
-                    <p>Kompletní návrh a realizace interiérových prvků, které dokonale doplní váš prostor.</p>
-                </div>
-            </div>
+            <h1 class="hero-title">Ručně vyráběný nábytek z masivu</h1>
+            <p class="hero-subtitle">Kvalitní dřevěný nábytek vyrobený s láskou a precizností</p>
+            <a href="#produkty" class="btn btn-primary">Prohlédnout produkty</a>
         </div>
     </section>
 
     <!-- Products Section -->
-    <section id="products" class="products">
+    <section class="products" id="produkty">
         <div class="container">
-            <div class="section-header">
-                <span class="section-tag">Naše výrobky</span>
-                <h2 class="section-title">Produkty</h2>
+            <h2 class="section-title">Naše produkty</h2>
+            
+            <!-- Categories Filter -->
+            <div class="categories-filter" id="categoriesFilter">
+                <!-- Categories will be loaded by JavaScript -->
             </div>
             
-            <div class="product-grid">
-                <div class="product-card">
-                    <div class="product-image">
-                        <div class="product-overlay">
-                            <a href="#contact" class="btn-overlay">Poptat</a>
+            <div class="products-grid" id="productsGrid">
+                <!-- Products will be loaded by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Cart Modal -->
+    <div class="modal" id="cartModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Košík</h2>
+                <button class="modal-close" id="modalClose">&times;</button>
+            </div>
+            <div class="modal-body" id="cartItems">
+                <p class="empty-cart">Košík je prázdný</p>
+            </div>
+            <div class="modal-footer">
+                <div class="cart-total">
+                    <span>Celkem:</span>
+                    <span id="cartTotal">0 Kč</span>
+                </div>
+                <button class="btn btn-secondary" id="clearCart">Vyprázdnit košík</button>
+                <button class="btn btn-primary" id="checkoutBtn">Pokračovat k objednávce</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom Order Modal -->
+    <div class="modal" id="customOrderModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>📐 Objednávka na míru: <span id="customProductName"></span></h2>
+                <button class="modal-close" id="customModalClose">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="customOrderForm">
+                    <input type="hidden" id="customOrderProductId">
+                    
+                    <div class="custom-order-section">
+                        <h3 style="color: #4ade80; margin-bottom: 15px;">Rozměry (cm)</h3>
+                        <div class="form-row-3">
+                            <div class="form-group">
+                                <label>Šířka</label>
+                                <input type="number" id="orderWidth" class="form-input" placeholder="např. 120" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Výška</label>
+                                <input type="number" id="orderHeight" class="form-input" placeholder="např. 75" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Hloubka</label>
+                                <input type="number" id="orderDepth" class="form-input" placeholder="např. 80" required>
+                            </div>
                         </div>
-                        <div class="product-placeholder">🪑</div>
                     </div>
-                    <div class="product-content">
-                        <span class="product-category">Nábytek</span>
-                        <h3>Dřevěné stoly</h3>
-                        <p>Ručně vyráběné stoly z masivního dřeva. Každý kus je unikátní.</p>
-                        <div class="product-features">
-                            <span class="feature">✓ Ruční výroba</span>
-                            <span class="feature">✓ Přírodní dřevo</span>
+                    
+                    <div class="custom-order-section">
+                        <h3 style="color: #4ade80; margin-bottom: 15px;">Kontaktní údaje</h3>
+                        <div class="form-group">
+                            <label>Telefon nebo Email *</label>
+                            <input type="text" id="orderContact" class="form-input" 
+                                   placeholder="např. +420 123 456 789 nebo email@example.cz" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Email (volitelné)</label>
+                            <input type="email" id="orderEmail" class="form-input" 
+                                   placeholder="pro potvrzení objednávky">
                         </div>
                     </div>
+                    
+                    <div class="custom-order-section">
+                        <h3 style="color: #4ade80; margin-bottom: 15px;">Další přání</h3>
+                        <div class="form-group">
+                            <textarea id="orderNotes" class="form-textarea" rows="4"
+                                      placeholder="Popište své požadavky, barvu, materiál, atd..."></textarea>
+                        </div>
+                    </div>
+                    
+                    <div class="custom-order-info">
+                        ℹ️ Po odeslání objednávky vás budeme kontaktovat do 24 hodin
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 20px;">
+                        ✅ Odeslat poptávku
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Image Lightbox -->
+    <div class="image-lightbox" id="imageLightbox" onclick="closeLightbox(event)">
+        <div class="lightbox-content" onclick="event.stopPropagation()">
+            <button class="lightbox-close" onclick="closeLightbox(event)">&times;</button>
+            
+            <!-- Image Container -->
+            <div class="lightbox-image-wrapper">
+                <div class="lightbox-image-container">
+                    <button class="lightbox-nav lightbox-prev" id="lightboxPrev" onclick="navigateLightbox(-1)">‹</button>
+                    <img src="" alt="" class="lightbox-image" id="lightboxImage">
+                    <button class="lightbox-nav lightbox-next" id="lightboxNext" onclick="navigateLightbox(1)">›</button>
                 </div>
                 
-                <div class="product-card">
-                    <div class="product-image">
-                        <div class="product-overlay">
-                            <a href="#contact" class="btn-overlay">Poptat</a>
-                        </div>
-                        <div class="product-placeholder">📻</div>
-                    </div>
-                    <div class="product-content">
-                        <span class="product-category">Interiér</span>
-                        <h3>Kryty na radiátory</h3>
-                        <p>Elegantní dřevěné kryty, které maskují radiátory a dodávají prezentabilní vzhled.</p>
-                        <div class="product-features">
-                            <span class="feature">✓ Na míru</span>
-                            <span class="feature">✓ Elegantní design</span>
-                        </div>
-                    </div>
+                <!-- Dots Indicator -->
+                <div class="lightbox-dots" id="lightboxDots"></div>
+            </div>
+            
+            <!-- Product Info -->
+            <div class="lightbox-product-info">
+                <h3 class="lightbox-product-name" id="lightboxProductName"></h3>
+                <p class="lightbox-product-description" id="lightboxProductDescription"></p>
+                <div class="lightbox-product-price" id="lightboxProductPrice"></div>
+            </div>
+            
+            <div class="lightbox-hint">
+                🔍 Klikněte mimo obrázek nebo stiskněte ESC pro zavření
+            </div>
+        </div>
+    </div>
+
+    <!-- Trust Badges -->
+    <section class="trust-badges">
+        <div class="container">
+            <div class="badges-grid">
+                <div class="badge">
+                    <span class="badge-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                            <polyline points="22 4 12 14.01 9 11.01"/>
+                        </svg>
+                    </span>
+                    <span class="badge-text">100% Přírodní dřevo</span>
                 </div>
-                
-                <div class="product-card">
-                    <div class="product-image">
-                        <div class="product-overlay">
-                            <a href="#contact" class="btn-overlay">Poptat</a>
-                        </div>
-                        <div class="product-placeholder">🔨</div>
-                    </div>
-                    <div class="product-content">
-                        <span class="product-category">Zakázka</span>
-                        <h3>Vaše vize</h3>
-                        <p>Máte vlastní nápad? Pomůžeme vám ho realizovat od návrhu až po instalaci.</p>
-                        <div class="product-features">
-                            <span class="feature">✓ Konzultace zdarma</span>
-                            <span class="feature">✓ Kompletní servis</span>
-                        </div>
-                    </div>
+                <div class="badge">
+                    <span class="badge-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="1" y="3" width="15" height="13"/>
+                            <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/>
+                            <circle cx="5.5" cy="18.5" r="2.5"/>
+                            <circle cx="18.5" cy="18.5" r="2.5"/>
+                        </svg>
+                    </span>
+                    <span class="badge-text">Doprava po celé ČR</span>
+                </div>
+                <div class="badge">
+                    <span class="badge-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                            <path d="M9 12l2 2 4-4"/>
+                        </svg>
+                    </span>
+                    <span class="badge-text">2 roky záruka</span>
+                </div>
+                <div class="badge">
+                    <span class="badge-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M20 7h-9"/>
+                            <path d="M14 17H5"/>
+                            <circle cx="17" cy="17" r="3"/>
+                            <circle cx="7" cy="7" r="3"/>
+                        </svg>
+                    </span>
+                    <span class="badge-text">Ruční výroba</span>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Gallery Section -->
-    <section id="gallery" class="gallery">
+    <section class="gallery-section" id="galerie">
         <div class="container">
-            <div class="section-header">
-                <span class="section-tag">Naše práce</span>
-                <h2 class="section-title">Galerie</h2>
-                <p class="section-desc">Podívejte se na naše realizované projekty</p>
+            <h2 class="section-title">Naše realizace</h2>
+            <p class="section-subtitle">Podívejte se na náš vyrobený nábytek</p>
+            <div class="gallery-grid" id="galleryGrid">
+                <!-- Gallery items will be loaded by JavaScript -->
             </div>
-            
-            <div class="gallery-grid">
-                <div class="gallery-item tall">
-                    <div class="gallery-placeholder">
-                        <span>🏡</span>
-                        <p>Rodinný dům</p>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="faq-section" id="faq">
+        <div class="container">
+            <h2 class="section-title">Často kladené otázky</h2>
+            <div class="faq-container">
+                <div class="faq-item">
+                    <button class="faq-question">
+                        Jak dlouho trvá výroba nábytku?
+                        <span class="faq-icon">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        Standardní výroba trvá 4-6 týdnů od potvrzení objednávky. Pro složitější kusový nábytek může být doba delší.
                     </div>
                 </div>
-                <div class="gallery-item">
-                    <div class="gallery-placeholder">
-                        <span>🪑</span>
-                        <p>Jídelní stůl</p>
+                
+                <div class="faq-item">
+                    <button class="faq-question">
+                        Nabízíte dopravu?
+                        <span class="faq-icon">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        Ano, nabízíme dopravu po celé České republice. Cena dopravy se počítá individuálně podle vzdálenosti a velikosti nábytku.
                     </div>
                 </div>
-                <div class="gallery-item">
-                    <div class="gallery-placeholder">
-                        <span>📻</span>
-                        <p>Kryt na radiátor</p>
+                
+                <div class="faq-item">
+                    <button class="faq-question">
+                        Jaké dřevo používáte?
+                        <span class="faq-icon">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        Používáme především masivní dub, jeřáb, bořovici a ováš. Všechno dřevo je přírodní, vysušené a ošetřené.
                     </div>
                 </div>
-                <div class="gallery-item wide">
-                    <div class="gallery-placeholder">
-                        <span>🎨</span>
-                        <p>Designový nábytek</p>
+                
+                <div class="faq-item">
+                    <button class="faq-question">
+                        Mohu si objednat nábytek na míru?
+                        <span class="faq-icon">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        Ano, většinu našeho nábytku vyrábíme na míru podle vašich přání. Stačí kliknout na tlačítko "📐 Na míru" u konkrétního produktu.
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <button class="faq-question">
+                        Jaká je záruka?
+                        <span class="faq-icon">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        Poskytujeme 2 roky záruky na všechen náš nábytek. Záruka se vztahuje na výrobní vady a materiál.
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <button class="faq-question">
+                        Mohu vidět nábytek před objednáním?
+                        <span class="faq-icon">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        Ano, je možné si domluvit prohlídku v naší dílně nebo vystavce. Kontaktujte nás telefonicky nebo emailem.
                     </div>
                 </div>
             </div>
@@ -232,57 +537,76 @@
     </section>
 
     <!-- Contact Section -->
-    <section id="contact" class="contact">
+    <section class="contact-section" id="kontakt">
         <div class="container">
-            <div class="section-header">
-                <span class="section-tag">Spojme se</span>
-                <h2 class="section-title">Kontaktujte nás</h2>
-                <p class="section-desc">Rádi zodpovíme vaše dotazy a probereme vaše nápady</p>
-            </div>
-            
-            <div class="contact-content">
-                <div class="contact-info">
-                    <div class="contact-item">
-                        <div class="contact-icon">📧</div>
-                        <div>
-                            <h3>Email</h3>
-                            <a href="mailto:info@ikardengroup.com">info@ikardengroup.com</a>
-                        </div>
-                    </div>
-                    
-                    <div class="contact-item">
-                        <div class="contact-icon">📱</div>
-                        <div>
-                            <h3>Telefon</h3>
-                            <a href="tel:+420000000000">+420 XXX XXX XXX</a>
-                        </div>
-                    </div>
-                    
-                    <div class="contact-item">
-                        <div class="contact-icon">📍</div>
-                        <div>
-                            <h3>Lokalita</h3>
-                            <p>Česká republika</p>
-                        </div>
-                    </div>
-
-                    <div class="contact-hours">
-                        <h4>Pracovní doba</h4>
-                        <p>Po-Pá: 8:00 - 17:00</p>
-                        <p>So-Ne: Zavřeno</p>
-                    </div>
+            <h2 class="section-title">Kontakt</h2>
+            <div class="contact-grid">
+                <div class="contact-item">
+                    <span class="contact-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                            <circle cx="12" cy="10" r="3"/>
+                        </svg>
+                    </span>
+                    <h3>Adresa</h3>
+                    <p>Praha, Česká republika</p>
+                    <p class="contact-note">(Čekáme na vaši přesnou adresu)</p>
                 </div>
                 
-                <form class="contact-form" id="contactForm">
-                    <div class="form-row">
-                        <input type="text" name="name" placeholder="Jméno" required>
-                        <input type="email" name="email" placeholder="Email" required>
-                    </div>
-                    <input type="tel" name="phone" placeholder="Telefon (volitelné)">
-                    <textarea name="message" rows="6" placeholder="Vaše zpráva" required></textarea>
-                    <button type="submit" class="btn btn-primary btn-full">Odeslat zprávu</button>
-                </form>
+                <div class="contact-item">
+                    <span class="contact-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+                        </svg>
+                    </span>
+                    <h3>Telefon</h3>
+                    <p>+420 XXX XXX XXX</p>
+                    <p class="contact-note">(Čekáme na vaše číslo)</p>
+                </div>
+                
+                <div class="contact-item">
+                    <span class="contact-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                            <polyline points="22,6 12,13 2,6"/>
+                        </svg>
+                    </span>
+                    <h3>E-mail</h3>
+                    <p>info@ikarden.cz</p>
+                    <p class="contact-note">(Čekáme na váš email)</p>
+                </div>
+                
+                <div class="contact-item">
+                    <span class="contact-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"/>
+                            <polyline points="12 6 12 12 16 14"/>
+                        </svg>
+                    </span>
+                    <h3>Otevírací doba</h3>
+                    <p>Po-Pá: 9:00-17:00</p>
+                    <p>So: 9:00-13:00</p>
+                </div>
             </div>
+        </div>
+    </section>
+
+    <!-- Newsletter Section -->
+    <section class="newsletter-section">
+        <div class="container">
+            <h2>Odběr novinek</h2>
+            <p>Získejte slevy a novinky přímo do e-mailu</p>
+            <form class="newsletter-form" onsubmit="subscribeNewsletter(event)">
+                <input 
+                    type="email" 
+                    placeholder="Váš e-mail" 
+                    required
+                    class="newsletter-input"
+                >
+                <button type="submit" class="newsletter-btn">
+                    Odebírat
+                </button>
+            </form>
         </div>
     </section>
 
@@ -290,36 +614,63 @@
     <footer class="footer">
         <div class="container">
             <div class="footer-content">
-                <div class="footer-column">
-                    <img src="logo.svg" alt="IK Arden Group" class="footer-logo-image">
-                    <p>Od nápadu ke skutečnosti</p>
-                    <p class="footer-desc">Přírodní materiály. Individuální design. Bezchybné provedení.</p>
+                <div class="footer-section">
+                    <div class="footer-logo-animated">
+                        <div class="footer-logo-mark">
+                            <svg viewBox="0 0 130 130">
+                                <rect class="sq-outer" x="2" y="2" width="126" height="126" rx="4"></rect>
+                                <rect class="sq-inner" x="14" y="14" width="102" height="102" rx="3"></rect>
+                            </svg>
+                            <div class="footer-ik-text">IK</div>
+                        </div>
+                        <div class="footer-logo-text-block">
+                            <div class="footer-logo-arden">ARDEN</div>
+                            <div class="footer-logo-rule"></div>
+                            <div class="footer-logo-group">GROUP</div>
+                        </div>
+                    </div>
+                    <p style="margin-top: 15px;">Ručně vyráběný nábytek z masivu</p>
                 </div>
                 
-                <div class="footer-column">
-                    <h4>Rychlé odkazy</h4>
-                    <a href="#home">Domů</a>
-                    <a href="#about">O nás</a>
-                    <a href="#services">Služby</a>
-                    <a href="#products">Produkty</a>
+                <div class="footer-section">
+                    <h3>Rychlé odkazy</h3>
+                    <a href="#produkty" class="footer-link">Produkty</a>
+                    <a href="#galerie" class="footer-link">Realizace</a>
+                    <a href="#faq" class="footer-link">FAQ</a>
+                    <a href="#kontakt" class="footer-link">Kontakt</a>
                 </div>
                 
-                <div class="footer-column">
-                    <h4>Kontakt</h4>
-                    <a href="mailto:info@ikardengroup.com">info@ikardengroup.com</a>
-                    <a href="tel:+420000000000">+420 XXX XXX XXX</a>
+                <div class="footer-section">
+                    <h3>Sledujte nás</h3>
+                    <div class="social-links">
+                        <a href="#" class="social-link" title="Facebook">📸 Facebook</a>
+                        <a href="#" class="social-link" title="Instagram">📷 Instagram</a>
+                    </div>
+                    <p class="contact-note">(Čekáme na odkazy)</p>
                 </div>
             </div>
-            
             <div class="footer-bottom">
-                <p>&copy; 2025 IK Arden Group. Všechna práva vyhrazena.</p>
+                <p>&copy; 2026 IKarden. Všechna práva vyhrazena.</p>
             </div>
         </div>
     </footer>
 
-    <!-- Back to Top Button -->
-    <button id="backToTop" class="back-to-top" aria-label="Zpět nahoru">↑</button>
+    <!-- WhatsApp Button -->
+    <a href="https://wa.me/420XXXXXXXXX" class="whatsapp-btn" target="_blank" title="Napište nám">
+        <svg viewBox="0 0 24 24" fill="currentColor" style="width: 20px; height: 20px; margin-right: 6px;">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+        </svg>
+        WhatsApp
+    </a>
 
-    <script src="script.js"></script>
+    <!-- Scroll to Top Button -->
+    <button class="scroll-top-btn" id="scrollTopBtn" onclick="scrollToTop()" title="Zpět nahoru">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <line x1="12" y1="19" x2="12" y2="5"/>
+            <polyline points="5 12 12 5 19 12"/>
+        </svg>
+    </button>
+
+    <script src="js/script.js"></script>
 </body>
 </html>

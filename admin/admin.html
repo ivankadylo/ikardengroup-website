@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - IKarden</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        .admin-wrapper {
+            min-height: 100vh;
+            background-color: #1a1a1a;
+        }
+        
+        .admin-header {
+            background-color: #0d0d0d;
+            padding: 20px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+        }
+        
+        .admin-header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .admin-title {
+            font-size: 28px;
+            color: #f59e0b;
+            font-weight: bold;
+        }
+        
+        .back-btn {
+            background-color: #3a3a3a;
+            color: #ffffff;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        
+        .back-btn:hover {
+            background-color: #4ade80;
+            color: #000000;
+        }
+        
+        /* Login Modal */
+        .login-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.95);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+        
+        .login-box {
+            background-color: #2a2a2a;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 50px rgba(0, 0, 0, 0.5);
+            max-width: 400px;
+            width: 90%;
+        }
+        
+        .login-title {
+            font-size: 28px;
+            color: #f59e0b;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        
+        .login-subtitle {
+            color: #888888;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+        
+        .login-input {
+            width: 100%;
+            padding: 15px;
+            background-color: #1a1a1a;
+            border: 2px solid #3a3a3a;
+            border-radius: 8px;
+            color: #ffffff;
+            font-size: 16px;
+            margin-bottom: 20px;
+            transition: border-color 0.3s;
+        }
+        
+        .login-input:focus {
+            outline: none;
+            border-color: #4ade80;
+        }
+        
+        .login-btn {
+            width: 100%;
+            padding: 15px;
+            background-color: #4ade80;
+            color: #000000;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .login-btn:hover {
+            background-color: #22c55e;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(74, 222, 128, 0.4);
+        }
+        
+        .login-error {
+            background-color: #ef4444;
+            color: white;
+            padding: 12px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            text-align: center;
+            display: none;
+        }
+        
+        .login-error.show {
+            display: block;
+            animation: shake 0.5s;
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+        
+        .change-password-btn {
+            background-color: #3a3a3a;
+            color: #ffffff;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-right: 15px;
+        }
+        
+        .change-password-btn:hover {
+            background-color: #f59e0b;
+            color: #000000;
+        }
+        
+        .admin-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 30px 20px;
+            display: grid;
+            grid-template-columns: 350px 1fr;
+            gap: 30px;
+        }
+        
+        .products-sidebar {
+            background-color: #2a2a2a;
+            border-radius: 10px;
+            padding: 20px;
+            height: fit-content;
+        }
+        
+        .sidebar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .sidebar-title {
+            font-size: 24px;
+            color: #4ade80;
+        }
+        
+        .btn-add-product {
+            background-color: #4ade80;
+            color: #000000;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 20px;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        
+        .btn-add-product:hover {
+            background-color: #22c55e;
+            transform: scale(1.1);
+        }
+        
+        .product-list-item {
+            background-color: #1a1a1a;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+            position: relative;
+        }
+        
+        .product-list-item:hover {
+            background-color: #3a3a3a;
+            border-color: #4ade80;
+        }
+        
+        .product-list-item.active {
+            border-color: #f59e0b;
+            background-color: #3a3a3a;
+        }
+        
+        .product-list-name {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .product-list-price {
+            font-size: 14px;
+            color: #4ade80;
+        }
+        
+        .product-discount {
+            display: inline-block;
+            background-color: #ef4444;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 3px;
+            font-size: 12px;
+            margin-left: 5px;
+        }
+        
+        .btn-delete-product {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #ef4444;
+            color: white;
+            border: none;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 16px;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .product-list-item:hover .btn-delete-product {
+            display: flex;
+        }
+        
+        .editor-panel {
+            background-color: #2a2a2a;
+            border-radius: 10px;
+            padding: 30px;
+        }
+        
+        .editor-title {
+            font-size: 28px;
+            color: #f59e0b;
+            margin-bottom: 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 20px;
+        }
+        
+        .form-label {
+            display: block;
+            font-size: 16px;
+            color: #cccccc;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 12px;
+            background-color: #1a1a1a;
+            border: 2px solid #3a3a3a;
+            border-radius: 5px;
+            color: #ffffff;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: #4ade80;
+        }
+        
+        .form-textarea {
+            width: 100%;
+            padding: 12px;
+            background-color: #1a1a1a;
+            border: 2px solid #3a3a3a;
+            border-radius: 5px;
+            color: #ffffff;
+            font-size: 16px;
+            min-height: 100px;
+            resize: vertical;
+            font-family: Arial, sans-serif;
+            transition: border-color 0.3s;
+        }
+        
+        .form-textarea:focus {
+            outline: none;
+            border-color: #4ade80;
+        }
+        
+        /* Image Gallery */
+        .image-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .gallery-item {
+            position: relative;
+            aspect-ratio: 1;
+            border-radius: 10px;
+            overflow: hidden;
+            background-color: #1a1a1a;
+            cursor: move;
+            border: 2px solid #3a3a3a;
+            transition: all 0.3s;
+        }
+        
+        .gallery-item:hover {
+            border-color: #4ade80;
+            transform: scale(1.05);
+        }
+        
+        .gallery-item.dragging {
+            opacity: 0.5;
+        }
+        
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .gallery-item-delete {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background-color: #ef4444;
+            color: white;
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        .gallery-item:hover .gallery-item-delete {
+            opacity: 1;
+        }
+        
+        .gallery-item-order {
+            position: absolute;
+            bottom: 5px;
+            left: 5px;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        
+        .image-upload-area {
+            border: 2px dashed #3a3a3a;
+            border-radius: 10px;
+            padding: 30px;
+            text-align: center;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        
+        .image-upload-area:hover {
+            border-color: #4ade80;
+            background-color: #1a1a1a;
+        }
+        
+        .image-upload-area.dragover {
+            border-color: #f59e0b;
+            background-color: #1a1a1a;
+        }
+        
+        .upload-icon {
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
+        
+        .upload-text {
+            color: #cccccc;
+            font-size: 14px;
+        }
+        
+        .file-input {
+            display: none;
+        }
+        
+        /* Video Upload */
+        .video-preview {
+            width: 100%;
+            max-height: 300px;
+            border-radius: 10px;
+            margin-top: 20px;
+            background-color: #000000;
+        }
+        
+        .video-remove {
+            background-color: #ef4444;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+        
+        .video-remove:hover {
+            background-color: #dc2626;
+        }
+        
+        .btn-save {
+            background-color: #4ade80;
+            color: #000000;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-save:hover {
+            background-color: #22c55e;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(74, 222, 128, 0.4);
+        }
+        
+        .placeholder-message {
+            text-align: center;
+            color: #888888;
+            padding: 100px 20px;
+            font-size: 18px;
+        }
+        
+        .success-message {
+            background-color: #4ade80;
+            color: #000000;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            font-weight: bold;
+            display: none;
+        }
+        
+        .success-message.show {
+            display: block;
+            animation: fadeIn 0.3s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .discount-info {
+            font-size: 12px;
+            color: #888888;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Modal -->
+    <div class="login-overlay" id="loginOverlay">
+        <div class="login-box">
+            <h2 class="login-title">🔐 Admin Panel</h2>
+            <p class="login-subtitle">Zadejte heslo pro přístup</p>
+            
+            <div class="login-error" id="loginError">Nesprávné heslo!</div>
+            
+            <form id="loginForm" onsubmit="checkPassword(event)">
+                <input type="password" 
+                       class="login-input" 
+                       id="passwordInput" 
+                       placeholder="Heslo" 
+                       required 
+                       autocomplete="current-password">
+                <button type="submit" class="login-btn">🔓 Přihlásit se</button>
+            </form>
+        </div>
+    </div>
+    
+    <div class="admin-wrapper" id="adminContent" style="display: none;">
+        <!-- Admin Header -->
+        <div class="admin-header">
+            <div class="admin-header-content">
+                <div class="admin-title">⚙️ Admin Panel</div>
+                <div>
+                    <button class="change-password-btn" onclick="changePassword()">🔑 Změnit heslo</button>
+                    <a href="../index.html" class="back-btn">← Zpět na web</a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Admin Container -->
+        <div class="admin-container">
+            <!-- Products Sidebar -->
+            <div class="products-sidebar">
+                <div class="sidebar-header">
+                    <h2 class="sidebar-title">Produkty</h2>
+                    <button class="btn-add-product" onclick="addNewProduct()" title="Přidat nový produkt">➕</button>
+                </div>
+                <div id="productsList">
+                    <!-- Products list will be loaded here -->
+                </div>
+            </div>
+            
+            <!-- Editor Panel -->
+            <div class="editor-panel">
+                <div class="success-message" id="successMessage">
+                    ✅ Změny byly úspěšně uloženy!
+                </div>
+                
+                <div id="editorContent">
+                    <div class="placeholder-message">
+                        ← Vyberte produkt pro úpravu<br>nebo klikněte ➕ pro přidání nového
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="admin-script.js"></script>
+</body>
+</html>

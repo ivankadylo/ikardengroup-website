@@ -1,0 +1,108 @@
+═══════════════════════════════════════════════════════════
+  IKARDEN WEBSITE - START HERE!
+  Username: ivankadylo
+═══════════════════════════════════════════════════════════
+
+PROBLEM: Ukrainian letters don't work in .bat files!
+SOLUTION: I created new files with English only!
+
+═══════════════════════════════════════════════════════════
+  WHAT TO DO NOW:
+═══════════════════════════════════════════════════════════
+
+STEP 1: Check your system
+────────────────────────────────────────────────────────────
+   Double-click on: CHECK-SYSTEM.bat
+   
+   It will check:
+   - Is Git installed?
+   - Are you in correct folder?
+   - Is everything ready?
+
+STEP 2: Deploy to GitHub
+────────────────────────────────────────────────────────────
+   Double-click on: SIMPLE-DEPLOY.bat
+   
+   It will:
+   - Add files to Git
+   - Connect to GitHub
+   - Upload your code
+
+STEP 3: Enable GitHub Pages
+────────────────────────────────────────────────────────────
+   1. Open: https://github.com/ivankadylo/ikarden-website
+   
+   2. Click: Settings (top menu)
+   
+   3. Click: Pages (left menu)
+   
+   4. Configure:
+      Source: Deploy from a branch
+      Branch: main
+      Folder: / (root)
+      Click: Save
+   
+   5. Wait 2 minutes
+   
+   6. Your site: https://ivankadylo.github.io/ikarden-website/
+
+═══════════════════════════════════════════════════════════
+  IF GIT IS NOT INSTALLED:
+═══════════════════════════════════════════════════════════
+
+1. Download Git:
+   https://git-scm.com/download/win
+
+2. Install Git (click Next everywhere)
+
+3. Restart computer
+
+4. Run CHECK-SYSTEM.bat again
+
+═══════════════════════════════════════════════════════════
+  IF IT ASKS FOR PASSWORD:
+═══════════════════════════════════════════════════════════
+
+GitHub needs a Personal Access Token (NOT regular password!)
+
+How to create:
+1. Open: https://github.com/settings/tokens/new
+
+2. Fill form:
+   Note: ikarden-deploy
+   Expiration: No expiration
+   Check: repo (all checkboxes under it)
+
+3. Click: Generate token
+
+4. COPY THE TOKEN (it won't show again!)
+
+5. Use token as password when Git asks
+
+Username: ivankadylo
+Password: [paste your token here]
+
+═══════════════════════════════════════════════════════════
+  QUICK SUMMARY:
+═══════════════════════════════════════════════════════════
+
+1. Run CHECK-SYSTEM.bat      (check everything)
+2. Run SIMPLE-DEPLOY.bat      (upload code)
+3. Enable Pages on GitHub     (make site live)
+4. Done!
+
+Your site will be at:
+https://ivankadylo.github.io/ikarden-website/
+
+═══════════════════════════════════════════════════════════
+
+Questions? Show me:
+- Screenshot of the black window
+- What error message you see
+- Where it stopped
+
+I will help! 💚
+
+═══════════════════════════════════════════════════════════
+Date: March 6, 2026
+Created by: Claude AI
