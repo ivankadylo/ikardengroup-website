@@ -8,9 +8,25 @@ const productId = parseInt(urlParams.get('id'));
 let currentProduct = null;
 let mediaItems = []; // Array to store media with order
 
+// Load all products (localStorage або з файлу products-data.js)
+function getAllProducts() {
+    try {
+        const saved = localStorage.getItem('ikarden-products');
+        if (saved) {
+            const parsed = JSON.parse(saved);
+            if (parsed && parsed.length > 0) return parsed;
+        }
+    } catch(e) {}
+    // Fallback: дані з файлу
+    if (window.IKARDEN_PRODUCTS && window.IKARDEN_PRODUCTS.length > 0) {
+        return window.IKARDEN_PRODUCTS;
+    }
+    return [];
+}
+
 // Load product data
 function loadProduct() {
-    const products = JSON.parse(localStorage.getItem('ikarden-products') || '[]');
+    const products = getAllProducts();
     currentProduct = products.find(p => p.id === productId);
     
     if (!currentProduct) {
@@ -317,15 +333,13 @@ function saveProduct() {
         
         try {
             localStorage.setItem('ikarden-products', JSON.stringify(products));
-            alert('✅ Produkt byl úspěšně uložen!');
             console.log('✅ Product saved:', products[index]);
             
-            // Go back to main page
-            setTimeout(() => {
-                window.location.href = 'index.html';
-            }, 500);
+            // Автоматично зберігаємо файл products-data.js
+            exportToFile(products);
+            
         } catch (error) {
-            alert('❌ Chyba při ukládání: ' + error.message);
+            alert('\u274c Chyba p\u0159i ukl\u00e1d\u00e1n\u00ed: ' + error.message);
         }
     }
 }
@@ -352,6 +366,45 @@ function goBack() {
     if (confirm('Máte neuložené změny. Opravdu chcete odejít?')) {
         window.location.href = 'index.html';
     }
+}
+
+// Автоекспорт товарів у файл
+function exportToFile(products) {
+    const content = `// ============================================================
+// IKARDEN - ДАНІ ТОВАРІВ
+// Останнє оновлення: ${new Date().toLocaleString('uk-UA')}
+// ============================================================
+
+window.IKARDEN_PRODUCTS = ${JSON.stringify(products, null, 4)};
+`;
+
+    const blob = new Blob([content], { type: 'text/javascript' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'products-data.js';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+
+    alert(`✅ Збережено!
+
+Тепер зроби 3 кроки:
+
+1️⃣ Перемісти завантажений файл products-data.js в папку:
+C:\\Users\\ivank\\muscle-diary\\ikarden-website\\js\\
+
+2️⃣ Відкрий Git Bash і введи:
+git add .
+git commit -m "Update products"
+git push
+
+3️⃣ Через 2-3 хвилини сайт оновиться!`);
+
+    setTimeout(() => {
+        window.location.href = '../index.html';
+    }, 500);
 }
 
 // Initialize
