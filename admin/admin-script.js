@@ -64,6 +64,9 @@ function showLoginSuccess() {
     
     // Initialize admin panel
     renderProductsList();
+    
+    // Додаємо кнопку експорту
+    addExportButton();
 }
 
 function changePassword() {
@@ -519,4 +522,48 @@ function saveProduct(event) {
     console.log('✅ Product saved:', product);
 }
 
+// ============================================================
+// ЕКСПОРТ У ФАЙЛ - ЗБЕРЕЖЕННЯ НА GITHUB
+// ============================================================
+
+function exportProductsToFile() {
+    const currentProducts = products;
+    
+    const fileContent = `// ============================================================
+// IKARDEN - ДАНІ ТОВАРІВ
+// Цей файл редагується через адмін панель
+// Останнє оновлення: ${new Date().toLocaleString('uk-UA')}
+// ============================================================
+
+window.IKARDEN_PRODUCTS = ${JSON.stringify(currentProducts, null, 4)};
+`;
+    
+    const blob = new Blob([fileContent], { type: 'text/javascript' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'products-data.js';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    
+    // Show instructions
+    alert(`✅ Файл products-data.js завантажено!\n\nТепер зроби:\n1. Перемісти цей файл в \u043fапку:\n   C:\\Users\\ivank\\muscle-diary\\ikarden-website\\js\\\n\n2. Відкрити Git Bash і ввести 3 команди:\n   cd /c/Users/ivank/muscle-diary/ikarden-website\n   git add .\n   git commit -m "Update products"\n   git push\n\n3. Через 2-3 хвилини сайт оновиться!`);
+}
+
+// Кнопка експорту - додаємо в інтерфейс
+function addExportButton() {
+    const header = document.querySelector('.admin-header-content');
+    if (!header || document.getElementById('exportBtn')) return;
+    
+    const btn = document.createElement('button');
+    btn.id = 'exportBtn';
+    btn.onclick = exportProductsToFile;
+    btn.style.cssText = 'background: #22c55e; color: #000; border: none; padding: 12px 24px; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; margin-left: 10px;';
+    btn.innerHTML = '💾 Зберегти на сайт';
+    header.appendChild(btn);
+}
+
+// Викликаємо addExportButton після успішного входу
 // Note: renderProductsList() is called after successful login in showLoginSuccess()

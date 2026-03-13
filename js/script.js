@@ -1,8 +1,9 @@
 // Debug mode
 console.log('🚀 Script started loading...');
 
-// Load products from localStorage or use defaults
+// Load products: спочатку з файлу products-data.js, потім localStorage, потім defaults
 function loadProductsData() {
+    // 1. Спочатку перевіряємо localStorage (адмін зміни)
     try {
         const savedProducts = localStorage.getItem('ikarden-products');
         if (savedProducts) {
@@ -11,8 +12,13 @@ function loadProductsData() {
         }
     } catch (error) {
         console.error('❌ Error loading products from localStorage:', error);
-        // Clear corrupted data
         localStorage.removeItem('ikarden-products');
+    }
+    
+    // 2. Потім дані з файлу products-data.js
+    if (window.IKARDEN_PRODUCTS && window.IKARDEN_PRODUCTS.length > 0) {
+        console.log('📦 Loading products from products-data.js file');
+        return window.IKARDEN_PRODUCTS;
     }
     
     console.log('📦 Using default products');
