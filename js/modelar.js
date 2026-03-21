@@ -598,7 +598,14 @@ function mBuildPanel() {
 function sipMAdd(name, color, w, h) {
   M.pending = {name:name, color:color, w:parseFloat(w), h:parseFloat(h)};
   M.mode = 'select';
-  mSetMode('select');
+  // НЕ викликаємо mSetMode — воно чистить M.pending!
+  // Просто підсвічуємо кнопку Výběr
+  ['mBtnSelect','mBtnDoor','mBtnWin','mBtnDel'].forEach(function(id){
+    var b=document.getElementById(id);
+    if(b){b.style.background='transparent';b.style.color='#ccc';b.style.borderColor='#3a3a3a';}
+  });
+  var ab=document.getElementById('mBtnSelect');
+  if(ab){ab.style.background='rgba(74,222,128,.2)';ab.style.color='#4ade80';ab.style.borderColor='#4ade80';}
   if (M.cvs) M.cvs.style.cursor = 'crosshair';
   mDraw();
 }
