@@ -1,0 +1,935 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SIP Modelář domu — Arden Group</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --g:#1fbc6b;--gd:#159a55;--glight:rgba(31,188,107,.12);
+  --bg:#0d1f18;--bg2:#0a1710;--bg3:#142a1e;
+  --card:rgba(255,255,255,.04);--brd:rgba(255,255,255,.1);
+  --text:#fff;--t2:rgba(255,255,255,.6);--t3:rgba(255,255,255,.35);
+  --red:#e74c3c;--amber:#f5a623;--blue:#3b82f6;
+}
+body{font-family:'Montserrat',sans-serif;background:var(--bg);color:var(--text);height:100vh;display:flex;flex-direction:column;overflow:hidden;}
+
+/* NAV */
+nav{
+  height:56px;background:rgba(10,23,16,.97);
+  border-bottom:1px solid var(--brd);
+  display:flex;align-items:center;padding:0 1.2rem;gap:12px;
+  flex-shrink:0;z-index:100;
+}
+.nav-logo{display:flex;align-items:center;gap:9px;text-decoration:none;margin-right:1rem;}
+.nl-box{width:34px;height:34px;border:2px solid var(--g);border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:var(--g);}
+.nl-name{font-size:14px;font-weight:800;letter-spacing:.05em;}
+.nl-sep{width:1px;height:28px;background:var(--brd);}
+.nav-title{font-size:13px;font-weight:600;color:var(--g);}
+.nav-title span{color:var(--t2);font-weight:400;}
+.nav-spacer{flex:1;}
+.nav-btn{
+  display:flex;align-items:center;gap:6px;
+  padding:7px 14px;border-radius:7px;
+  font-size:12px;font-weight:600;font-family:inherit;
+  cursor:pointer;transition:all .15s;border:none;
+}
+.nb-outline{background:transparent;border:1px solid var(--brd);color:var(--t2);}
+.nb-outline:hover{border-color:var(--g);color:var(--g);}
+.nb-green{background:var(--g);color:#fff;}
+.nb-green:hover{background:var(--gd);}
+
+/* MAIN LAYOUT */
+.app{display:flex;flex:1;overflow:hidden;}
+
+/* LEFT TOOLBAR */
+.toolbar{
+  width:220px;flex-shrink:0;
+  background:var(--bg2);border-right:1px solid var(--brd);
+  display:flex;flex-direction:column;overflow-y:auto;
+}
+.tb-section{padding:12px 14px;border-bottom:1px solid var(--brd);}
+.tb-label{font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--t3);margin-bottom:8px;}
+
+/* TOOLS */
+.tools-row{display:grid;grid-template-columns:1fr 1fr;gap:6px;}
+.tool-btn{
+  padding:9px 6px;border-radius:8px;
+  background:var(--card);border:1px solid var(--brd);
+  color:var(--t2);font-size:11px;font-weight:600;
+  cursor:pointer;text-align:center;transition:all .15s;
+  font-family:inherit;
+}
+.tool-btn:hover{border-color:var(--g);color:var(--g);background:var(--glight);}
+.tool-btn.active{background:var(--g);color:#fff;border-color:var(--g);}
+.tool-icon{font-size:18px;display:block;margin-bottom:3px;}
+
+/* ROOM LIST */
+.room-list{display:flex;flex-direction:column;gap:5px;}
+.room-item{
+  display:flex;align-items:center;gap:8px;
+  padding:8px 10px;border-radius:7px;
+  background:var(--card);border:1px solid var(--brd);
+  cursor:pointer;transition:all .15s;
+}
+.room-item:hover{border-color:var(--g);}
+.room-item.selected{border-color:var(--g);background:var(--glight);}
+.room-dot{width:10px;height:10px;border-radius:3px;flex-shrink:0;}
+.room-name{font-size:11px;font-weight:600;flex:1;}
+.room-size{font-size:10px;color:var(--t2);}
+.room-del{background:none;border:none;color:var(--t3);cursor:pointer;font-size:14px;padding:0 2px;}
+.room-del:hover{color:var(--red);}
+
+/* PARAMS */
+.param-row{margin-bottom:10px;}
+.param-label{font-size:10px;font-weight:600;color:var(--t2);margin-bottom:5px;display:flex;justify-content:space-between;}
+.param-val{color:var(--g);}
+input[type=range]{width:100%;accent-color:var(--g);}
+.param-select{
+  width:100%;padding:7px 10px;
+  background:var(--card);border:1px solid var(--brd);
+  border-radius:7px;color:var(--text);
+  font-size:11px;font-family:inherit;
+  transition:border .15s;
+}
+.param-select:focus{outline:none;border-color:var(--g);}
+
+/* INS OPTIONS */
+.ins-opts{display:grid;grid-template-columns:1fr 1fr;gap:5px;}
+.ins-opt{
+  padding:7px 4px;border-radius:6px;text-align:center;
+  background:var(--card);border:1px solid var(--brd);
+  cursor:pointer;transition:all .15s;
+}
+.ins-opt:hover{border-color:var(--g);}
+.ins-opt.active{background:var(--g);border-color:var(--g);}
+.ins-mm{font-size:12px;font-weight:700;}
+.ins-u{font-size:9px;color:var(--t3);}
+.ins-opt.active .ins-u{color:rgba(255,255,255,.7);}
+.ins-lbl{font-size:9px;color:var(--t2);}
+.ins-opt.active .ins-lbl{color:rgba(255,255,255,.8);}
+
+/* CANVAS AREA */
+.canvas-wrap{flex:1;position:relative;overflow:hidden;background:var(--bg3);}
+canvas{display:block;cursor:crosshair;}
+.canvas-hint{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  text-align:center;pointer-events:none;opacity:.35;
+}
+.canvas-hint-icon{font-size:48px;margin-bottom:10px;}
+.canvas-hint p{font-size:14px;font-weight:500;}
+
+/* ZOOM CONTROLS */
+.zoom-ctrl{
+  position:absolute;bottom:16px;right:16px;
+  display:flex;flex-direction:column;gap:4px;
+}
+.zoom-btn{
+  width:34px;height:34px;background:rgba(0,0,0,.5);
+  border:1px solid var(--brd);border-radius:7px;
+  color:var(--text);font-size:16px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:all .15s;font-family:inherit;
+}
+.zoom-btn:hover{border-color:var(--g);color:var(--g);}
+
+/* GRID LABEL */
+.grid-label{
+  position:absolute;top:12px;left:50%;transform:translateX(-50%);
+  background:rgba(0,0,0,.45);border:1px solid var(--brd);
+  border-radius:20px;padding:4px 14px;
+  font-size:11px;color:var(--t2);pointer-events:none;
+}
+
+/* RIGHT PANEL — PRICE */
+.price-panel{
+  width:260px;flex-shrink:0;
+  background:var(--bg2);border-left:1px solid var(--brd);
+  display:flex;flex-direction:column;overflow-y:auto;
+}
+.pp-header{
+  padding:14px 16px;border-bottom:1px solid var(--brd);
+  background:linear-gradient(135deg,#0d2e1e,#1a4a2e);
+}
+.pp-title{font-size:13px;font-weight:700;color:var(--g);margin-bottom:2px;}
+.pp-sub{font-size:10px;color:var(--t3);}
+
+.pp-section{padding:12px 14px;border-bottom:1px solid var(--brd);}
+.pp-sec-label{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--t3);margin-bottom:8px;}
+
+.price-row{display:flex;justify-content:space-between;font-size:11px;padding:4px 0;}
+.price-row-k{color:var(--t2);}
+.price-row-v{font-weight:600;color:var(--text);}
+.price-row-v.green{color:var(--g);}
+
+.price-total-box{
+  margin:12px 14px;
+  background:var(--g);border-radius:10px;
+  padding:14px 16px;text-align:center;
+}
+.pt-label{font-size:10px;opacity:.8;margin-bottom:4px;}
+.pt-val{font-size:26px;font-weight:800;line-height:1;}
+.pt-unit{font-size:11px;opacity:.75;margin-top:2px;}
+.pt-compare{font-size:10px;opacity:.75;margin-top:6px;}
+.pt-save{font-size:12px;font-weight:700;background:rgba(0,0,0,.2);border-radius:6px;padding:4px 10px;margin-top:8px;display:inline-block;}
+
+.pp-cta{padding:12px 14px;}
+.cta-btn{
+  display:block;width:100%;padding:12px;
+  background:var(--g);color:#fff;
+  border:none;border-radius:8px;
+  font-size:13px;font-weight:700;
+  cursor:pointer;font-family:inherit;
+  transition:all .15s;text-align:center;
+  text-decoration:none;
+}
+.cta-btn:hover{background:var(--gd);}
+
+.pp-stats{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:12px 14px;border-bottom:1px solid var(--brd);}
+.stat-box{background:var(--card);border:1px solid var(--brd);border-radius:8px;padding:10px;text-align:center;}
+.stat-val{font-size:16px;font-weight:700;color:var(--g);}
+.stat-lbl{font-size:9px;color:var(--t3);margin-top:2px;}
+
+/* STATUS BAR */
+.statusbar{
+  height:28px;background:var(--bg2);border-top:1px solid var(--brd);
+  display:flex;align-items:center;padding:0 1rem;gap:1.5rem;flex-shrink:0;
+}
+.sb-item{font-size:10px;color:var(--t3);display:flex;align-items:center;gap:5px;}
+.sb-dot{width:6px;height:6px;border-radius:50%;background:var(--g);}
+
+/* MODAL */
+.modal-overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,.7);
+  z-index:500;display:flex;align-items:center;justify-content:center;
+  opacity:0;pointer-events:none;transition:opacity .2s;
+}
+.modal-overlay.open{opacity:1;pointer-events:all;}
+.modal{
+  background:#0d2515;border:1px solid var(--brd);border-radius:14px;
+  padding:28px;width:380px;max-width:90vw;
+}
+.modal h3{font-size:16px;font-weight:700;margin-bottom:16px;color:var(--g);}
+.modal-row{margin-bottom:12px;}
+.modal-label{font-size:11px;font-weight:600;color:var(--t2);margin-bottom:5px;display:block;}
+.modal-input{
+  width:100%;padding:9px 12px;
+  background:var(--card);border:1px solid var(--brd);
+  border-radius:7px;color:var(--text);font-size:13px;font-family:inherit;
+}
+.modal-input:focus{outline:none;border-color:var(--g);}
+.modal-btns{display:flex;gap:8px;margin-top:16px;}
+.modal-btn{
+  flex:1;padding:10px;border-radius:7px;font-size:13px;
+  font-weight:600;cursor:pointer;font-family:inherit;border:none;
+}
+.mb-cancel{background:var(--card);color:var(--t2);}
+.mb-ok{background:var(--g);color:#fff;}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="index.html">
+    <div class="nl-box">IK</div>
+    <div class="nl-name">ARDEN GROUP</div>
+  </a>
+  <div class="nl-sep"></div>
+  <div class="nav-title">🏠 Modelář SIP domu <span>— navrhněte si dům a zjistěte cenu</span></div>
+  <div class="nav-spacer"></div>
+  <button class="nav-btn nb-outline" onclick="clearAll()">🗑 Vymazat vše</button>
+  <button class="nav-btn nb-outline" onclick="exportPDF()">📄 Uložit PDF</button>
+  <button class="nav-btn nb-green" onclick="document.getElementById('modal-order').classList.add('open')">📩 Chci nabídku</button>
+</nav>
+
+<!-- MAIN -->
+<div class="app">
+
+  <!-- LEFT TOOLBAR -->
+  <div class="toolbar">
+
+    <!-- NÁSTROJE -->
+    <div class="tb-section">
+      <div class="tb-label">Nástroj</div>
+      <div class="tools-row">
+        <button class="tool-btn active" id="tool-room" onclick="setTool('room')">
+          <span class="tool-icon">⬛</span>Místnost
+        </button>
+        <button class="tool-btn" id="tool-wall" onclick="setTool('wall')">
+          <span class="tool-icon">📏</span>Stěna
+        </button>
+        <button class="tool-btn" id="tool-door" onclick="setTool('door')">
+          <span class="tool-icon">🚪</span>Dveře
+        </button>
+        <button class="tool-btn" id="tool-window" onclick="setTool('window')">
+          <span class="tool-icon">🪟</span>Okno
+        </button>
+        <button class="tool-btn" id="tool-stairs" onclick="setTool('stairs')">
+          <span class="tool-icon">🪜</span>Schody
+        </button>
+        <button class="tool-btn" id="tool-select" onclick="setTool('select')">
+          <span class="tool-icon">↖</span>Vybrat
+        </button>
+      </div>
+    </div>
+
+    <!-- MÍSTNOSTI -->
+    <div class="tb-section">
+      <div class="tb-label">Přidat místnost</div>
+      <div class="room-list" id="room-presets">
+        <div class="room-item" onclick="addRoomPreset('Obývací pokoj','#3b82f6',6,4)">
+          <div class="room-dot" style="background:#3b82f6;"></div>
+          <div class="room-name">Obývací pokoj</div>
+          <div class="room-size">6×4 m</div>
+        </div>
+        <div class="room-item" onclick="addRoomPreset('Kuchyň','#f5a623',3,4)">
+          <div class="room-dot" style="background:#f5a623;"></div>
+          <div class="room-name">Kuchyň</div>
+          <div class="room-size">3×4 m</div>
+        </div>
+        <div class="room-item" onclick="addRoomPreset('Ložnice','#a855f7',4,4)">
+          <div class="room-dot" style="background:#a855f7;"></div>
+          <div class="room-name">Ložnice</div>
+          <div class="room-size">4×4 m</div>
+        </div>
+        <div class="room-item" onclick="addRoomPreset('Dětský pokoj','#06b6d4',3,3)">
+          <div class="room-dot" style="background:#06b6d4;"></div>
+          <div class="room-name">Dětský pokoj</div>
+          <div class="room-size">3×3 m</div>
+        </div>
+        <div class="room-item" onclick="addRoomPreset('Koupelna','#1fbc6b',2.5,2)">
+          <div class="room-dot" style="background:#1fbc6b;"></div>
+          <div class="room-name">Koupelna</div>
+          <div class="room-size">2.5×2 m</div>
+        </div>
+        <div class="room-item" onclick="addRoomPreset('WC','#1fbc6b',1.5,1.5)">
+          <div class="room-dot" style="background:#1fbc6b;"></div>
+          <div class="room-name">WC</div>
+          <div class="room-size">1.5×1.5 m</div>
+        </div>
+        <div class="room-item" onclick="addRoomPreset('Pracovna','#e74c3c',3,3)">
+          <div class="room-dot" style="background:#e74c3c;"></div>
+          <div class="room-name">Pracovna</div>
+          <div class="room-size">3×3 m</div>
+        </div>
+        <div class="room-item" onclick="addRoomPreset('Šatna','#f5a623',2,2)">
+          <div class="room-dot" style="background:#f5a623;"></div>
+          <div class="room-name">Šatna</div>
+          <div class="room-size">2×2 m</div>
+        </div>
+        <div class="room-item" onclick="addRoomPreset('Zádveří','#9ca3af',2,2)">
+          <div class="room-dot" style="background:#9ca3af;"></div>
+          <div class="room-name">Zádveří</div>
+          <div class="room-size">2×2 m</div>
+        </div>
+        <div class="room-item" onclick="addRoomPreset('Garáž','#6b7280',6,3)">
+          <div class="room-dot" style="background:#6b7280;"></div>
+          <div class="room-name">Garáž</div>
+          <div class="room-size">6×3 m</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PARAMETRY -->
+    <div class="tb-section">
+      <div class="tb-label">Parametry stavby</div>
+
+      <div class="param-row">
+        <div class="param-label">Počet podlaží <span class="param-val" id="lbl-floor">1</span></div>
+        <input type="range" min="1" max="3" value="1" id="sl-floor" oninput="updateParam()">
+      </div>
+
+      <div class="param-row">
+        <div class="param-label">Výška stropu <span class="param-val" id="lbl-height">2,6 m</span></div>
+        <input type="range" min="24" max="32" value="26" id="sl-height" oninput="updateParam()">
+      </div>
+
+      <div class="param-row">
+        <div class="tb-label" style="margin-bottom:5px;">Typ izolace</div>
+        <select class="param-select" id="sel-ins-type" onchange="updateParam()">
+          <option value="eps">EPS — expandovaný polystyren</option>
+          <option value="neopor">Neopor — grafitový EPS</option>
+          <option value="pir">PIR/PUR — polyuretan (prémiový)</option>
+        </select>
+      </div>
+
+      <div class="param-row">
+        <div class="tb-label" style="margin-bottom:5px;">Tloušťka izolace</div>
+        <div class="ins-opts" id="ins-opts">
+          <div class="ins-opt" onclick="setIns(100,this)">
+            <div class="ins-mm">100 mm</div>
+            <div class="ins-u">U = 0,28</div>
+            <div class="ins-lbl">Základní</div>
+          </div>
+          <div class="ins-opt active" onclick="setIns(160,this)">
+            <div class="ins-mm">160 mm</div>
+            <div class="ins-u">U = 0,17</div>
+            <div class="ins-lbl">Standard</div>
+          </div>
+          <div class="ins-opt" onclick="setIns(200,this)">
+            <div class="ins-mm">200 mm</div>
+            <div class="ins-u">U = 0,14</div>
+            <div class="ins-lbl">Nízkoenerget.</div>
+          </div>
+          <div class="ins-opt" onclick="setIns(250,this)">
+            <div class="ins-mm">250 mm</div>
+            <div class="ins-u">U = 0,11</div>
+            <div class="ins-lbl">Pasivní</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="param-row">
+        <div class="tb-label" style="margin-bottom:5px;">Typ střechy</div>
+        <select class="param-select" id="sel-roof" onchange="updateParam()">
+          <option value="sedlo">Sedlová střecha</option>
+          <option value="ploch">Plochá střecha (−8 %)</option>
+          <option value="pult">Pultová střecha (−4 %)</option>
+        </select>
+      </div>
+
+      <div class="param-row">
+        <div class="tb-label" style="margin-bottom:5px;">Varianta stavby</div>
+        <select class="param-select" id="sel-variant" onchange="updateParam()">
+          <option value="material">Pouze materiál</option>
+          <option value="montaz" selected>Materiál + montáž</option>
+          <option value="klic">Na klíč</option>
+        </select>
+      </div>
+    </div>
+
+  </div><!-- end toolbar -->
+
+  <!-- CANVAS -->
+  <div class="canvas-wrap" id="canvas-wrap">
+    <canvas id="canvas"></canvas>
+    <div class="canvas-hint" id="hint">
+      <div class="canvas-hint-icon">✏️</div>
+      <p>Klikněte na místnost vlevo<br>a umístěte ji na plán</p>
+    </div>
+    <div class="grid-label" id="grid-label">Mřížka: 1 čtverec = 1 m²</div>
+    <div class="zoom-ctrl">
+      <button class="zoom-btn" onclick="zoom(1.15)" title="Přiblížit">+</button>
+      <button class="zoom-btn" onclick="zoom(0.87)" title="Oddálit">−</button>
+      <button class="zoom-btn" onclick="resetView()" title="Obnovit pohled">⊙</button>
+    </div>
+  </div>
+
+  <!-- RIGHT PRICE PANEL -->
+  <div class="price-panel">
+    <div class="pp-header">
+      <div class="pp-title">💰 Kalkulace ceny</div>
+      <div class="pp-sub">Aktualizuje se v reálném čase</div>
+    </div>
+
+    <div class="pp-stats">
+      <div class="stat-box">
+        <div class="stat-val" id="st-area">0 m²</div>
+        <div class="stat-lbl">Plocha podlaží</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-val" id="st-rooms">0</div>
+        <div class="stat-lbl">Místností</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-val" id="st-uval">0,17</div>
+        <div class="stat-lbl">U-hodnota</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-val" id="st-ins">160 mm</div>
+        <div class="stat-lbl">Izolace</div>
+      </div>
+    </div>
+
+    <div class="pp-section">
+      <div class="pp-sec-label">Rozklad ceny</div>
+      <div class="price-row"><span class="price-row-k">SIP panely (materiál)</span><span class="price-row-v" id="p-mat">—</span></div>
+      <div class="price-row"><span class="price-row-k">Doprava na staveniště</span><span class="price-row-v" id="p-dop">—</span></div>
+      <div class="price-row" id="row-mon"><span class="price-row-k">Montáž (česká firma)</span><span class="price-row-v" id="p-mon">—</span></div>
+      <div class="price-row" id="row-klic" style="display:none;"><span class="price-row-k">Projekt + povolení</span><span class="price-row-v" id="p-klic">—</span></div>
+    </div>
+
+    <div class="price-total-box">
+      <div class="pt-label">Orientační cena celkem</div>
+      <div class="pt-val" id="pt-total">— Kč</div>
+      <div class="pt-unit" id="pt-unit">přidejte místnosti na plán</div>
+      <div class="pt-compare" id="pt-cmp"></div>
+      <div class="pt-save" id="pt-save" style="display:none;"></div>
+    </div>
+
+    <div class="pp-section">
+      <div class="pp-sec-label">Srovnání s konkurencí</div>
+      <div class="price-row"><span class="price-row-k">RD Rýmařov</span><span class="price-row-v" id="cmp-rd" style="color:#e74c3c;">—</span></div>
+      <div class="price-row"><span class="price-row-k">Haas Fertigbau</span><span class="price-row-v" id="cmp-haas" style="color:#e74c3c;">—</span></div>
+      <div class="price-row"><span class="price-row-k">ALFAHAUS</span><span class="price-row-v" id="cmp-alfa" style="color:#f5a623;">—</span></div>
+      <div class="price-row"><span class="price-row-k" style="font-weight:700;">⭐ Vaše cena</span><span class="price-row-v green" id="cmp-you">—</span></div>
+    </div>
+
+    <div class="pp-section" id="rooms-breakdown">
+      <div class="pp-sec-label">Místnosti na plánu</div>
+      <div id="rooms-list-pp" style="font-size:11px;color:var(--t3);">Zatím žádné místnosti</div>
+    </div>
+
+    <div class="pp-cta">
+      <button class="cta-btn" onclick="document.getElementById('modal-order').classList.add('open')">
+        📩 Chci přesnou nabídku →
+      </button>
+    </div>
+  </div><!-- end price panel -->
+
+</div><!-- end app -->
+
+<!-- STATUS BAR -->
+<div class="statusbar">
+  <div class="sb-item"><div class="sb-dot"></div><span id="sb-tool">Nástroj: Místnost</span></div>
+  <div class="sb-item"><span id="sb-pos">X: — Y: —</span></div>
+  <div class="sb-item"><span id="sb-rooms">Místností: 0</span></div>
+  <div class="sb-item"><span id="sb-area">Plocha: 0 m²</span></div>
+  <div class="sb-item"><span>Zoom: <span id="sb-zoom">100%</span></span></div>
+  <div class="sb-item" style="margin-left:auto;"><span style="color:var(--g);">ECOPAN · EU certifikáty · Metylovice</span></div>
+</div>
+
+<!-- MODAL ORDER -->
+<div class="modal-overlay" id="modal-order" onclick="if(event.target===this)this.classList.remove('open')">
+  <div class="modal">
+    <h3>📩 Chci přesnou nabídku</h3>
+    <div class="modal-row">
+      <label class="modal-label">Jméno a příjmení</label>
+      <input class="modal-input" type="text" placeholder="Jan Novák">
+    </div>
+    <div class="modal-row">
+      <label class="modal-label">Telefon</label>
+      <input class="modal-input" type="tel" placeholder="+420 XXX XXX XXX">
+    </div>
+    <div class="modal-row">
+      <label class="modal-label">E-mail</label>
+      <input class="modal-input" type="email" placeholder="jan@novak.cz">
+    </div>
+    <div class="modal-row">
+      <label class="modal-label">Poznámka</label>
+      <input class="modal-input" type="text" placeholder="Termín, lokalita, dotazy...">
+    </div>
+    <div id="modal-summary" style="background:rgba(31,188,107,.1);border:1px solid rgba(31,188,107,.3);border-radius:8px;padding:10px 12px;margin-top:10px;font-size:11px;color:rgba(255,255,255,.7);"></div>
+    <div class="modal-btns">
+      <button class="modal-btn mb-cancel" onclick="document.getElementById('modal-order').classList.remove('open')">Zrušit</button>
+      <button class="modal-btn mb-ok" onclick="sendOrder()">Odeslat poptávku →</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// =====================
+//  STATE
+// =====================
+let rooms = [];
+let scale = 40; // px per meter
+let offsetX = 60, offsetY = 60;
+let tool = 'room';
+let selectedRoom = null;
+let dragRoom = null, dragOX = 0, dragOY = 0;
+let pendingPreset = null;
+let insThick = 160;
+let insUval = 0.17;
+let totalArea = 0;
+
+const COLORS = {
+  'Obývací pokoj':'#3b82f6','Kuchyň':'#f5a623','Ložnice':'#a855f7',
+  'Dětský pokoj':'#06b6d4','Koupelna':'#1fbc6b','WC':'#1fbc6b',
+  'Pracovna':'#e74c3c','Šatna':'#f5a623','Zádveří':'#9ca3af','Garáž':'#6b7280'
+};
+
+// =====================
+//  CANVAS INIT
+// =====================
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+let W,H;
+
+function resize(){
+  const wrap = document.getElementById('canvas-wrap');
+  W = canvas.width = wrap.clientWidth;
+  H = canvas.height = wrap.clientHeight;
+  draw();
+}
+window.addEventListener('resize',resize);
+resize();
+
+// =====================
+//  DRAW
+// =====================
+function draw(){
+  ctx.clearRect(0,0,W,H);
+  drawGrid();
+  rooms.forEach(r => drawRoom(r));
+  if(rooms.length>0) document.getElementById('hint').style.display='none';
+  else document.getElementById('hint').style.display='';
+}
+
+function drawGrid(){
+  ctx.strokeStyle='rgba(255,255,255,.06)';
+  ctx.lineWidth=1;
+  for(let x=offsetX%scale;x<W;x+=scale){
+    ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();
+  }
+  for(let y=offsetY%scale;y<H;y+=scale){
+    ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();
+  }
+  // Thicker every 5m
+  ctx.strokeStyle='rgba(255,255,255,.12)';
+  ctx.lineWidth=1.5;
+  for(let x=offsetX%(scale*5);x<W;x+=scale*5){
+    ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();
+  }
+  for(let y=offsetY%(scale*5);y<H;y+=scale*5){
+    ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();
+  }
+  // Origin cross
+  ctx.strokeStyle='rgba(31,188,107,.3)';ctx.lineWidth=1.5;
+  ctx.beginPath();ctx.moveTo(offsetX,0);ctx.lineTo(offsetX,H);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(0,offsetY);ctx.lineTo(W,offsetY);ctx.stroke();
+}
+
+function drawRoom(r){
+  const px=offsetX+r.x*scale, py=offsetY+r.y*scale;
+  const pw=r.w*scale, ph=r.h*scale;
+  const sel = r===selectedRoom;
+
+  // fill
+  ctx.globalAlpha=0.22;
+  ctx.fillStyle=r.color;
+  ctx.fillRect(px,py,pw,ph);
+  ctx.globalAlpha=1;
+
+  // border
+  ctx.strokeStyle=sel?'#fff':r.color;
+  ctx.lineWidth=sel?2.5:2;
+  ctx.strokeRect(px+1,py+1,pw-2,ph-2);
+
+  // selection glow
+  if(sel){
+    ctx.shadowColor=r.color;
+    ctx.shadowBlur=12;
+    ctx.strokeRect(px+1,py+1,pw-2,ph-2);
+    ctx.shadowBlur=0;
+  }
+
+  // label
+  ctx.fillStyle='#fff';
+  ctx.font=`bold ${Math.max(9,Math.min(13,pw/r.name.length*1.4))}px Montserrat,sans-serif`;
+  ctx.textAlign='center';
+  ctx.textBaseline='middle';
+  ctx.fillText(r.name,px+pw/2,py+ph/2-8);
+
+  ctx.fillStyle=r.color;
+  ctx.font=`600 ${Math.max(8,Math.min(11,pw/5))}px Montserrat,sans-serif`;
+  ctx.fillText(r.w.toFixed(1)+'×'+r.h.toFixed(1)+' m',px+pw/2,py+ph/2+9);
+  ctx.fillText('('+(r.w*r.h).toFixed(1)+' m²)',px+pw/2,py+ph/2+21);
+  ctx.textAlign='left';
+
+  // resize handle
+  if(sel){
+    ctx.fillStyle='#fff';
+    ctx.fillRect(px+pw-8,py+ph-8,8,8);
+  }
+}
+
+// =====================
+//  TOOLS
+// =====================
+function setTool(t){
+  tool=t;
+  document.querySelectorAll('.tool-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tool-'+t)?.classList.add('active');
+  canvas.style.cursor=t==='select'?'default':'crosshair';
+  document.getElementById('sb-tool').textContent='Nástroj: '+{room:'Místnost',wall:'Stěna',door:'Dveře',window:'Okno',stairs:'Schody',select:'Výběr'}[t];
+  pendingPreset=null;
+}
+
+// =====================
+//  ADD ROOM PRESET
+// =====================
+function addRoomPreset(name,color,w,h){
+  pendingPreset={name,color,w,h};
+  setTool('room');
+  canvas.style.cursor='crosshair';
+  document.getElementById('hint').style.display='none';
+}
+
+function snapToGrid(v){ return Math.round(v*2)/2; } // 0.5m snap
+
+function worldX(px){ return (px-offsetX)/scale; }
+function worldY(py){ return (py-offsetY)/scale; }
+
+// =====================
+//  MOUSE
+// =====================
+let isPanning=false,panSX=0,panSY=0,panOX=0,panOY=0;
+let isResizing=false,resizingRoom=null;
+
+canvas.addEventListener('mousedown',e=>{
+  const wx=worldX(e.offsetX), wy=worldY(e.offsetY);
+
+  if(tool==='select' || !pendingPreset){
+    // Check resize handle first
+    if(selectedRoom){
+      const px=offsetX+selectedRoom.x*scale, py=offsetY+selectedRoom.y*scale;
+      const pw=selectedRoom.w*scale, ph=selectedRoom.h*scale;
+      if(e.offsetX>=px+pw-12&&e.offsetX<=px+pw+2&&e.offsetY>=py+ph-12&&e.offsetY<=py+ph+2){
+        isResizing=true;resizingRoom=selectedRoom;return;
+      }
+    }
+    // Click on room to select/drag
+    const hit=rooms.slice().reverse().find(r=>{
+      return wx>=r.x&&wx<=r.x+r.w&&wy>=r.y&&wy<=r.y+r.h;
+    });
+    if(hit){
+      selectedRoom=hit;
+      if(tool==='select'){
+        dragRoom=hit;
+        dragOX=wx-hit.x;
+        dragOY=wy-hit.y;
+      }
+      draw();return;
+    } else {
+      selectedRoom=null;draw();
+    }
+    // Middle-click or right-click pan
+    if(e.button===1||e.button===2){isPanning=true;panSX=e.offsetX;panSY=e.offsetY;panOX=offsetX;panOY=offsetY;return;}
+  }
+
+  if(tool==='room'&&pendingPreset){
+    const x=snapToGrid(wx), y=snapToGrid(wy);
+    const r={
+      id:Date.now(),
+      name:pendingPreset.name,
+      color:pendingPreset.color,
+      x,y,
+      w:pendingPreset.w,
+      h:pendingPreset.h
+    };
+    rooms.push(r);
+    selectedRoom=r;
+    draw();
+    updatePrice();
+    updateRoomsPanel();
+    pendingPreset=null;
+  }
+});
+
+canvas.addEventListener('mousemove',e=>{
+  const wx=worldX(e.offsetX), wy=worldY(e.offsetY);
+  document.getElementById('sb-pos').textContent=`X: ${wx.toFixed(1)} m  Y: ${wy.toFixed(1)} m`;
+
+  if(isResizing&&resizingRoom){
+    resizingRoom.w=Math.max(1,snapToGrid(wx-resizingRoom.x));
+    resizingRoom.h=Math.max(1,snapToGrid(wy-resizingRoom.y));
+    draw();updatePrice();updateRoomsPanel();return;
+  }
+  if(dragRoom){
+    dragRoom.x=snapToGrid(wx-dragOX);
+    dragRoom.y=snapToGrid(wy-dragOY);
+    draw();return;
+  }
+  if(isPanning){
+    offsetX=panOX+(e.offsetX-panSX);
+    offsetY=panOY+(e.offsetY-panSY);
+    draw();
+  }
+  if(pendingPreset) canvas.style.cursor='crosshair';
+});
+
+canvas.addEventListener('mouseup',()=>{dragRoom=null;isResizing=false;resizingRoom=null;isPanning=false;});
+canvas.addEventListener('contextmenu',e=>{e.preventDefault();});
+
+canvas.addEventListener('keydown',e=>{
+  if(e.key==='Delete'&&selectedRoom){
+    rooms=rooms.filter(r=>r!==selectedRoom);
+    selectedRoom=null;draw();updatePrice();updateRoomsPanel();
+  }
+});
+canvas.setAttribute('tabindex','0');
+
+// WHEEL ZOOM
+canvas.addEventListener('wheel',e=>{
+  e.preventDefault();
+  const factor=e.deltaY<0?1.1:0.91;
+  const mx=e.offsetX,my=e.offsetY;
+  offsetX=mx+(offsetX-mx)*factor;
+  offsetY=my+(offsetY-my)*factor;
+  scale=Math.max(20,Math.min(120,scale*factor));
+  document.getElementById('sb-zoom').textContent=Math.round(scale/40*100)+'%';
+  draw();
+},{passive:false});
+
+// =====================
+//  INSULATION
+// =====================
+const INS_U={100:0.28,160:0.17,200:0.14,250:0.11};
+function setIns(mm,el){
+  insThick=mm;
+  insUval=INS_U[mm];
+  document.querySelectorAll('.ins-opt').forEach(o=>o.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('st-uval').textContent=insUval.toFixed(2);
+  document.getElementById('st-ins').textContent=mm+' mm';
+  updatePrice();
+}
+
+// =====================
+//  PARAMS
+// =====================
+function updateParam(){ updatePrice(); }
+
+document.getElementById('sl-floor').addEventListener('input',function(){
+  document.getElementById('lbl-floor').textContent=this.value;updateParam();
+});
+document.getElementById('sl-height').addEventListener('input',function(){
+  document.getElementById('lbl-height').textContent=(this.value/10).toFixed(1).replace('.',',')+' m';updateParam();
+});
+
+// =====================
+//  PRICE CALC
+// =====================
+function fmt(n){return Math.round(n).toLocaleString('cs-CZ')+' Kč';}
+function fmtE(n){return '€ '+Math.round(n).toLocaleString('cs-CZ');}
+
+function updatePrice(){
+  totalArea=rooms.reduce((s,r)=>s+r.w*r.h,0);
+  const floors=+document.getElementById('sl-floor').value;
+  const totalFloorArea=totalArea*floors;
+  const insType=document.getElementById('sel-ins-type').value;
+  const roof=document.getElementById('sel-roof').value;
+  const variant=document.getElementById('sel-variant').value;
+
+  document.getElementById('st-area').textContent=totalArea.toFixed(1)+' m²';
+  document.getElementById('st-rooms').textContent=rooms.length;
+
+  const INS_MULT={100:0.88,160:1.0,200:1.12,250:1.28};
+  const TYPE_MULT={eps:1.0,neopor:1.08,pir:1.18};
+  const ROOF_MULT={sedlo:1.0,ploch:0.92,pult:0.96};
+  const FLOOR_MULT=[1,1.0,1.15,1.28];
+
+  const baseEur=280;
+  const matM2=baseEur*INS_MULT[insThick]*TYPE_MULT[insType]*ROOF_MULT[roof]*FLOOR_MULT[floors];
+  const matEur=matM2*totalFloorArea;
+  const dopEur=totalFloorArea<=80?1200:totalFloorArea<=150?1500:1800;
+  const monEur=totalFloorArea*120;
+  const klicEur=totalFloorArea*180+8000;
+
+  let totalEur=matEur+dopEur;
+  if(variant==='montaz') totalEur+=monEur;
+  if(variant==='klic')   totalEur+=monEur+klicEur;
+
+  const CZK=25;
+  const totalKc=totalEur*CZK;
+
+  document.getElementById('p-mat').textContent=fmtE(matEur);
+  document.getElementById('p-dop').textContent=fmtE(dopEur);
+  document.getElementById('p-mon').textContent=variant==='material'?'není zahrnuta':fmtE(monEur);
+  document.getElementById('row-klic').style.display=variant==='klic'?'':'none';
+  document.getElementById('p-klic').textContent=fmtE(klicEur);
+
+  if(totalFloorArea>0){
+    document.getElementById('pt-total').textContent=fmt(totalKc);
+    document.getElementById('pt-unit').textContent=
+      fmtE(Math.round(totalEur/totalFloorArea))+'/m² · '+totalFloorArea.toFixed(0)+' m² · '+floors+' podlaží';
+
+    const rdKc=totalFloorArea*1200*CZK;
+    const haasKc=totalFloorArea*1500*CZK;
+    const alfaKc=totalFloorArea*950*CZK;
+    const save=rdKc-totalKc;
+    const pct=Math.round(save/rdKc*100);
+
+    document.getElementById('cmp-rd').textContent=fmt(rdKc);
+    document.getElementById('cmp-haas').textContent=fmt(haasKc);
+    document.getElementById('cmp-alfa').textContent=fmt(alfaKc);
+    document.getElementById('cmp-you').textContent=fmt(totalKc);
+    document.getElementById('pt-cmp').textContent='RD Rýmařov: '+fmt(rdKc);
+    document.getElementById('pt-save').textContent='Úspora: '+fmt(save)+' (−'+pct+' %)';
+    document.getElementById('pt-save').style.display='inline-block';
+    document.getElementById('sb-area').textContent='Plocha: '+totalFloorArea.toFixed(1)+' m²';
+  } else {
+    document.getElementById('pt-total').textContent='— Kč';
+    document.getElementById('pt-unit').textContent='přidejte místnosti na plán';
+    document.getElementById('pt-save').style.display='none';
+    document.getElementById('pt-cmp').textContent='';
+    ['cmp-rd','cmp-haas','cmp-alfa','cmp-you'].forEach(id=>document.getElementById(id).textContent='—');
+  }
+  document.getElementById('sb-rooms').textContent='Místností: '+rooms.length;
+}
+
+function updateRoomsPanel(){
+  const el=document.getElementById('rooms-list-pp');
+  if(rooms.length===0){el.textContent='Zatím žádné místnosti';return;}
+  el.innerHTML=rooms.map(r=>`
+    <div style="display:flex;align-items:center;gap:6px;padding:4px 0;border-bottom:1px solid rgba(255,255,255,.06);">
+      <div style="width:8px;height:8px;border-radius:2px;background:${r.color};flex-shrink:0;"></div>
+      <span style="flex:1;color:rgba(255,255,255,.75);">${r.name}</span>
+      <span style="color:var(--g);">${(r.w*r.h).toFixed(1)} m²</span>
+    </div>
+  `).join('');
+}
+
+// =====================
+//  ZOOM
+// =====================
+function zoom(f){
+  offsetX=W/2+(offsetX-W/2)*f;
+  offsetY=H/2+(offsetY-H/2)*f;
+  scale=Math.max(20,Math.min(120,scale*f));
+  document.getElementById('sb-zoom').textContent=Math.round(scale/40*100)+'%';
+  draw();
+}
+function resetView(){
+  scale=40;offsetX=80;offsetY=60;
+  document.getElementById('sb-zoom').textContent='100%';
+  draw();
+}
+
+// =====================
+//  CLEAR / EXPORT
+// =====================
+function clearAll(){
+  if(rooms.length===0||confirm('Vymazat celý plán?')){
+    rooms=[];selectedRoom=null;draw();updatePrice();updateRoomsPanel();
+    document.getElementById('hint').style.display='';
+  }
+}
+function exportPDF(){
+  alert('PDF export: v produkční verzi se plán uloží jako PDF s kalkulací.\n\nAktuálně: použijte Ctrl+P → Uložit jako PDF.');
+}
+function sendOrder(){
+  const summary=document.getElementById('modal-summary');
+  summary.innerHTML=`<strong style="color:var(--g);">Souhrn vašeho projektu:</strong><br>
+    Plocha: ${totalArea.toFixed(1)} m² · Místností: ${rooms.length}<br>
+    Izolace: ${insThick} mm (U = ${insUval})<br>
+    Orientační cena: ${document.getElementById('pt-total').textContent}`;
+  alert('Poptávka odeslána! Ozveme se do 24 hodin.\n\n(Demo verze — propojte s e-mailem nebo CRM.)');
+  document.getElementById('modal-order').classList.remove('open');
+}
+
+// update modal summary on open
+document.getElementById('modal-order').addEventListener('click',()=>{
+  const s=document.getElementById('modal-summary');
+  if(rooms.length>0){
+    s.innerHTML=`<strong style="color:var(--g);">Váš plán:</strong> ${rooms.length} místností, ${totalArea.toFixed(1)} m², izolace ${insThick} mm, cena: ${document.getElementById('pt-total').textContent}`;
+  }
+});
+
+// LOAD DEMO
+(function loadDemo(){
+  rooms=[
+    {id:1,name:'Obývací pokoj',color:'#3b82f6',x:0,y:0,w:6,h:4},
+    {id:2,name:'Kuchyň',color:'#f5a623',x:6,y:0,w:3,h:4},
+    {id:3,name:'Koupelna',color:'#1fbc6b',x:0,y:4,w:2.5,h:2},
+    {id:4,name:'Zádveří',color:'#9ca3af',x:2.5,y:4,w:2,h:2},
+    {id:5,name:'Ložnice',color:'#a855f7',x:4.5,y:4,w:4.5,h:4},
+  ];
+  draw();updatePrice();updateRoomsPanel();
+})();
+</script>
+</body>
+</html>

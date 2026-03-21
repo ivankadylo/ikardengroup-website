@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FAQ — SIP Domy Arden Group</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--g:#1fbc6b;--gd:#159a55;--gl:rgba(31,188,107,.12);--bg:#0d1f18;--bg2:#0a1710;--bg3:#142a1e;--card:rgba(255,255,255,.04);--brd:rgba(255,255,255,.1);--t2:rgba(255,255,255,.6);--t3:rgba(255,255,255,.35);}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Montserrat',sans-serif;background:var(--bg);color:#fff;min-height:100vh;}
+nav{position:sticky;top:0;z-index:100;background:rgba(10,23,16,.97);border-bottom:1px solid var(--brd);padding:0 2rem;display:flex;align-items:center;height:60px;gap:10px;}
+.nl{display:flex;align-items:center;gap:9px;text-decoration:none;margin-right:1.5rem;}
+.nl-box{width:34px;height:34px;border:2px solid var(--g);border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:var(--g);}
+.nl-name{font-size:14px;font-weight:800;letter-spacing:.05em;}
+.nav-links{display:flex;gap:0;flex:1;}
+.nav-links a{padding:0 14px;height:60px;display:flex;align-items:center;font-size:12px;font-weight:500;color:var(--t2);text-decoration:none;border-bottom:2px solid transparent;transition:all .15s;white-space:nowrap;}
+.nav-links a:hover,.nav-links a.active{color:var(--g);border-bottom-color:var(--g);}
+.nav-right{display:flex;align-items:center;gap:8px;margin-left:auto;}
+.nav-btn{display:flex;align-items:center;gap:6px;padding:7px 14px;border-radius:7px;font-size:12px;font-weight:600;font-family:inherit;cursor:pointer;transition:all .15s;border:none;text-decoration:none;white-space:nowrap;}
+.nb-g{background:var(--g);color:#fff;} .nb-g:hover{background:var(--gd);}
+.nb-o{background:linear-gradient(135deg,#e67e22,#d35400);color:#fff;} .nb-o:hover{opacity:.9;}
+
+.page-hero{background:linear-gradient(135deg,#0a1e12,#142a1e);padding:4rem 2rem 3rem;text-align:center;border-bottom:1px solid var(--brd);}
+.ph-badge{display:inline-block;background:var(--gl);border:1px solid rgba(31,188,107,.3);color:var(--g);font-size:10px;font-weight:700;padding:3px 14px;border-radius:20px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:12px;}
+.ph-title{font-size:clamp(1.8rem,4vw,3rem);font-weight:800;margin-bottom:.8rem;}
+.ph-title span{color:var(--g);}
+.ph-sub{font-size:15px;color:var(--t2);max-width:560px;margin:0 auto 1.5rem;}
+.search-wrap{max-width:440px;margin:0 auto;position:relative;}
+.search-input{width:100%;padding:12px 40px 12px 16px;background:rgba(255,255,255,.06);border:1px solid var(--brd);border-radius:30px;color:#fff;font-size:14px;font-family:inherit;transition:border .15s;}
+.search-input:focus{outline:none;border-color:var(--g);}
+.search-icon{position:absolute;right:14px;top:50%;transform:translateY(-50%);color:var(--t3);font-size:16px;}
+
+/* CATEGORY TABS */
+.cat-tabs{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;padding:2rem 2rem 0;}
+.cat-tab{padding:8px 18px;border-radius:24px;border:1px solid var(--brd);background:var(--card);color:var(--t2);font-size:12px;font-weight:600;cursor:pointer;transition:all .15s;font-family:inherit;}
+.cat-tab:hover{border-color:var(--g);color:var(--g);}
+.cat-tab.active{background:var(--g);color:#fff;border-color:var(--g);}
+
+/* FAQ */
+.faq-wrap{max-width:780px;margin:0 auto;padding:2rem;}
+.faq-section{margin-bottom:2.5rem;}
+.faq-sec-title{font-size:13px;font-weight:700;color:var(--g);text-transform:uppercase;letter-spacing:.1em;margin-bottom:1rem;padding-bottom:8px;border-bottom:1px solid rgba(31,188,107,.2);}
+.faq-item{background:var(--card);border:1px solid var(--brd);border-radius:10px;margin-bottom:8px;overflow:hidden;transition:border .15s;}
+.faq-item:hover{border-color:rgba(31,188,107,.3);}
+.faq-item.open{border-color:var(--g);}
+.faq-q{padding:16px 20px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;gap:12px;}
+.faq-q-text{font-size:14px;font-weight:600;line-height:1.4;}
+.faq-arrow{color:var(--g);font-size:18px;flex-shrink:0;transition:transform .2s;}
+.faq-item.open .faq-arrow{transform:rotate(180deg);}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .3s ease;}
+.faq-item.open .faq-a{max-height:500px;}
+.faq-a-inner{padding:0 20px 16px;font-size:13px;color:var(--t2);line-height:1.7;border-top:1px solid var(--brd);}
+.faq-a-inner strong{color:#fff;}
+.faq-a-inner a{color:var(--g);text-decoration:none;}
+.faq-highlight{background:var(--gl);border:1px solid rgba(31,188,107,.2);border-radius:6px;padding:8px 12px;margin-top:8px;font-size:12px;color:var(--g);}
+
+/* CTA */
+.cta-section{background:linear-gradient(135deg,#0d2e1e,#1a4a2e);padding:4rem 2rem;text-align:center;border-top:1px solid var(--brd);}
+.cta-section h2{font-size:2rem;font-weight:800;margin-bottom:.8rem;}
+.cta-section h2 span{color:var(--g);}
+.cta-section p{font-size:15px;color:var(--t2);margin-bottom:2rem;}
+.cta-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
+.cta-btn{padding:14px 28px;border-radius:10px;font-size:14px;font-weight:700;text-decoration:none;transition:all .2s;display:inline-flex;align-items:center;gap:8px;font-family:inherit;border:none;cursor:pointer;}
+.cb-g{background:var(--g);color:#fff;} .cb-g:hover{background:var(--gd);}
+.cb-o{background:transparent;border:2px solid var(--g);color:var(--g);} .cb-o:hover{background:var(--g);color:#fff;}
+
+/* not found */
+.no-results{text-align:center;padding:3rem;color:var(--t3);display:none;}
+
+footer{background:var(--bg2);border-top:1px solid var(--brd);padding:2rem;text-align:center;color:var(--t3);font-size:12px;}
+footer a{color:var(--g);text-decoration:none;}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nl" href="index.html">
+    <div class="nl-box">IK</div>
+    <div class="nl-name">ARDEN GROUP</div>
+  </a>
+    <div class="nav-links">
+    <a href="index.html">Domů</a>
+    <a href="sip-domy.html">SIP Domy</a>
+    <a href="realizace.html">Realizace</a>
+    <a href="faq.html" class="active">FAQ</a>
+    <a href="kontakt.html">Kontakt</a>
+  </div>
+  <div class="nav-right">
+    <a class="nav-btn nb-o" href="modelar.html">🏗 Navrhnout dům</a>
+    <a class="nav-btn nb-g" href="kontakt.html">📩 Poptávka</a>
+  </div>
+</nav>
+
+<div class="page-hero">
+  <div class="ph-badge">Časté dotazy</div>
+  <h1 class="ph-title">Máte <span>otázky?</span></h1>
+  <p class="ph-sub">Odpovídáme na všechno — od technických parametrů po cenu, povolení a hypotéku.</p>
+  <div class="search-wrap">
+    <input class="search-input" type="text" placeholder="Hledat otázku..." id="search-inp" oninput="searchFAQ()">
+    <span class="search-icon">🔍</span>
+  </div>
+</div>
+
+<div class="cat-tabs">
+  <button class="cat-tab active" onclick="filterFAQ('all',this)">Vše</button>
+  <button class="cat-tab" onclick="filterFAQ('cena',this)">Cena a platba</button>
+  <button class="cat-tab" onclick="filterFAQ('technika',this)">Technika a kvalita</button>
+  <button class="cat-tab" onclick="filterFAQ('povoleni',this)">Povolení a legislativa</button>
+  <button class="cat-tab" onclick="filterFAQ('stavba',this)">Průběh stavby</button>
+  <button class="cat-tab" onclick="filterFAQ('hypoteka',this)">Hypotéka a dotace</button>
+</div>
+
+<div class="faq-wrap">
+  <div id="no-results" class="no-results">
+    <div style="font-size:40px;margin-bottom:12px;">🔍</div>
+    <p>Nenašli jsme žádnou otázku.<br>
+    <a href="kontakt.html" style="color:var(--g);">Zeptejte se nás přímo →</a></p>
+  </div>
+  <div id="faq-container"></div>
+</div>
+
+<div class="cta-section">
+  <h2>Nenašli jste <span>odpověď?</span></h2>
+  <p>Napište nám — odpovíme do 24 hodin. Nebo si rovnou navrhněte dům v naší aplikaci.</p>
+  <div class="cta-btns">
+    <a class="cta-btn cb-g" href="kontakt.html">📩 Napište nám</a>
+    <a class="cta-btn cb-o" href="modelar.html">🏗 Navrhnout dům</a>
+  </div>
+</div>
+
+<footer>
+  <p><strong style="color:#fff;">ARDEN GROUP s.r.o.</strong> · Metylovice 153, PSČ 739 49 ·
+  <a href="sip-domy.html">SIP Domy</a> ·
+  <a href="realizace.html">Realizace</a> ·
+  <a href="kontakt.html">Kontakt</a></p>
+</footer>
+
+<script>
+const FAQS=[
+  {cat:'cena',q:'Proč jsou vaše ceny o 40 % nižší než RD Rýmařov?',
+   a:'RD Rýmařov platí za 55 let reklamy, showroomy po celé ČR, velký tým obchodníků a značku. To všechno je v jejich ceně. My kupujeme panely přímo od EU výrobce (ECOPAN, Rumunsko) a montáž zadáváme lokální CZ firmě — bez zbytečných mezičlánků. <strong>Stejný panel, jiná distribuce.</strong>',
+   highlight:'Za dům 100 m² zákazník průměrně ušetří 700 000 – 1 200 000 Kč oproti RD Rýmařov.'},
+  {cat:'cena',q:'Co vše je zahrnuto v ceně?',
+   a:'Záleží na zvolené variantě. <strong>Materiál:</strong> SIP panely + doprava. <strong>Materiál + montáž:</strong> navíc montáž českou firmou, 3D vizualizace, pomoc s povolením, příprava pro TČ a FV. <strong>Na klíč:</strong> navíc projekt, stavební povolení, základová deska, okna, dveře, střecha a energetický štítek PENB.',
+   highlight:'Pevná smluvní cena — žádné vícepráce ani skryté příplatky.'},
+  {cat:'cena',q:'Jak mohu platit?',
+   a:'Standardní platební plán: <strong>30 % záloha</strong> při podpisu smlouvy, <strong>60 % při dodání panelů</strong> na staveniště, <strong>10 % po dokončení montáže</strong>. Platby bankovním převodem na český účet. Na požádání lze domluvit jiné podmínky.'},
+  {cat:'cena',q:'Jsou v ceně zahrnuty daně?',
+   a:'Všechny uvedené ceny jsou bez DPH. Pro rodinné domy platí <strong>snížená sazba DPH 12 %</strong> (§ 47 zákona o DPH). Finální cena v návrhu smlouvy vždy zahrnuje aktuálně platnou sazbu DPH.'},
+  {cat:'technika',q:'Jakou mají SIP panely životnost?',
+   a:'Certifikovaná životnost panelů ECOPAN je <strong>50+ let</strong>. OSB desky jsou vlhkuvzdorné (třídy 3), EPS jádro je chemicky stálé a nesnědají ho hlodavci ani hmyz. Správně provedená SIP stavba přežije generace.',
+   highlight:'Garantovaná životnost přes 50 let. Požární odolnost REI 60 dle EU normy.'},
+  {cat:'technika',q:'Jaké mají panely U-hodnoty? Splňují pasivní standard?',
+   a:'Dle zvolené tloušťky: <strong>100 mm EPS = U 0,28</strong> (základní), <strong>160 mm = U 0,17</strong> (nízkoenergetický), <strong>200 mm = U 0,14</strong>, <strong>250 mm EPS = U 0,11</strong> (pasivní standard). Pasivní standard v ČR vyžaduje U ≤ 0,15 — splňujeme od 200 mm.'},
+  {cat:'technika',q:'Jsou SIP panely bezpečné? Neobsahují toxické látky?',
+   a:'Panely ECOPAN jsou vyrobeny z <strong>OSB desek (90 % dřevo + pryskyřice)</strong> a <strong>EPS pěny</strong>. Škodlivé látky se uvolňují pouze při výrobě, ne při užívání. Panely mají certifikáty CE, ETA a ISO 14001 (environmentální norma). Jsou bezpečné pro alergiky i děti.'},
+  {cat:'technika',q:'Jak je to s požární odolností?',
+   a:'SIP panely mají požární odolnost <strong>REI 60</strong> podle normy EN 1364-1:1999. To je standardní požadavek pro rodinné domy v ČR. Při použití sádrokartonu na vnitřní povrch se odolnost zvyšuje na REI 90.'},
+  {cat:'technika',q:'Jaká je akustická izolace SIP domu?',
+   a:'Vzduchová neprůzvučnost SIP stěny: <strong>Rw = 38–52 dB</strong> dle tloušťky a povrchové úpravy. Pro srovnání: cihlová zeď 30 cm ≈ Rw 50 dB. Přidáním sádrokartonu nebo akustické předstěny lze dosáhnout i vyšších hodnot.'},
+  {cat:'povoleni',q:'Potřebuji stavební povolení na SIP dům?',
+   a:'Ano, pro trvalý rodinný dům je <strong>stavební povolení povinné</strong>. Naši zákazníci ve variantách Montáž a Na klíč dostávají pomoc s vyřízením povolení. Dokumentace je standardní — SIP domy nejsou z hlediska legislativy nijak jiné než zděné domy.',
+   highlight:'Stavební povolení pomáháme vyřídit — zákazník se nemusí starat.'},
+  {cat:'povoleni',q:'Jsou panely certifikovány pro použití v ČR?',
+   a:'Panely ECOPAN mají <strong>ETA 23/0526</strong> (Evropské technické posouzení), <strong>CE certifikát</strong> a <strong>ISO 9001</strong>. To jsou stejné certifikáty jako u Haas Fertigbau nebo jiných západoevropských výrobců. V ČR není žádný problém s povolováním.'},
+  {cat:'povoleni',q:'Může mi banka odmítnout hypotéku na SIP dům?',
+   a:'Ne. Banky v ČR financují SIP domy standardně jako jakoukoliv jinou stavbu. Podmínkou je platné stavební povolení, smlouva o dílo a pojištění stavby. <strong>CE certifikát</strong> panelů je klíčový — bez něj by banka mohla mít výhrady, s ním je vše v pořádku.'},
+  {cat:'stavba',q:'Jak dlouho trvá celá stavba od podpisu smlouvy?',
+   a:'<strong>1–2 týdny:</strong> upřesnění projektu, smlouva. <strong>30–45 dní:</strong> výroba panelů v ECOPAN (Rumunsko). <strong>2–3 dny:</strong> doprava TIR na staveniště. <strong>7–14 dní:</strong> montáž hrubé stavby. <strong>Celkem: přibližně 8–11 týdnů</strong> od podpisu po předání hrubé stavby.',
+   highlight:'RD Rýmařov má čekací dobu 6–18 měsíců. U nás začínáme do 2 týdnů.'},
+  {cat:'stavba',q:'Kdo provádí montáž?',
+   a:'Montáž zajišťuje <strong>certifikovaná česká firma</strong> — konkrétně spolupracujeme se SIPsCZ (showroom v Čeladné, 5 km od Metylovice) nebo HK Dřestav. Obě firmy znají normy ČSN, mají zkušenosti se SIP montáží a nesou zákonnou odpovědnost za provedení.'},
+  {cat:'stavba',q:'Mohu si zvolit vlastní montážní firmu?',
+   a:'Ano, ve variantě <strong>Pouze materiál</strong> si montáž organizujete zcela sami. V ostatních variantách doporučujeme naše ověřené partnery — ale po domluvě lze použít i vaši firmu, pokud má zkušenosti se SIP technologií.'},
+  {cat:'stavba',q:'Co je základová deska a kdo ji zajišťuje?',
+   a:'Základová deska je betonová platforma, na které stojí dům. Ve variantách <strong>Materiál a Montáž</strong> si zákazník zajišťuje základ sám (nebo s naší pomocí při doporučení firmy). Ve variantě <strong>Na klíč</strong> základ zajišťujeme my jako součást balíku.'},
+  {cat:'hypoteka',q:'Vztahuje se na SIP dům dotace Nová zelená úsporám?',
+   a:'Ano! SIP domy s izolací 160 mm (U ≤ 0,17) splňují podmínky dotačního programu <strong>Nová zelená úsporám</strong>. Pro pasivní standard (U ≤ 0,15) lze získat vyšší dotaci. Energetický štítek PENB je nutnou součástí žádosti — zajišťujeme ho ve variantě Na klíč.',
+   highlight:'Dotace NZÚ může pokrýt 10–40 % nákladů na stavbu.'},
+  {cat:'hypoteka',q:'Jak velkou hypotéku dostanu na SIP dům?',
+   a:'Banky posuzují SIP domy stejně jako zděné — podle hodnoty nemovitosti a příjmů žadatele. Typicky lze získat <strong>80–90 % LTV</strong> (loan-to-value). Doporučujeme konzultaci s hypotečním poradcem — na požádání vás odkážeme na ověřeného poradce v regionu.'},
+  {cat:'hypoteka',q:'Je SIP dům vhodný pro Airbnb nebo komerční pronájem?',
+   a:'Absolutně. Rekreační chaty a modulární domy jsou pro Airbnb ideální — nízké náklady na pořízení, rychlá výstavba, nízké provozní náklady. Při obsazenosti 60 % se investice do chatky 68 m² vrátí za <strong>4–5 let</strong>.'},
+];
+
+let activeFilter='all';
+let searchTerm='';
+
+function renderFAQ(){
+  const container=document.getElementById('faq-container');
+  const noRes=document.getElementById('no-results');
+  let filtered=FAQS;
+  if(activeFilter!=='all') filtered=filtered.filter(f=>f.cat===activeFilter);
+  if(searchTerm) filtered=filtered.filter(f=>f.q.toLowerCase().includes(searchTerm)||f.a.toLowerCase().includes(searchTerm));
+
+  if(filtered.length===0){noRes.style.display='block';container.innerHTML='';return;}
+  noRes.style.display='none';
+
+  // group by category
+  const cats={cena:'💰 Cena a platba',technika:'🔧 Technika a kvalita',povoleni:'📋 Povolení a legislativa',stavba:'🏗 Průběh stavby',hypoteka:'🏦 Hypotéka a dotace'};
+  const groups={};
+  filtered.forEach(f=>{
+    if(!groups[f.cat]) groups[f.cat]=[];
+    groups[f.cat].push(f);
+  });
+
+  container.innerHTML=Object.entries(groups).map(([cat,items])=>`
+    <div class="faq-section">
+      <div class="faq-sec-title">${cats[cat]}</div>
+      ${items.map((f,i)=>`
+        <div class="faq-item" id="faq-${cat}-${i}">
+          <div class="faq-q" onclick="toggleFAQ('faq-${cat}-${i}')">
+            <span class="faq-q-text">${f.q}</span>
+            <span class="faq-arrow">▾</span>
+          </div>
+          <div class="faq-a">
+            <div class="faq-a-inner">
+              ${f.a}
+              ${f.highlight?`<div class="faq-highlight">💡 ${f.highlight}</div>`:''}
+            </div>
+          </div>
+        </div>
+      `).join('')}
+    </div>
+  `).join('');
+}
+
+function toggleFAQ(id){
+  const el=document.getElementById(id);
+  el.classList.toggle('open');
+}
+function filterFAQ(f,btn){
+  activeFilter=f;
+  document.querySelectorAll('.cat-tab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderFAQ();
+}
+function searchFAQ(){
+  searchTerm=document.getElementById('search-inp').value.toLowerCase();
+  renderFAQ();
+}
+renderFAQ();
+</script>
+</body>
+</html>

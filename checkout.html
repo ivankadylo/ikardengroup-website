@@ -261,5 +261,89 @@
             }, 1000);
         }
     </script>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+<script>
+// Ініціалізація EmailJS
+(function(){
+    emailjs.init('YOUR_PUBLIC_KEY'); // ← замінити пізніше
+})();
+
+// Переписуємо функцію відправки
+document.getElementById('orderForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    if (cart.length === 0) {
+        alert('Košík je prázdný!');
+        window.location.href = 'index.html';
+        return;
+    }
+
+    const firstName = document.getElementById('firstName').value;
+    const lastName  = document.getElementById('lastName').value;
+    const email     = document.getElementById('email').value;
+    const phone     = document.getElementById('phone').value;
+    const street    = document.getElementById('street').value;
+    const city      = document.getElementById('city').value;
+    const zip       = document.getElementById('zip').value;
+    const payment   = document.getElementById('payment').value;
+    const total     = cart.reduce((s,i) => s + i.price * i.quantity, 0);
+
+    const itemsList = cart.map(i =>
+        `• ${i.name} x${i.quantity} — ${(i.price*i.quantity).toLocaleString()} Kč`
+    ).join('\n');
+
+    const paymentNames = {
+        cash: 'Наготові при отриманні',
+        transfer: 'Банківський переказ',
+        card: 'Кредитна картка'
+    };
+
+    const templateParams = {
+        to_email:      'ikardengroup@gmail.com',
+        from_name:     `${firstName} ${lastName}`,
+        from_email:    email,
+        phone:         phone,
+        address:       `${street}, ${city}, ${zip}`,
+        payment:       paymentNames[payment] || payment,
+        items:         itemsList,
+        total:         `${total.toLocaleString()} Kč`,
+        order_date:    new Date().toLocaleString('uk-UA'),
+    };
+
+    // Показуємо кнопку завантаження
+    const btn = document.querySelector('.submit-btn');
+    btn.disabled = true;
+    btn.textContent = 'Відправляємо...';
+
+    try {
+        await emailjs.send(
+            'service_2hxrr9l',   // Service ID
+            'template_ikarden',   // Template ID ← створимо зараз
+            templateParams
+        );
+
+        // Зберігаємо замовлення локально
+        const orders = JSON.parse(localStorage.getItem('ikarden-orders') || '[]');
+        orders.push({ ...templateParams, date: new Date().toISOString() });
+        localStorage.setItem('ikarden-orders', JSON.stringify(orders));
+
+        localStorage.removeItem('ikarden-cart');
+
+        alert('✅ Děkujeme za objednávku! Potvrzovací e-mail byl odeslán.');
+        window.location.href = 'index.html';
+
+    } catch (err) {
+        console.error('EmailJS error:', err);
+        // Навіть якщо email не відправився — зберігаємо локально
+        const orders = JSON.parse(localStorage.getItem('ikarden-orders') || '[]');
+        orders.push({ ...templateParams, date: new Date().toISOString() });
+        localStorage.setItem('ikarden-orders', JSON.stringify(orders));
+        localStorage.removeItem('ikarden-cart');
+
+        alert('Děkujeme za objednávku! Brzy vás budeme kontaktovat.');
+        window.location.href = 'index.html';
+    }
+});
+</script>
 </body>
 </html>

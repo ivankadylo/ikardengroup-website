@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kontakt — SIP Domy Arden Group</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--g:#1fbc6b;--gd:#159a55;--gl:rgba(31,188,107,.12);--bg:#0d1f18;--bg2:#0a1710;--bg3:#142a1e;--card:rgba(255,255,255,.04);--brd:rgba(255,255,255,.1);--t2:rgba(255,255,255,.6);--t3:rgba(255,255,255,.35);}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Montserrat',sans-serif;background:var(--bg);color:#fff;min-height:100vh;}
+nav{position:sticky;top:0;z-index:100;background:rgba(10,23,16,.97);border-bottom:1px solid var(--brd);padding:0 2rem;display:flex;align-items:center;height:60px;gap:10px;}
+.nl{display:flex;align-items:center;gap:9px;text-decoration:none;margin-right:1.5rem;}
+.nl-box{width:34px;height:34px;border:2px solid var(--g);border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:var(--g);}
+.nl-name{font-size:14px;font-weight:800;letter-spacing:.05em;}
+.nav-links{display:flex;gap:0;flex:1;}
+.nav-links a{padding:0 14px;height:60px;display:flex;align-items:center;font-size:12px;font-weight:500;color:var(--t2);text-decoration:none;border-bottom:2px solid transparent;transition:all .15s;white-space:nowrap;}
+.nav-links a:hover,.nav-links a.active{color:var(--g);border-bottom-color:var(--g);}
+.nav-right{display:flex;align-items:center;gap:8px;margin-left:auto;}
+.nav-btn{display:flex;align-items:center;gap:6px;padding:7px 14px;border-radius:7px;font-size:12px;font-weight:600;font-family:inherit;cursor:pointer;transition:all .15s;border:none;text-decoration:none;white-space:nowrap;}
+.nb-g{background:var(--g);color:#fff;} .nb-g:hover{background:var(--gd);}
+.nb-o{background:linear-gradient(135deg,#e67e22,#d35400);color:#fff;} .nb-o:hover{opacity:.9;}
+
+.page-hero{background:linear-gradient(135deg,#0a1e12,#142a1e);padding:4rem 2rem 3rem;text-align:center;border-bottom:1px solid var(--brd);}
+.ph-badge{display:inline-block;background:var(--gl);border:1px solid rgba(31,188,107,.3);color:var(--g);font-size:10px;font-weight:700;padding:3px 14px;border-radius:20px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:12px;}
+.ph-title{font-size:clamp(1.8rem,4vw,3rem);font-weight:800;margin-bottom:.8rem;}
+.ph-title span{color:var(--g);}
+.ph-sub{font-size:15px;color:var(--t2);max-width:540px;margin:0 auto;}
+
+/* MAIN GRID */
+.main-grid{display:grid;grid-template-columns:1fr 380px;gap:24px;max-width:1100px;margin:0 auto;padding:3rem 2rem;}
+
+/* FORM */
+.form-card{background:var(--card);border:1px solid var(--brd);border-radius:16px;padding:28px;}
+.form-card h2{font-size:20px;font-weight:800;margin-bottom:6px;}
+.form-sub{font-size:13px;color:var(--t2);margin-bottom:24px;}
+.form-row{margin-bottom:16px;}
+.form-row label{display:block;font-size:11px;font-weight:700;color:var(--t2);margin-bottom:6px;text-transform:uppercase;letter-spacing:.06em;}
+.form-row input,.form-row textarea,.form-row select{width:100%;padding:11px 14px;background:rgba(255,255,255,.06);border:1px solid var(--brd);border-radius:8px;color:#fff;font-size:13px;font-family:inherit;transition:border .15s;}
+.form-row input:focus,.form-row textarea:focus,.form-row select:focus{outline:none;border-color:var(--g);}
+.form-row textarea{height:100px;resize:vertical;}
+.form-row select option{background:#142a1e;}
+.form-2col{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.form-submit{width:100%;padding:14px;background:var(--g);color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .15s;margin-top:8px;}
+.form-submit:hover{background:var(--gd);}
+.form-note{font-size:11px;color:var(--t3);text-align:center;margin-top:10px;}
+
+/* RIGHT COLUMN */
+.right-col{display:flex;flex-direction:column;gap:16px;}
+
+.info-card{background:var(--card);border:1px solid var(--brd);border-radius:12px;padding:20px;}
+.ic-title{font-size:13px;font-weight:700;color:var(--g);margin-bottom:14px;}
+.ic-row{display:flex;align-items:flex-start;gap:12px;margin-bottom:12px;}
+.ic-row:last-child{margin-bottom:0;}
+.ic-icon{width:36px;height:36px;background:var(--gl);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
+.ic-text{}
+.ic-label{font-size:10px;color:var(--t3);font-weight:600;text-transform:uppercase;letter-spacing:.06em;}
+.ic-val{font-size:13px;font-weight:600;margin-top:2px;}
+.ic-val a{color:var(--g);text-decoration:none;}
+
+.hours-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:10px;}
+.hg-item{background:rgba(255,255,255,.03);border-radius:6px;padding:8px;}
+.hg-day{font-size:10px;color:var(--t3);}
+.hg-time{font-size:12px;font-weight:600;color:var(--g);margin-top:2px;}
+
+.cert-card{background:linear-gradient(135deg,#0d2e1e,#1a4a2e);border:1px solid rgba(31,188,107,.3);border-radius:12px;padding:18px;}
+.cert-title{font-size:12px;font-weight:700;color:var(--g);margin-bottom:12px;}
+.cert-row{display:flex;gap:8px;flex-wrap:wrap;}
+.cert-pill{background:var(--gl);border:1px solid rgba(31,188,107,.25);color:var(--g);font-size:10px;font-weight:700;padding:4px 10px;border-radius:10px;}
+
+.quick-links{background:var(--card);border:1px solid var(--brd);border-radius:12px;padding:18px;}
+.ql-title{font-size:12px;font-weight:700;color:var(--t2);margin-bottom:10px;text-transform:uppercase;letter-spacing:.08em;}
+.ql-btn{display:flex;align-items:center;gap:10px;padding:10px 12px;background:rgba(255,255,255,.03);border:1px solid var(--brd);border-radius:8px;text-decoration:none;color:#fff;font-size:13px;font-weight:600;transition:all .15s;margin-bottom:7px;}
+.ql-btn:last-child{margin-bottom:0;}
+.ql-btn:hover{border-color:var(--g);background:var(--gl);}
+
+/* SUCCESS */
+.success-box{display:none;background:linear-gradient(135deg,#0d2e1e,#1a4a2e);border:1px solid rgba(31,188,107,.4);border-radius:12px;padding:32px;text-align:center;}
+.success-icon{font-size:48px;margin-bottom:12px;}
+.success-title{font-size:20px;font-weight:800;color:var(--g);margin-bottom:8px;}
+.success-sub{font-size:14px;color:var(--t2);line-height:1.6;}
+
+/* PROGRESS STEPS */
+.steps-row{display:flex;gap:0;margin-bottom:2rem;}
+.step-item{flex:1;display:flex;flex-direction:column;align-items:center;position:relative;}
+.step-item:not(:last-child)::after{content:'';position:absolute;top:16px;left:50%;width:100%;height:2px;background:var(--brd);}
+.step-item.done::after{background:var(--g);}
+.step-num{width:32px;height:32px;border-radius:50%;background:var(--brd);color:var(--t2);font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;position:relative;z-index:1;}
+.step-item.active .step-num{background:var(--g);color:#fff;}
+.step-item.done .step-num{background:var(--gd);color:#fff;}
+.step-lbl{font-size:9px;color:var(--t3);margin-top:5px;text-align:center;white-space:nowrap;}
+.step-item.active .step-lbl{color:var(--g);}
+
+@media(max-width:780px){.main-grid{grid-template-columns:1fr;} .form-2col{grid-template-columns:1fr;}}
+footer{background:var(--bg2);border-top:1px solid var(--brd);padding:2rem;text-align:center;color:var(--t3);font-size:12px;}
+footer a{color:var(--g);text-decoration:none;}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nl" href="index.html">
+    <div class="nl-box">IK</div>
+    <div class="nl-name">ARDEN GROUP</div>
+  </a>
+    <div class="nav-links">
+    <a href="index.html">Domů</a>
+    <a href="sip-domy.html">SIP Domy</a>
+    <a href="realizace.html">Realizace</a>
+    <a href="faq.html">FAQ</a>
+    <a href="kontakt.html" class="active">Kontakt</a>
+  </div>
+  <div class="nav-right">
+    <a class="nav-btn nb-o" href="modelar.html">🏗 Navrhnout dům</a>
+    <a class="nav-btn nb-g" href="#form-top">📩 Napsat zprávu</a>
+  </div>
+</nav>
+
+<div class="page-hero">
+  <div class="ph-badge">Odpovíme do 24 hodin</div>
+  <h1 class="ph-title">Napište <span>nám</span></h1>
+  <p class="ph-sub">Poptávka je zcela zdarma a nezávazná. Pošleme vám přesnou nabídku a 3D vizualizaci.</p>
+</div>
+
+<div class="main-grid" id="form-top">
+
+  <!-- FORM -->
+  <div>
+    <!-- PROGRESS -->
+    <div class="steps-row">
+      <div class="step-item active done"><div class="step-num">1</div><div class="step-lbl">Poptávka</div></div>
+      <div class="step-item"><div class="step-num">2</div><div class="step-lbl">Nabídka 24h</div></div>
+      <div class="step-item"><div class="step-num">3</div><div class="step-lbl">Projekt</div></div>
+      <div class="step-item"><div class="step-num">4</div><div class="step-lbl">Smlouva</div></div>
+      <div class="step-item"><div class="step-num">5</div><div class="step-lbl">Stavba</div></div>
+      <div class="step-item"><div class="step-num">6</div><div class="step-lbl">Klíče</div></div>
+    </div>
+
+    <div class="form-card" id="form-card">
+      <h2>Nezávazná poptávka</h2>
+      <p class="form-sub">Vyplňte formulář — do 24 hodin dostanete přesnou nabídku s 3D vizualizací. Bez závazků, bez skrytých poplatků.</p>
+
+      <div class="form-2col">
+        <div class="form-row">
+          <label>Jméno</label>
+          <input type="text" placeholder="Jan" id="f-name">
+        </div>
+        <div class="form-row">
+          <label>Příjmení</label>
+          <input type="text" placeholder="Novák" id="f-surname">
+        </div>
+      </div>
+      <div class="form-2col">
+        <div class="form-row">
+          <label>Telefon</label>
+          <input type="tel" placeholder="+420 XXX XXX XXX" id="f-phone">
+        </div>
+        <div class="form-row">
+          <label>E-mail</label>
+          <input type="email" placeholder="jan@novak.cz" id="f-email">
+        </div>
+      </div>
+
+      <div class="form-row">
+        <label>Zájem o</label>
+        <select id="f-type">
+          <option value="">— vyberte variantu —</option>
+          <option>Pouze materiál (SIP panely)</option>
+          <option>Materiál + montáž</option>
+          <option>Na klíč (vše včetně)</option>
+          <option>Konzultace / informace</option>
+        </select>
+      </div>
+
+      <div class="form-2col">
+        <div class="form-row">
+          <label>Odhadovaná plocha (m²)</label>
+          <input type="text" placeholder="např. 100 m²" id="f-area">
+        </div>
+        <div class="form-row">
+          <label>Termín realizace</label>
+          <select id="f-timing">
+            <option value="">— vyberte —</option>
+            <option>Do 3 měsíců</option>
+            <option>Do 6 měsíců</option>
+            <option>Do 1 roku</option>
+            <option>Zatím jen zjišťuji</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <label>Lokalita stavby</label>
+        <input type="text" placeholder="Město / obec / kraj" id="f-loc">
+      </div>
+
+      <div class="form-row">
+        <label>Popis projektu a dotazy</label>
+        <textarea placeholder="Počet pokojů, podlaží, speciální požadavky, dotazy..." id="f-msg"></textarea>
+      </div>
+
+      <button class="form-submit" onclick="submitForm()">
+        📩 Odeslat poptávku — odpovíme do 24 hodin
+      </button>
+      <p class="form-note">Odesláním souhlasíte se zpracováním osobních údajů za účelem odpovědi na poptávku. Vaše data nebudou předána třetím stranám.</p>
+    </div>
+
+    <!-- SUCCESS -->
+    <div class="success-box" id="success-box">
+      <div class="success-icon">✅</div>
+      <div class="success-title">Poptávka odeslána!</div>
+      <p class="success-sub">Děkujeme. Ozveme se vám do <strong>24 hodin</strong> s přesnou nabídkou a 3D vizualizací.<br><br>
+      Mezitím si můžete <a href="modelar.html" style="color:var(--g);">navrhnout půdorys v naší aplikaci →</a></p>
+    </div>
+  </div>
+
+  <!-- RIGHT COLUMN -->
+  <div class="right-col">
+
+    <div class="info-card">
+      <div class="ic-title">Kontaktní informace</div>
+      <div class="ic-row">
+        <div class="ic-icon">📍</div>
+        <div class="ic-text">
+          <div class="ic-label">Adresa</div>
+          <div class="ic-val">Metylovice 153<br>PSČ 739 49, ČR</div>
+        </div>
+      </div>
+      <div class="ic-row">
+        <div class="ic-icon">📞</div>
+        <div class="ic-text">
+          <div class="ic-label">Telefon</div>
+          <div class="ic-val"><a href="tel:+420XXXXXXXXX">+420 XXX XXX XXX</a></div>
+        </div>
+      </div>
+      <div class="ic-row">
+        <div class="ic-icon">✉️</div>
+        <div class="ic-text">
+          <div class="ic-label">E-mail</div>
+          <div class="ic-val"><a href="mailto:info@ardengroup.cz">info@ardengroup.cz</a></div>
+        </div>
+      </div>
+      <div class="ic-row">
+        <div class="ic-icon">🌐</div>
+        <div class="ic-text">
+          <div class="ic-label">Web</div>
+          <div class="ic-val">www.ardengroup.cz</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="info-card">
+      <div class="ic-title">Pracovní doba</div>
+      <div class="hours-grid">
+        <div class="hg-item"><div class="hg-day">Pondělí — Pátek</div><div class="hg-time">8:00 — 18:00</div></div>
+        <div class="hg-item"><div class="hg-day">Sobota</div><div class="hg-time">9:00 — 13:00</div></div>
+        <div class="hg-item"><div class="hg-day">Neděle</div><div class="hg-time" style="color:var(--t3);">Zavřeno</div></div>
+        <div class="hg-item"><div class="hg-day">Online poptávka</div><div class="hg-time">24 / 7</div></div>
+      </div>
+    </div>
+
+    <div class="cert-card">
+      <div class="cert-title">Certifikace a záruky</div>
+      <div class="cert-row">
+        <span class="cert-pill">CE certifikát</span>
+        <span class="cert-pill">ETA 23/0526</span>
+        <span class="cert-pill">ISO 9001</span>
+        <span class="cert-pill">ISO 14001</span>
+        <span class="cert-pill">Česká s.r.o.</span>
+        <span class="cert-pill">ECOPAN partner</span>
+      </div>
+      <p style="font-size:11px;color:var(--t2);margin-top:10px;line-height:1.5;">Výroba: ECOPAN, Rumunsko (EU). Montáž: certifikovaná česká firma. Smlouva dle českého práva.</p>
+    </div>
+
+    <div class="quick-links">
+      <div class="ql-title">Rychlé zkratky</div>
+      <a class="ql-btn" href="modelar.html">🏗 <span>Navrhnout vlastní dům</span></a>
+      <a class="ql-btn" href="realizace.html">📸 <span>Prohlédnout realizace</span></a>
+      <a class="ql-btn" href="faq.html">❓ <span>Časté dotazy (FAQ)</span></a>
+      <a class="ql-btn" href="sip-domy.html">🏠 <span>Ceník a kalkulačka</span></a>
+    </div>
+
+  </div>
+</div>
+
+<footer>
+  <p><strong style="color:#fff;">ARDEN GROUP s.r.o.</strong> · Metylovice 153, PSČ 739 49 · IČ: XXXXXXXX ·
+  <a href="sip-domy.html">SIP Domy</a> ·
+  <a href="realizace.html">Realizace</a> ·
+  <a href="faq.html">FAQ</a></p>
+  <p style="margin-top:6px;">Ceny jsou orientační · Přesnou nabídku zašleme zdarma do 24 hodin</p>
+</footer>
+
+<script>
+function submitForm(){
+  const name=document.getElementById('f-name').value;
+  const email=document.getElementById('f-email').value;
+  if(!name||!email){alert('Vyplňte prosím jméno a e-mail.');return;}
+  document.getElementById('form-card').style.display='none';
+  document.getElementById('success-box').style.display='block';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+</script>
+</body>
+</html>

@@ -1263,7 +1263,7 @@ function checkAdminMode() {
 // Open edit product modal with live preview
 function openEditProductModal(productId) {
     // ВІДКРИВАЄМО НОВУ СТОРІНКУ ДЛЯ РЕДАГУВАННЯ
-    window.location.href = `admin-edit.html?id=${productId}`;
+    window.location.href = `admin-panel.html`;
     return; // Exit function
     
     // OLD CODE BELOW (DISABLED)

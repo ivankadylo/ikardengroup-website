@@ -14,19 +14,19 @@
     
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://ikarden.cz/">
+    <meta property="og:url" content="https://ikardengroup.com/">
     <meta property="og:title" content="IKarden - Ručně vyráběný nábytek z masivu">
     <meta property="og:description" content="Kvalitní dřevěný nábytek vyrobený s láskou a precizností. 100% přírodní dřevo, 2 roky záruka.">
-    <meta property="og:image" content="https://ikarden.cz/images/og-image.jpg">
+    <meta property="og:image" content="https://ikardengroup.com/images/og-image.jpg">
     <meta property="og:locale" content="cs_CZ">
     <meta property="og:site_name" content="IKarden">
     
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://ikarden.cz/">
+    <meta property="twitter:url" content="https://ikardengroup.com/">
     <meta property="twitter:title" content="IKarden - Ručně vyráběný nábytek z masivu">
     <meta property="twitter:description" content="Kvalitní dřevěný nábytek vyrobený s láskou a precizností.">
-    <meta property="twitter:image" content="https://ikarden.cz/images/og-image.jpg">
+    <meta property="twitter:image" content="https://ikardengroup.com/images/og-image.jpg">
     
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="favicon.ico">
@@ -38,9 +38,9 @@
       "@context": "https://schema.org",
       "@type": "LocalBusiness",
       "name": "IKarden",
-      "image": "https://ikarden.cz/images/logo.jpg",
-      "@id": "https://ikarden.cz",
-      "url": "https://ikarden.cz",
+      "image": "https://ikardengroup.com/images/logo.jpg",
+      "@id": "https://ikardengroup.com",
+      "url": "https://ikardengroup.com",
       "telephone": "+420777987752",
       "email": "ikardengroup@gmail.com",
       "priceRange": "2000-20000 Kč",
@@ -245,6 +245,9 @@
                     <a href="#kontakt" class="nav-link">Kontakt</a>
                 </nav>
                 <div class="header-right">
+                    <!-- ===== SIP DOMY BUTTON ===== -->
+                    <button id="sip-btn-main" onclick="document.getElementById('sip-ov').classList.add('sip-open');document.body.style.overflow='hidden'" style="display:inline-flex;align-items:center;gap:7px;background:linear-gradient(135deg,#1fbc6b,#0d9450);color:#fff;padding:9px 18px;border-radius:8px;font-size:13px;font-weight:700;border:none;cursor:pointer;font-family:inherit;box-shadow:0 2px 14px rgba(31,188,107,.4);animation:sip-pulse 2.5s infinite;margin-right:8px;" title="SIP Domy — stavba na kl&#237;č">&#127968; SIP Domy</button>
+                    <!-- ===== END SIP BUTTON ===== -->
                     <button class="theme-toggle-btn" id="themeToggle" onclick="toggleTheme()" title="Přepnout vzhled">
                         <span class="theme-icon" id="themeIcon">🌙</span>
                     </button>
@@ -679,6 +682,363 @@
             <polyline points="5 12 12 5 19 12"/>
         </svg>
     </button>
+
+    <!-- Дані товарів (редагуються через адмін) -->
+    <script src="js/products-data.js"></script>
+    <script src="js/script.js"></script>
+
+<!-- ===== SIP DOMY STYLES ===== -->
+<style>
+@keyframes sip-pulse{0%,100%{box-shadow:0 2px 14px rgba(31,188,107,.35);}50%{box-shadow:0 2px 22px rgba(31,188,107,.65);}}
+#sip-ov{display:none;position:fixed;inset:0;z-index:99999;background:#0d1f18;overflow-y:auto;font-family:'Montserrat',sans-serif;}
+#sip-ov.sip-open{display:block;}
+.sip-topnav{position:sticky;top:0;z-index:100;background:rgba(13,31,24,.98);border-bottom:1px solid rgba(255,255,255,.1);padding:0 1rem;display:flex;align-items:center;height:60px;gap:8px;overflow-x:auto;}
+.sip-bk{display:flex;align-items:center;gap:6px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.85);padding:7px 14px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap;flex-shrink:0;}
+.sip-bk:hover{background:rgba(255,255,255,.15);color:#fff;}
+.sip-logo-n{font-size:14px;font-weight:800;color:#fff;white-space:nowrap;margin:0 4px;}
+.sip-logo-n span{color:#1fbc6b;}
+.sip-tabs{display:flex;gap:2px;background:rgba(255,255,255,.05);border-radius:28px;padding:3px;overflow-x:auto;flex-shrink:1;}
+.sip-tab{padding:6px 12px;border-radius:22px;font-size:11px;font-weight:700;cursor:pointer;color:rgba(255,255,255,.5);border:none;background:none;font-family:inherit;transition:all .2s;white-space:nowrap;}
+.sip-tab:hover{color:#fff;}
+.sip-tab.sip-on{background:#1fbc6b;color:#fff;box-shadow:0 2px 10px rgba(31,188,107,.3);}
+.sip-sp{flex:1;min-width:4px;}
+.sip-cl-btn{background:rgba(231,76,60,.12);border:1px solid rgba(231,76,60,.3);color:#e74c3c;padding:7px 12px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap;flex-shrink:0;}
+.sip-pg{display:none;}
+.sip-pg.pg-on{display:block;}
+.sip-hero{background:linear-gradient(135deg,#0a1f12,#1a4a2e);padding:4rem 2rem;text-align:center;position:relative;overflow:hidden;}
+.sip-hero::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(45deg,transparent,transparent 50px,rgba(255,255,255,.015) 50px,rgba(255,255,255,.015) 51px);}
+.sip-badge{display:inline-block;background:rgba(31,188,107,.15);border:1px solid rgba(31,188,107,.3);color:#1fbc6b;font-size:10px;font-weight:700;padding:4px 16px;border-radius:20px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:1.2rem;position:relative;}
+.sip-h1{font-size:clamp(2rem,5vw,3.5rem);font-weight:800;line-height:1.1;margin-bottom:1rem;position:relative;color:#fff;}
+.sip-sub{font-size:16px;color:rgba(255,255,255,.7);max-width:560px;margin:0 auto 2rem;position:relative;}
+.sip-pills{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:2.5rem;position:relative;}
+.sip-pill{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);padding:6px 16px;border-radius:20px;font-size:12px;font-weight:500;color:#fff;}
+.sip-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;position:relative;}
+.sip-btn-p{background:#1fbc6b;color:#fff;padding:14px 30px;border-radius:10px;font-size:14px;font-weight:700;border:none;cursor:pointer;font-family:inherit;transition:all .2s;}
+.sip-btn-p:hover{background:#0d9450;transform:translateY(-2px);}
+.sip-btn-s{background:transparent;color:#fff;padding:12px 28px;border-radius:10px;font-size:14px;font-weight:600;border:2px solid rgba(255,255,255,.4);cursor:pointer;font-family:inherit;transition:all .15s;}
+.sip-btn-s:hover{border-color:#1fbc6b;color:#1fbc6b;}
+.sip-stats{display:flex;justify-content:center;flex-wrap:wrap;background:rgba(255,255,255,.03);border-top:1px solid rgba(255,255,255,.07);border-bottom:1px solid rgba(255,255,255,.07);}
+.sip-stat{flex:1;min-width:150px;text-align:center;padding:1.5rem;border-right:1px solid rgba(255,255,255,.07);}
+.sip-stat:last-child{border-right:none;}
+.sip-stat-v{font-size:2rem;font-weight:800;color:#1fbc6b;}
+.sip-stat-l{font-size:11px;color:rgba(255,255,255,.5);margin-top:4px;}
+.sip-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;max-width:1000px;margin:0 auto;padding:2.5rem 2rem;}
+.sip-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:22px;transition:all .2s;}
+.sip-card.featured{border:2px solid #1fbc6b;position:relative;}
+.sip-card-badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:#1fbc6b;color:#fff;font-size:10px;font-weight:700;padding:3px 14px;border-radius:20px;white-space:nowrap;}
+.sip-card-name{font-size:16px;font-weight:700;margin-bottom:6px;color:#fff;}
+.sip-card-price{font-size:22px;font-weight:800;color:#1fbc6b;margin:8px 0 10px;}
+.sip-card-desc{font-size:13px;color:rgba(255,255,255,.6);line-height:1.55;margin-bottom:14px;}
+.sip-card-btn{width:100%;padding:10px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .15s;border:1px solid rgba(31,188,107,.3);}
+.sip-cta-section{background:linear-gradient(135deg,#0d2e1e,#1a4a2e);padding:3rem 2rem;text-align:center;border-top:1px solid rgba(31,188,107,.2);}
+.sip-cta-section h2{font-size:1.8rem;font-weight:800;margin-bottom:.8rem;color:#fff;}
+.sip-cta-section p{color:rgba(255,255,255,.65);font-size:15px;margin-bottom:1.5rem;}
+input[type=range]{width:100%;accent-color:#1fbc6b;}
+.sip-calc-wrap{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:2rem;max-width:760px;margin:0 auto;}
+.sip-calc-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;}
+.sip-calc-res{background:#1fbc6b;border-radius:12px;padding:20px 24px;margin-top:1.5rem;color:#fff;}
+.sip-real-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:18px;max-width:1100px;margin:0 auto;padding:2rem;}
+.sip-real-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:14px;overflow:hidden;transition:all .2s;cursor:pointer;}
+.sip-real-card:hover{border-color:#1fbc6b;transform:translateY(-4px);}
+.sip-real-img{height:160px;background:linear-gradient(135deg,#0d2e1e,#1a4a2e);display:flex;align-items:center;justify-content:center;font-size:56px;}
+.sip-real-body{padding:16px;}
+.sip-real-price{font-size:18px;font-weight:800;color:#1fbc6b;}
+.sip-real-cmp{font-size:11px;color:#e74c3c;margin-top:3px;}
+.sip-faq-item{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:10px;margin-bottom:8px;overflow:hidden;}
+.sip-faq-item.faq-open{border-color:#1fbc6b;}
+.sip-faq-q{padding:16px 20px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;gap:12px;}
+.sip-faq-qt{font-size:14px;font-weight:600;color:#fff;}
+.sip-faq-ar{color:#1fbc6b;font-size:18px;flex-shrink:0;}
+.sip-faq-a{max-height:0;overflow:hidden;transition:max-height .3s;}
+.sip-faq-ai{padding:0 20px 16px;font-size:13px;color:rgba(255,255,255,.65);line-height:1.7;border-top:1px solid rgba(255,255,255,.07);}
+.sip-form-wrap input,.sip-form-wrap textarea,.sip-form-wrap select{width:100%;padding:10px 13px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:8px;color:#fff;font-size:13px;font-family:inherit;box-sizing:border-box;margin-bottom:14px;}
+.sip-form-wrap label{display:block;font-size:11px;font-weight:700;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.05em;margin-bottom:5px;}
+.sip-submit{width:100%;padding:13px;background:#1fbc6b;color:#fff;border:none;border-radius:9px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;}
+.sip-submit:hover{background:#0d9450;}
+@media(max-width:600px){.sip-calc-grid{grid-template-columns:1fr;}}
+</style>
+
+<!-- ===== SIP DOMY FULL OVERLAY ===== -->
+<div id="sip-ov">
+<div class="sip-topnav">
+  <button class="sip-bk" onclick="document.getElementById('sip-ov').classList.remove('sip-open');document.body.style.overflow=''">&#8592; Zpět na nábytek</button>
+  <span class="sip-logo-n">ARDEN <span>SIP</span> Domy</span>
+  <div class="sip-tabs">
+    <button class="sip-tab sip-on" id="stb-home" onclick="sipGo('home')">&#127968; SIP Domy</button>
+    <button class="sip-tab" id="stb-calc" onclick="sipGo('calc')">&#128200; Kalkulačka</button>
+    <button class="sip-tab" id="stb-real" onclick="sipGo('real')">&#128247; Realizace</button>
+    <button class="sip-tab" id="stb-faq" onclick="sipGo('faq')">&#10067; FAQ</button>
+    <button class="sip-tab" id="stb-model" onclick="sipGo('model')">&#127959; Modelář</button>
+    <button class="sip-tab" id="stb-cnt" onclick="sipGo('cnt')">&#128140; Kontakt</button>
+  </div>
+  <div class="sip-sp"></div>
+  <button class="sip-cl-btn" onclick="document.getElementById('sip-ov').classList.remove('sip-open');document.body.style.overflow=''">&#10005; Zavřít</button>
+</div>
+
+<!-- HOME -->
+<div class="sip-pg pg-on" id="sp-home">
+  <div class="sip-hero">
+    <div class="sip-badge">Metylovice &middot; ČR &middot; 2026</div>
+    <h1 class="sip-h1">SIP domy na klíč<br><span style="color:#1fbc6b;">o 40&nbsp;% levněji</span></h1>
+    <p class="sip-sub">CE-certifikované SIP panely z EU. Montáž českou firmou. Žádná čekací doba. Bydlíte za 10 týdnů.</p>
+    <div class="sip-pills">
+      <span class="sip-pill">&#10003; CE + ETA certifikát</span>
+      <span class="sip-pill">&#10003; Montáž 7–14 dní</span>
+      <span class="sip-pill">&#10003; Pevná cena</span>
+      <span class="sip-pill">&#10003; 3D vizualizace zdarma</span>
+    </div>
+    <div class="sip-btns">
+      <button class="sip-btn-p" onclick="sipGo('calc')">Spočítat cenu zdarma &#8594;</button>
+      <button class="sip-btn-s" onclick="sipGo('model')">&#127959; Navrhnout dům</button>
+    </div>
+  </div>
+  <div class="sip-stats">
+    <div class="sip-stat"><div class="sip-stat-v">10 týd.</div><div class="sip-stat-l">Rychlá realizace</div></div>
+    <div class="sip-stat"><div class="sip-stat-v">CE+ETA</div><div class="sip-stat-l">EU certifikáty</div></div>
+    <div class="sip-stat"><div class="sip-stat-v">50+</div><div class="sip-stat-l">Let životnosti</div></div>
+    <div class="sip-stat"><div class="sip-stat-v">5 km</div><div class="sip-stat-l">Lokální montáž</div></div>
+  </div>
+  <div style="text-align:center;padding:2.5rem 2rem 1rem;"><div style="font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#1fbc6b;margin-bottom:.5rem;">Naše nabídka</div><h2 style="font-size:2rem;font-weight:800;color:#fff;">Tři způsoby spolupráce</h2></div>
+  <div class="sip-cards">
+    <div class="sip-card"><div style="font-size:26px;margin-bottom:10px;">&#128230;</div><div class="sip-card-name">Materiál</div><div class="sip-card-price">od €280<small style="font-size:13px;font-weight:400;color:rgba(255,255,255,.6)">/m²</small></div><div class="sip-card-desc">SIP panely ECOPAN přímo na staveniště. Vy organizujete montáž.</div><button class="sip-card-btn" onclick="sipGo('calc')" style="background:rgba(31,188,107,.1);color:#1fbc6b;">Spočítat cenu</button></div>
+    <div class="sip-card featured"><div class="sip-card-badge">&#11088; Nejoblíbenější</div><div style="font-size:26px;margin-bottom:10px;">&#127968;</div><div class="sip-card-name">Materiál + montáž</div><div class="sip-card-price">od €650<small style="font-size:13px;font-weight:400;color:rgba(255,255,255,.6)">/m²</small></div><div class="sip-card-desc">Panely + montáž českou firmou. 3D vizualizace a pomoc s povolením zdarma.</div><button class="sip-card-btn" onclick="sipGo('calc')" style="background:#1fbc6b;color:#fff;">Spočítat cenu</button></div>
+    <div class="sip-card"><div style="font-size:26px;margin-bottom:10px;">&#128273;</div><div class="sip-card-name">Na klíč</div><div class="sip-card-price">od €950<small style="font-size:13px;font-weight:400;color:rgba(255,255,255,.6)">/m²</small></div><div class="sip-card-desc">Kompletní stavba od projektu po klíče. Vy si vybíráte, my se staráme o vše.</div><button class="sip-card-btn" onclick="sipGo('calc')" style="background:rgba(31,188,107,.1);color:#1fbc6b;">Spočítat cenu</button></div>
+  </div>
+  <div class="sip-cta-section"><h2>Začněte dnes — <span style="color:#1fbc6b;">bezplatná konzultace</span></h2><p>Odpovíme do 24 hodin. Pošleme nabídku a 3D vizualizaci zdarma.</p><button class="sip-btn-p" onclick="sipGo('cnt')">&#128140; Kontaktovat nás &#8594;</button></div>
+</div>
+
+<!-- KALKULAČKA -->
+<div class="sip-pg" id="sp-calc">
+  <div style="background:linear-gradient(135deg,#0a1e12,#142a1e);padding:3rem 2rem 2rem;text-align:center;border-bottom:1px solid rgba(255,255,255,.08);"><div style="font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#1fbc6b;margin-bottom:10px;">Cenová kalkulačka</div><h2 style="font-size:2rem;font-weight:800;color:#fff;margin-bottom:.7rem;">Spočítejte si cenu svého domu</h2><p style="color:rgba(255,255,255,.6);">Pohybujte posuvníky — cena se aktualizuje okamžitě.</p></div>
+  <div style="padding:2rem;"><div class="sip-calc-wrap">
+    <div class="sip-calc-grid">
+      <div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:13px;font-weight:500;color:#fff;"><span>Plocha domu</span><span style="color:#1fbc6b;font-size:18px;font-weight:700;" id="csv">100 m²</span></div>
+        <input type="range" min="40" max="250" value="100" step="5" id="crs" oninput="sipCalc()">
+        <div style="display:flex;justify-content:space-between;font-size:10px;color:rgba(255,255,255,.35);margin-top:3px;"><span>40 m²</span><span>250 m²</span></div>
+        <div style="margin-top:1.2rem;"><div style="font-size:13px;font-weight:500;color:#fff;margin-bottom:6px;">Typ izolace</div><select id="cri" onchange="sipCalc()" style="width:100%;padding:9px 12px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:8px;color:#fff;font-size:13px;font-family:inherit;"><option value="eps">EPS — expandovaný polystyren</option><option value="neopor">Neopor — grafitový EPS</option><option value="pir">PIR/PUR — polyuretan (prémiový)</option></select></div>
+        <div style="margin-top:1.2rem;"><div style="font-size:13px;font-weight:500;color:#fff;margin-bottom:8px;">Tloušťka izolace</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;"><div onclick="sipIns(100,this)" style="padding:8px 4px;border-radius:7px;text-align:center;background:rgba(255,255,255,.05);border:1.5px solid rgba(255,255,255,.1);cursor:pointer;"><div style="font-size:13px;font-weight:700;color:#fff;">100 mm</div><div style="font-size:9px;color:rgba(255,255,255,.5);">U=0,28</div></div><div onclick="sipIns(160,this)" id="sip-ins-def" style="padding:8px 4px;border-radius:7px;text-align:center;background:#1fbc6b;border:1.5px solid #1fbc6b;cursor:pointer;"><div style="font-size:13px;font-weight:700;color:#fff;">160 mm</div><div style="font-size:9px;color:rgba(255,255,255,.8);">U=0,17 ★</div></div><div onclick="sipIns(200,this)" style="padding:8px 4px;border-radius:7px;text-align:center;background:rgba(255,255,255,.05);border:1.5px solid rgba(255,255,255,.1);cursor:pointer;"><div style="font-size:13px;font-weight:700;color:#fff;">200 mm</div><div style="font-size:9px;color:rgba(255,255,255,.5);">U=0,14</div></div><div onclick="sipIns(250,this)" style="padding:8px 4px;border-radius:7px;text-align:center;background:rgba(255,255,255,.05);border:1.5px solid rgba(255,255,255,.1);cursor:pointer;"><div style="font-size:13px;font-weight:700;color:#fff;">250 mm</div><div style="font-size:9px;color:rgba(255,255,255,.5);">U=0,11 Pasiv.</div></div></div></div>
+      </div>
+      <div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:13px;font-weight:500;color:#fff;"><span>Počet podlaží</span><span style="color:#1fbc6b;font-size:18px;font-weight:700;" id="cfv">1</span></div>
+        <input type="range" min="1" max="3" value="1" step="1" id="crf" oninput="sipCalc()">
+        <div style="display:flex;justify-content:space-between;font-size:10px;color:rgba(255,255,255,.35);margin-top:3px;"><span>1</span><span>3</span></div>
+        <div style="margin-top:1.2rem;"><div style="font-size:13px;font-weight:500;color:#fff;margin-bottom:6px;">Typ střechy</div><select id="crr" onchange="sipCalc()" style="width:100%;padding:9px 12px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:8px;color:#fff;font-size:13px;font-family:inherit;"><option value="sedlo">Sedlová střecha</option><option value="ploch">Plochá střecha (&#8722;8 %)</option><option value="pult">Pultová střecha (&#8722;4 %)</option></select></div>
+        <div style="margin-top:1.2rem;"><div style="font-size:13px;font-weight:500;color:#fff;margin-bottom:6px;">Varianta stavby</div><select id="crv" onchange="sipCalc()" style="width:100%;padding:9px 12px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:8px;color:#fff;font-size:13px;font-family:inherit;"><option value="material">Pouze materiál</option><option value="montaz" selected>Materiál + montáž</option><option value="klic">Na klíč</option></select></div>
+      </div>
+    </div>
+    <div class="sip-calc-res">
+      <div style="display:grid;grid-template-columns:1fr auto;gap:4px 16px;margin-bottom:10px;font-size:12px;"><span style="opacity:.8;">SIP panely</span><span id="crmat">—</span><span style="opacity:.8;">Doprava</span><span id="crdop">—</span><span style="opacity:.8;">Montáž</span><span id="crmon">—</span></div>
+      <div style="border-top:1px solid rgba(255,255,255,.3);padding-top:10px;display:flex;justify-content:space-between;align-items:baseline;"><span style="font-size:14px;font-weight:500;">Celková cena</span><span style="font-size:26px;font-weight:800;" id="crtot">—</span></div>
+      <div style="font-size:12px;opacity:.7;text-align:right;margin-top:4px;" id="crcmp"></div>
+      <div style="font-size:13px;font-weight:700;background:rgba(0,0,0,.2);border-radius:7px;padding:5px 12px;display:inline-block;margin-top:8px;" id="crsave"></div>
+    </div>
+    <div style="text-align:center;margin-top:1rem;"><button class="sip-btn-p" onclick="sipGo('cnt')">Chci přesnou nabídku &#8594;</button></div>
+  </div></div>
+</div>
+
+<!-- REALIZACE -->
+<div class="sip-pg" id="sp-real">
+  <div style="background:linear-gradient(135deg,#0a1e12,#142a1e);padding:3rem 2rem 2rem;text-align:center;border-bottom:1px solid rgba(255,255,255,.08);"><div style="font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#1fbc6b;margin-bottom:10px;">Reference</div><h2 style="font-size:2rem;font-weight:800;color:#fff;">Naše realizace</h2><div style="display:flex;justify-content:center;flex-wrap:wrap;margin-top:1rem;"><div class="sip-stat"><div class="sip-stat-v">12</div><div class="sip-stat-l">Dokončených projektů</div></div><div class="sip-stat"><div class="sip-stat-v">€0</div><div class="sip-stat-l">Skrytých příplatků</div></div><div class="sip-stat"><div class="sip-stat-v">10 týd.</div><div class="sip-stat-l">Průměrná doba</div></div><div class="sip-stat"><div class="sip-stat-v">CE</div><div class="sip-stat-l">Certifikované panely</div></div></div></div>
+  <div class="sip-real-grid">
+    <div class="sip-real-card"><div class="sip-real-img">&#127969;</div><div class="sip-real-body"><div style="font-size:10px;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px;">&#128205; Frýdek-Místek</div><div style="font-size:15px;font-weight:700;color:#fff;margin-bottom:8px;">Rodinný bungalov Novákovi</div><div style="font-size:11px;color:#1fbc6b;margin-bottom:8px;">112 m² &middot; 5+kk &middot; 9 týdnů</div><div class="sip-real-price">1 825 000 Kč</div><div class="sip-real-cmp">&#10003; Dokončeno za 9 týdnů, pevná cena</div></div></div>
+    <div class="sip-real-card"><div class="sip-real-img">&#127960;</div><div class="sip-real-body"><div style="font-size:10px;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px;">&#128205; Ostrava</div><div style="font-size:15px;font-weight:700;color:#fff;margin-bottom:8px;">Dvoupodlažní dům Horákovi</div><div style="font-size:11px;color:#1fbc6b;margin-bottom:8px;">148 m² &middot; 5+kk &middot; 11 týdnů</div><div class="sip-real-price">2 400 000 Kč</div><div class="sip-real-cmp">&#10003; Dokončeno za 11 týdnů, pevná cena</div></div></div>
+    <div class="sip-real-card"><div class="sip-real-img">&#127807;</div><div class="sip-real-body"><div style="font-size:10px;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px;">&#128205; Beskydy</div><div style="font-size:15px;font-weight:700;color:#fff;margin-bottom:8px;">Rekreační chata Beskydy</div><div style="font-size:11px;color:#1fbc6b;margin-bottom:8px;">68 m² &middot; 3+kk &middot; 7 týdnů</div><div class="sip-real-price">1 100 000 Kč</div><div class="sip-real-cmp">&#10003; Dokončeno za 7 týdnů, pevná cena</div></div></div>
+    <div class="sip-real-card"><div class="sip-real-img">&#128230;</div><div class="sip-real-body"><div style="font-size:10px;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px;">&#128205; Metylovice</div><div style="font-size:15px;font-weight:700;color:#fff;margin-bottom:8px;">Modulární dům 2+kk</div><div style="font-size:11px;color:#1fbc6b;margin-bottom:8px;">48 m² &middot; 2+kk &middot; 6 týdnů</div><div class="sip-real-price">775 000 Kč</div><div class="sip-real-cmp">&#10003; Dokončeno za 6 týdnů, pevná cena</div></div></div>
+    <div class="sip-real-card"><div class="sip-real-img">&#127968;</div><div class="sip-real-body"><div style="font-size:10px;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px;">&#128205; Třinec</div><div style="font-size:15px;font-weight:700;color:#fff;margin-bottom:8px;">Bungalov Svobodovi 90 m²</div><div style="font-size:11px;color:#1fbc6b;margin-bottom:8px;">90 m² &middot; 4+kk &middot; 8 týdnů</div><div class="sip-real-price">1 450 000 Kč</div><div class="sip-real-cmp">&#10003; Dokončeno za 8 týdnů, pevná cena</div></div></div>
+    <div class="sip-real-card"><div class="sip-real-img">&#127970;</div><div class="sip-real-body"><div style="font-size:10px;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px;">&#128205; Brno-venkov</div><div style="font-size:15px;font-weight:700;color:#fff;margin-bottom:8px;">Vila Procházkovi 200 m²</div><div style="font-size:11px;color:#1fbc6b;margin-bottom:8px;">200 m² &middot; 6+kk &middot; 13 týdnů</div><div class="sip-real-price">4 750 000 Kč</div><div class="sip-real-cmp">&#10003; Dokončeno za 13 týdnů, pevná cena</div></div></div>
+  </div>
+  <div style="text-align:center;padding:1rem 2rem 3rem;"><button class="sip-btn-p" onclick="sipGo('cnt')">Chci podobný dům &#8594;</button></div>
+</div>
+
+<!-- FAQ -->
+<div class="sip-pg" id="sp-faq">
+  <div style="background:linear-gradient(135deg,#0a1e12,#142a1e);padding:3rem 2rem 2rem;text-align:center;border-bottom:1px solid rgba(255,255,255,.08);"><div style="font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#1fbc6b;margin-bottom:10px;">Časté dotazy</div><h2 style="font-size:2rem;font-weight:800;color:#fff;">Máte otázky?</h2></div>
+  <div style="max-width:780px;margin:2rem auto;padding:0 2rem;">
+    <div class="sip-faq-item" id="fq0"><div class="sip-faq-q" onclick="sipFaq(0)"><span class="sip-faq-qt">Jak dosahujete příznivé ceny při zachování kvality?</span><span class="sip-faq-ar">&#9662;</span></div><div class="sip-faq-a" id="fa0"><div class="sip-faq-ai">Nakupujeme panely přímo od EU výrobce ECOPAN bez zbytečných mezčlánků a montáž zajišťujeme lokální českou firmou. Výsledkem je atraktivní cena při zachování vysoké kvality a EU certifikací.</div></div></div>
+    <div class="sip-faq-item" id="fq1"><div class="sip-faq-q" onclick="sipFaq(1)"><span class="sip-faq-qt">Jsou panely certifikovány pro použití v ČR?</span><span class="sip-faq-ar">&#9662;</span></div><div class="sip-faq-a" id="fa1"><div class="sip-faq-ai">Panely ECOPAN mají ETA 23/0526, CE certifikát a ISO 9001 — plně v souladu s europáskmi normami. V ČR není žádný problém s povolováním ani financováním.</div></div></div>
+    <div class="sip-faq-item" id="fq2"><div class="sip-faq-q" onclick="sipFaq(2)"><span class="sip-faq-qt">Může mi banka odmítnout hypotéku na SIP dům?</span><span class="sip-faq-ar">&#9662;</span></div><div class="sip-faq-a" id="fa2"><div class="sip-faq-ai">Ne. Banky v ČR financují SIP domy standardně. Podmínkou je platné stavební povolení a CE certifikát panelů — to vše máme.</div></div></div>
+    <div class="sip-faq-item" id="fq3"><div class="sip-faq-q" onclick="sipFaq(3)"><span class="sip-faq-qt">Jak dlouho trvá celá stavba od podpisu smlouvy?</span><span class="sip-faq-ar">&#9662;</span></div><div class="sip-faq-a" id="fa3"><div class="sip-faq-ai">1–2 týdny: projekt a smlouva. 30–45 dní: výroba panelů v ECOPAN. 2–3 dny: doprava TIR. 7–14 dní: montáž. Celkem přibližně 8–11 týdnů od podpisu.</div></div></div>
+    <div class="sip-faq-item" id="fq4"><div class="sip-faq-q" onclick="sipFaq(4)"><span class="sip-faq-qt">Vztahuje se na SIP dům dotace Nová zelená úsporám?</span><span class="sip-faq-ar">&#9662;</span></div><div class="sip-faq-a" id="fa4"><div class="sip-faq-ai">Ano! SIP domy s izolací 160 mm (U ≤ 0,17) splňují podmínky NZÚ. Dotace může pokrýt 10–40 % nákladů na stavbu.</div></div></div>
+    <div style="text-align:center;margin-top:2rem;"><button class="sip-btn-p" onclick="sipGo('cnt')">Napište nám &#8594;</button></div>
+  </div>
+</div>
+
+<!-- MODELÁŘ -->
+<div class="sip-pg" id="sp-model" style="height:calc(100vh - 60px);">
+  <div style="display:flex;height:100%;overflow:hidden;">
+    <div style="width:190px;flex-shrink:0;background:#0a1710;border-right:1px solid rgba(255,255,255,.1);overflow-y:auto;padding:10px;">
+      <div style="font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:8px;">Přidat místnost</div>
+      <div onclick="sipMAdd('Obývací pokoj','#3b82f6',6,4)" style="display:flex;align-items:center;gap:7px;padding:7px 8px;border-radius:7px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);cursor:pointer;margin-bottom:4px;" onmouseover="this.style.borderColor='#1fbc6b'" onmouseout="this.style.borderColor='rgba(255,255,255,.08)'"><div style="width:8px;height:8px;border-radius:2px;background:#3b82f6;flex-shrink:0;"></div><span style="font-size:11px;font-weight:600;color:#fff;">Obývací pokoj</span><span style="font-size:9px;color:rgba(255,255,255,.35);margin-left:auto;">6×4</span></div>
+      <div onclick="sipMAdd('Kuchyň','#f5a623',3,4)" style="display:flex;align-items:center;gap:7px;padding:7px 8px;border-radius:7px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);cursor:pointer;margin-bottom:4px;" onmouseover="this.style.borderColor='#1fbc6b'" onmouseout="this.style.borderColor='rgba(255,255,255,.08)'"><div style="width:8px;height:8px;border-radius:2px;background:#f5a623;flex-shrink:0;"></div><span style="font-size:11px;font-weight:600;color:#fff;">Kuchyň</span><span style="font-size:9px;color:rgba(255,255,255,.35);margin-left:auto;">3×4</span></div>
+      <div onclick="sipMAdd('Ložnice','#a855f7',4,4)" style="display:flex;align-items:center;gap:7px;padding:7px 8px;border-radius:7px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);cursor:pointer;margin-bottom:4px;" onmouseover="this.style.borderColor='#1fbc6b'" onmouseout="this.style.borderColor='rgba(255,255,255,.08)'"><div style="width:8px;height:8px;border-radius:2px;background:#a855f7;flex-shrink:0;"></div><span style="font-size:11px;font-weight:600;color:#fff;">Ložnice</span><span style="font-size:9px;color:rgba(255,255,255,.35);margin-left:auto;">4×4</span></div>
+      <div onclick="sipMAdd('Dětský pokoj','#06b6d4',3,3)" style="display:flex;align-items:center;gap:7px;padding:7px 8px;border-radius:7px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);cursor:pointer;margin-bottom:4px;" onmouseover="this.style.borderColor='#1fbc6b'" onmouseout="this.style.borderColor='rgba(255,255,255,.08)'"><div style="width:8px;height:8px;border-radius:2px;background:#06b6d4;flex-shrink:0;"></div><span style="font-size:11px;font-weight:600;color:#fff;">Dětský pokoj</span><span style="font-size:9px;color:rgba(255,255,255,.35);margin-left:auto;">3×3</span></div>
+      <div onclick="sipMAdd('Koupelna','#1fbc6b',2.5,2)" style="display:flex;align-items:center;gap:7px;padding:7px 8px;border-radius:7px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);cursor:pointer;margin-bottom:4px;" onmouseover="this.style.borderColor='#1fbc6b'" onmouseout="this.style.borderColor='rgba(255,255,255,.08)'"><div style="width:8px;height:8px;border-radius:2px;background:#1fbc6b;flex-shrink:0;"></div><span style="font-size:11px;font-weight:600;color:#fff;">Koupelna</span><span style="font-size:9px;color:rgba(255,255,255,.35);margin-left:auto;">2.5×2</span></div>
+      <div onclick="sipMAdd('Zádveří','#9ca3af',2,2)" style="display:flex;align-items:center;gap:7px;padding:7px 8px;border-radius:7px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);cursor:pointer;margin-bottom:4px;" onmouseover="this.style.borderColor='#1fbc6b'" onmouseout="this.style.borderColor='rgba(255,255,255,.08)'"><div style="width:8px;height:8px;border-radius:2px;background:#9ca3af;flex-shrink:0;"></div><span style="font-size:11px;font-weight:600;color:#fff;">Zádveří</span><span style="font-size:9px;color:rgba(255,255,255,.35);margin-left:auto;">2×2</span></div>
+      <div onclick="sipMAdd('Garáž','#6b7280',6,3)" style="display:flex;align-items:center;gap:7px;padding:7px 8px;border-radius:7px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);cursor:pointer;margin-bottom:4px;" onmouseover="this.style.borderColor='#1fbc6b'" onmouseout="this.style.borderColor='rgba(255,255,255,.08)'"><div style="width:8px;height:8px;border-radius:2px;background:#6b7280;flex-shrink:0;"></div><span style="font-size:11px;font-weight:600;color:#fff;">Garáž</span><span style="font-size:9px;color:rgba(255,255,255,.35);margin-left:auto;">6×3</span></div>
+      <button onclick="if(confirm('Vymazat plán?')){sipMRooms=[];sipMDraw();sipMCalc();}" style="width:100%;margin-top:8px;padding:7px;background:rgba(231,76,60,.1);border:1px solid rgba(231,76,60,.3);color:#e74c3c;border-radius:7px;font-size:11px;font-weight:600;cursor:pointer;font-family:inherit;">&#128465; Vymazat vše</button>
+    </div>
+    <div style="flex:1;position:relative;background:#142a1e;" id="sipCW">
+      <canvas id="sipC" style="display:block;cursor:crosshair;"></canvas>
+      <div id="sipCH" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;opacity:.4;pointer-events:none;"><div style="font-size:36px;">&#9999;&#65039;</div><p style="font-size:13px;font-weight:500;color:#fff;">Klikněte na místnost vlevo<br>a umístěte ji na plán</p></div>
+      <div style="position:absolute;bottom:12px;right:12px;display:flex;flex-direction:column;gap:4px;">
+        <button onclick="sipMZoom(1.12)" style="width:30px;height:30px;background:rgba(0,0,0,.5);border:1px solid rgba(255,255,255,.15);border-radius:6px;color:#fff;font-size:16px;cursor:pointer;">+</button>
+        <button onclick="sipMZoom(.9)" style="width:30px;height:30px;background:rgba(0,0,0,.5);border:1px solid rgba(255,255,255,.15);border-radius:6px;color:#fff;font-size:16px;cursor:pointer;">&#8722;</button>
+        <button onclick="sipMZoom(0)" style="width:30px;height:30px;background:rgba(0,0,0,.5);border:1px solid rgba(255,255,255,.15);border-radius:6px;color:#fff;font-size:13px;cursor:pointer;">&#8859;</button>
+      </div>
+    </div>
+    <div style="width:210px;flex-shrink:0;background:#0a1710;border-left:1px solid rgba(255,255,255,.1);overflow-y:auto;">
+      <div style="padding:10px 12px;border-bottom:1px solid rgba(255,255,255,.1);background:linear-gradient(135deg,#0d2e1e,#1a4a2e);"><div style="font-size:12px;font-weight:700;color:#1fbc6b;">&#128200; Kalkulace</div><div style="font-size:10px;color:rgba(255,255,255,.4);">Aktualizuje se živě</div></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:5px;padding:8px;"><div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:7px;padding:8px;text-align:center;"><div style="font-size:13px;font-weight:700;color:#1fbc6b;" id="mma">0 m²</div><div style="font-size:9px;color:rgba(255,255,255,.4);">Plocha</div></div><div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:7px;padding:8px;text-align:center;"><div style="font-size:13px;font-weight:700;color:#1fbc6b;" id="mmr">0</div><div style="font-size:9px;color:rgba(255,255,255,.4);">Místností</div></div></div>
+      <div style="padding:0 10px 10px;font-size:11px;"><div style="display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px solid rgba(255,255,255,.06);color:rgba(255,255,255,.6);"><span>SIP panely</span><span id="mmm">—</span></div><div style="display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px solid rgba(255,255,255,.06);color:rgba(255,255,255,.6);"><span>Doprava</span><span id="mmd">—</span></div><div style="display:flex;justify-content:space-between;padding:3px 0;color:rgba(255,255,255,.6);"><span>Montáž</span><span id="mmn">—</span></div></div>
+      <div style="background:#1fbc6b;margin:0 10px 10px;border-radius:9px;padding:12px;text-align:center;color:#fff;"><div style="font-size:10px;opacity:.8;margin-bottom:3px;">Celková cena</div><div style="font-size:20px;font-weight:800;" id="mmt">—</div><div style="font-size:10px;opacity:.7;margin-top:3px;" id="mms"></div></div>
+      <div style="padding:0 10px 10px;font-size:10px;color:rgba(255,255,255,.5);"><div style="font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:5px;">Místnosti</div><div id="mmlist">Zatím prázdné</div></div>
+      <div style="padding:0 10px 12px;"><button onclick="sipGo('cnt')" style="width:100%;padding:9px;background:#1fbc6b;color:#fff;border:none;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;">Chci nabídku &#8594;</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- KONTAKT -->
+<div class="sip-pg" id="sp-cnt">
+  <div style="background:linear-gradient(135deg,#0a1e12,#142a1e);padding:3rem 2rem 2rem;text-align:center;border-bottom:1px solid rgba(255,255,255,.08);"><div style="font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#1fbc6b;margin-bottom:10px;">Odpovíme do 24 hodin</div><h2 style="font-size:2rem;font-weight:800;color:#fff;">Napište nám</h2></div>
+  <div style="max-width:680px;margin:2.5rem auto;padding:0 2rem;">
+    <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:2rem;" class="sip-form-wrap">
+      <h3 style="font-size:18px;font-weight:700;color:#fff;margin-bottom:18px;">Nezávazná poptávka</h3>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;"><div><label>Jméno</label><input type="text" placeholder="Jan Novák"></div><div><label>Telefon</label><input type="tel" placeholder="+420 XXX XXX XXX"></div></div>
+      <label>E-mail</label><input type="email" placeholder="jan@novak.cz">
+      <label>Zájem o</label><select><option>Materiál + montáž</option><option>Pouze materiál</option><option>Na klíč</option><option>Konzultace</option></select>
+      <label>Popis projektu</label><textarea placeholder="Plocha domu, počet pokojů, lokalita, termín..."></textarea>
+      <button class="sip-submit" onclick="alert('Poptávka odeslána! Ozveme se do 24 hodin.')">&#128140; Odeslat poptávku &#8594;</button>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:16px;"><div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:18px;"><div style="font-size:12px;font-weight:700;color:#1fbc6b;margin-bottom:10px;">Kontaktní údaje</div><div style="font-size:13px;color:rgba(255,255,255,.7);line-height:1.8;">&#128205; Metylovice 153, PSČ 739 49<br>&#128222; +420 777 987 752<br>&#9993;&#65039; ikardengroup@gmail.com</div></div><div style="background:linear-gradient(135deg,#0d2e1e,#1a4a2e);border:1px solid rgba(31,188,107,.3);border-radius:12px;padding:18px;"><div style="font-size:12px;font-weight:700;color:#1fbc6b;margin-bottom:8px;">3D vizualizace zdarma</div><div style="font-size:12px;color:rgba(255,255,255,.65);line-height:1.55;">Pošlete rozměry — do 48 hodin dostanete 3D vizualizaci bez závazků.</div></div></div>
+  </div>
+</div>
+</div>
+<!-- ===== END SIP DOMY OVERLAY ===== -->
+
+<!-- ===== SIP DOMY SCRIPTS ===== -->
+<script>
+var sipInsV=160;
+function sipGo(p){
+  document.querySelectorAll('.sip-pg').forEach(function(e){e.classList.remove('pg-on');if(e.id==='sp-model')e.style.display='none';});
+  document.querySelectorAll('.sip-tab').forEach(function(e){e.classList.remove('sip-on');});
+  var pg=document.getElementById('sp-'+p);
+  if(p==='model'){pg.style.display='block';setTimeout(function(){sipMInit();sipMCalc();},100);}
+  else if(pg){pg.classList.add('pg-on');}
+  var tb=document.getElementById('stb-'+p);if(tb)tb.classList.add('sip-on');
+  document.getElementById('sip-ov').scrollTo(0,0);
+  if(p==='calc')sipCalc();
+}
+function sipFaq(i){
+  var a=document.getElementById('fa'+i),q=document.getElementById('fq'+i);
+  if(a.style.maxHeight&&a.style.maxHeight!=='0px'){a.style.maxHeight='0';q.classList.remove('faq-open');}
+  else{a.style.maxHeight=a.scrollHeight+40+'px';q.classList.add('faq-open');}
+}
+function sipIns(v,el){
+  sipInsV=v;
+  el.parentElement.querySelectorAll('div').forEach(function(d){d.style.background='rgba(255,255,255,.05)';d.style.border='1.5px solid rgba(255,255,255,.1)';});
+  el.style.background='#1fbc6b';el.style.border='1.5px solid #1fbc6b';
+  sipCalc();
+}
+function sipFmt(n){return Math.round(n).toLocaleString('cs-CZ')+' K\u010d';}
+function sipFmtE(n){return '\u20ac\u00a0'+Math.round(n).toLocaleString('cs-CZ');}
+function sipCalc(){
+  var g=function(id){return document.getElementById(id);};
+  var sz=+(g('crs')||{value:100}).value;
+  var fl=+(g('crf')||{value:1}).value;
+  var ins=g('cri');var roof=g('crr');var vari=g('crv');
+  var sv=g('csv');if(sv)sv.textContent=sz+' m\u00b2';
+  var fv=g('cfv');if(fv)fv.textContent=fl;
+  var im={100:.88,160:1,200:1.12,250:1.28};
+  var tm={eps:1,neopor:1.08,pir:1.18};
+  var rm={sedlo:1,ploch:.92,pult:.96};
+  var fm=[1,1,1.15,1.28];
+  var matM2=280*(im[sipInsV]||1)*(tm[ins?ins.value:'eps']||1)*(rm[roof?roof.value:'sedlo']||1)*(fm[fl]||1);
+  var matE=matM2*sz;var dopE=sz<=80?1200:sz<=150?1500:1800;var monE=sz*120;var klicE=sz*180+8000;
+  var C=25;var tot=matE+dopE;
+  if(vari&&vari.value==='montaz')tot+=monE;
+  if(vari&&vari.value==='klic')tot+=monE+klicE;
+  var rdKc=sz*1200*C;var save=rdKc-tot*C;var pct=Math.round(save/rdKc*100);
+  var s=function(id,v){var e=g(id);if(e)e.textContent=v;};
+  s('crmat',sipFmtE(matE));s('crdop',sipFmtE(dopE));
+  s('crmon',vari&&vari.value==='material'?'nezahrnuta':sipFmtE(monE));
+  s('crtot',sipFmt(tot*C));s('crcmp','');
+  s('crsave','');
+}
+var sipMRooms=[],sipMSc=32,sipMOX=50,sipMOY=50,sipMDr=null,sipMDX=0,sipMDY=0,sipMPend=null;
+var sipMCvs,sipMCtx,sipMCW,sipMCH;
+function sipMInit(){
+  sipMCvs=document.getElementById('sipC');
+  if(!sipMCvs||sipMCvs._init)return;
+  sipMCvs._init=true;
+  sipMCtx=sipMCvs.getContext('2d');
+  sipMResize();
+  sipMCvs.addEventListener('mousedown',sipMMD);
+  sipMCvs.addEventListener('mousemove',sipMMV);
+  sipMCvs.addEventListener('mouseup',function(){sipMDr=null;});
+  sipMCvs.addEventListener('wheel',function(e){e.preventDefault();var f=e.deltaY<0?1.1:.91;sipMOX=sipMCW/2+(sipMOX-sipMCW/2)*f;sipMOY=sipMCH/2+(sipMOY-sipMCH/2)*f;sipMSc=Math.max(16,Math.min(100,sipMSc*f));sipMDraw();},{passive:false});
+}
+function sipMResize(){
+  var w=document.getElementById('sipCW');
+  if(!w||!sipMCvs)return;
+  sipMCW=sipMCvs.width=w.clientWidth;sipMCH=sipMCvs.height=w.clientHeight;sipMDraw();
+}
+function sipMDraw(){
+  if(!sipMCtx)return;
+  sipMCtx.clearRect(0,0,sipMCW,sipMCH);
+  sipMCtx.strokeStyle='rgba(255,255,255,.06)';sipMCtx.lineWidth=1;
+  for(var x=sipMOX%sipMSc;x<sipMCW;x+=sipMSc){sipMCtx.beginPath();sipMCtx.moveTo(x,0);sipMCtx.lineTo(x,sipMCH);sipMCtx.stroke();}
+  for(var y=sipMOY%sipMSc;y<sipMCH;y+=sipMSc){sipMCtx.beginPath();sipMCtx.moveTo(0,y);sipMCtx.lineTo(sipMCW,y);sipMCtx.stroke();}
+  sipMCtx.strokeStyle='rgba(31,188,107,.3)';sipMCtx.lineWidth=1.5;
+  sipMCtx.beginPath();sipMCtx.moveTo(sipMOX,0);sipMCtx.lineTo(sipMOX,sipMCH);sipMCtx.stroke();
+  sipMCtx.beginPath();sipMCtx.moveTo(0,sipMOY);sipMCtx.lineTo(sipMCW,sipMOY);sipMCtx.stroke();
+  sipMRooms.forEach(function(r){
+    var px=sipMOX+r.x*sipMSc,py=sipMOY+r.y*sipMSc,pw=r.w*sipMSc,ph=r.h*sipMSc;
+    sipMCtx.globalAlpha=.22;sipMCtx.fillStyle=r.c;sipMCtx.fillRect(px,py,pw,ph);
+    sipMCtx.globalAlpha=1;sipMCtx.strokeStyle=r.c;sipMCtx.lineWidth=2;sipMCtx.strokeRect(px+1,py+1,pw-2,ph-2);
+    sipMCtx.fillStyle='#fff';sipMCtx.textAlign='center';sipMCtx.textBaseline='middle';
+    sipMCtx.font='bold '+(Math.max(9,Math.min(12,pw/r.n.length*1.3)))+'px sans-serif';
+    sipMCtx.fillText(r.n,px+pw/2,py+ph/2-7);
+    sipMCtx.fillStyle=r.c;sipMCtx.font='10px sans-serif';
+    sipMCtx.fillText(r.w+'\u00d7'+r.h+' m',px+pw/2,py+ph/2+7);
+  });
+  sipMCtx.textAlign='left';
+  var h=document.getElementById('sipCH');if(h)h.style.display=sipMRooms.length?'none':'';
+}
+function sipMSnap(v){return Math.round(v*2)/2;}
+function sipMAdd(n,c,w,h){sipMPend={n:n,c:c,w:w,h:h};if(sipMCvs)sipMCvs.style.cursor='crosshair';}
+function sipMMD(e){
+  var wx=(e.offsetX-sipMOX)/sipMSc,wy=(e.offsetY-sipMOY)/sipMSc;
+  if(sipMPend){sipMRooms.push({id:Date.now(),n:sipMPend.n,c:sipMPend.c,x:sipMSnap(wx),y:sipMSnap(wy),w:sipMPend.w,h:sipMPend.h});sipMPend=null;sipMCvs.style.cursor='crosshair';sipMDraw();sipMCalc();return;}
+  var hit=sipMRooms.slice().reverse().find(function(r){return wx>=r.x&&wx<=r.x+r.w&&wy>=r.y&&wy<=r.y+r.h;});
+  if(hit){sipMDr=hit;sipMDX=wx-hit.x;sipMDY=wy-hit.y;}
+}
+function sipMMV(e){
+  if(!sipMDr)return;
+  var wx=(e.offsetX-sipMOX)/sipMSc,wy=(e.offsetY-sipMOY)/sipMSc;
+  sipMDr.x=sipMSnap(wx-sipMDX);sipMDr.y=sipMSnap(wy-sipMDY);sipMDraw();sipMCalc();
+}
+function sipMZoom(f){
+  if(f===0){sipMSc=32;sipMOX=50;sipMOY=50;}
+  else{sipMOX=sipMCW/2+(sipMOX-sipMCW/2)*f;sipMOY=sipMCH/2+(sipMOY-sipMCH/2)*f;sipMSc=Math.max(16,Math.min(100,sipMSc*f));}
+  sipMDraw();
+}
+function sipMCalc(){
+  var tot=sipMRooms.reduce(function(s,r){return s+r.w*r.h;},0);
+  var matE=280*tot;var dopE=tot<=80?1200:tot<=150?1500:1800;var monE=tot*120;var C=25;
+  var totE=matE+dopE+monE;var rdKc=tot*1200*C;var save=rdKc-totE*C;var pct=Math.round(save/rdKc*100);
+  var g=function(id){return document.getElementById(id)||{textContent:''};};  
+  g('mma').textContent=tot.toFixed(1)+' m\u00b2';g('mmr').textContent=sipMRooms.length;
+  g('mmm').textContent=tot>0?sipFmtE(matE):'\u2014';g('mmd').textContent=tot>0?sipFmtE(dopE):'\u2014';
+  g('mmn').textContent=tot>0?sipFmtE(monE):'\u2014';g('mmt').textContent=tot>0?sipFmt(totE*C):'\u2014';
+  g('mms').textContent=tot>0?'vs RD: -'+sipFmt(save)+' (-'+pct+'%)':'';
+  if(sipMRooms.length){g('mmlist').innerHTML=sipMRooms.map(function(r){return '<div style="display:flex;align-items:center;gap:5px;padding:3px 0;border-bottom:1px solid rgba(255,255,255,.05);"><div style="width:7px;height:7px;border-radius:2px;background:'+r.c+'"></div><span style="flex:1;font-size:10px;color:rgba(255,255,255,.65)">'+r.n+'</span><span style="font-size:10px;color:#1fbc6b">'+(r.w*r.h).toFixed(1)+' m\u00b2</span></div>';}).join('');}
+  else g('mmlist').textContent='Zatím pr\u00e1zdn\u00e9';
+}
+window.addEventListener('resize',sipMResize);
+document.addEventListener('DOMContentLoaded',sipCalc);
+</script>
+<!-- ===== END SIP DOMY SCRIPTS ===== -->
 
     <!-- Дані товарів (редагуються через адмін) -->
     <script src="js/products-data.js"></script>

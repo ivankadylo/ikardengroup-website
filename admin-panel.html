@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IKarden Admin</title>
+    <style>
+        :root {
+            --bg: #0f0f0f;
+            --bg2: #1a1a1a;
+            --bg3: #2a2a2a;
+            --border: #3a3a3a;
+            --green: #4ade80;
+            --green2: #22c55e;
+            --amber: #f59e0b;
+            --red: #ef4444;
+            --text: #ffffff;
+            --muted: #888888;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { background: var(--bg); color: var(--text); font-family: Arial, sans-serif; min-height: 100vh; }
+
+        /* ── LOGIN ── */
+        .login-overlay {
+            position: fixed; inset: 0;
+            background: rgba(0,0,0,.97);
+            display: flex; align-items: center; justify-content: center;
+            z-index: 9999;
+        }
+        .login-box {
+            background: var(--bg3); padding: 40px; border-radius: 16px;
+            width: 380px; box-shadow: 0 20px 60px rgba(0,0,0,.6);
+        }
+        .login-box h2 { color: var(--amber); text-align: center; margin-bottom: 8px; font-size: 26px; }
+        .login-box p  { color: var(--muted); text-align: center; margin-bottom: 28px; font-size: 14px; }
+        .login-input {
+            width: 100%; padding: 14px; background: var(--bg2);
+            border: 2px solid var(--border); border-radius: 8px;
+            color: var(--text); font-size: 16px; margin-bottom: 16px;
+            transition: border-color .2s;
+        }
+        .login-input:focus { outline: none; border-color: var(--green); }
+        .login-btn {
+            width: 100%; padding: 14px; background: var(--green); color: #000;
+            border: none; border-radius: 8px; font-size: 16px; font-weight: 700;
+            cursor: pointer; transition: all .2s;
+        }
+        .login-btn:hover { background: var(--green2); transform: translateY(-2px); }
+        .login-error {
+            background: var(--red); color: #fff; padding: 10px; border-radius: 6px;
+            margin-bottom: 14px; text-align: center; display: none; font-size: 14px;
+        }
+        .login-error.show { display: block; }
+
+        /* ── LAYOUT ── */
+        .admin-wrap { display: none; flex-direction: column; height: 100vh; }
+        .admin-header {
+            background: var(--bg2); border-bottom: 1px solid var(--border);
+            padding: 14px 24px; display: flex; align-items: center; justify-content: space-between;
+            flex-shrink: 0;
+        }
+        .admin-header .logo { color: var(--amber); font-size: 22px; font-weight: 700; }
+        .header-actions { display: flex; gap: 10px; align-items: center; }
+        .header-btn {
+            padding: 8px 18px; border-radius: 6px; border: none; cursor: pointer;
+            font-size: 14px; font-weight: 600; transition: all .2s;
+        }
+        .btn-green  { background: var(--green); color: #000; }
+        .btn-green:hover  { background: var(--green2); }
+        .btn-amber  { background: var(--amber); color: #000; }
+        .btn-amber:hover  { background: #d97706; }
+        .btn-gray   { background: var(--bg3); color: var(--text); }
+        .btn-gray:hover   { background: var(--border); }
+        .btn-red    { background: var(--red); color: #fff; }
+        .btn-red:hover    { background: #dc2626; }
+
+        .admin-body { display: flex; flex: 1; overflow: hidden; }
+
+        /* ── SIDEBAR ── */
+        .sidebar {
+            width: 300px; background: var(--bg2);
+            border-right: 1px solid var(--border);
+            display: flex; flex-direction: column; flex-shrink: 0;
+        }
+        .sidebar-header {
+            padding: 16px; border-bottom: 1px solid var(--border);
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        .sidebar-header h3 { color: var(--green); font-size: 18px; }
+        .btn-add {
+            background: var(--green); color: #000; border: none;
+            width: 34px; height: 34px; border-radius: 8px; font-size: 20px;
+            cursor: pointer; transition: all .2s; display: flex; align-items: center; justify-content: center;
+        }
+        .btn-add:hover { background: var(--green2); transform: scale(1.1); }
+        .products-list { flex: 1; overflow-y: auto; padding: 10px; }
+        .product-item {
+            padding: 12px 14px; background: var(--bg);
+            border: 2px solid transparent; border-radius: 8px;
+            cursor: pointer; margin-bottom: 8px; transition: all .2s;
+            position: relative;
+        }
+        .product-item:hover { background: var(--bg3); border-color: var(--border); }
+        .product-item.active { border-color: var(--amber); background: var(--bg3); }
+        .product-item .p-name { font-size: 15px; font-weight: 600; margin-bottom: 4px; }
+        .product-item .p-price { font-size: 13px; color: var(--green); }
+        .product-item .p-delete {
+            position: absolute; top: 8px; right: 8px;
+            background: var(--red); color: #fff; border: none;
+            width: 24px; height: 24px; border-radius: 50%;
+            font-size: 14px; cursor: pointer; display: none;
+            align-items: center; justify-content: center;
+        }
+        .product-item:hover .p-delete { display: flex; }
+
+        /* ── EDITOR ── */
+        .editor { flex: 1; overflow-y: auto; padding: 30px; }
+        .editor-placeholder {
+            display: flex; flex-direction: column; align-items: center;
+            justify-content: center; height: 100%; color: var(--muted); font-size: 18px; gap: 10px;
+        }
+        .editor-grid { display: grid; grid-template-columns: 1fr 380px; gap: 30px; }
+        .editor-form h2 { color: var(--amber); margin-bottom: 24px; font-size: 22px; }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; color: #ccc; font-size: 14px; font-weight: 600; margin-bottom: 8px; }
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%; padding: 11px 14px; background: var(--bg);
+            border: 2px solid var(--border); border-radius: 8px;
+            color: var(--text); font-size: 15px; transition: border-color .2s;
+        }
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus { outline: none; border-color: var(--green); }
+        .form-group textarea { min-height: 90px; resize: vertical; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        .checkbox-row { display: flex; align-items: center; gap: 10px; margin: 10px 0; }
+        .checkbox-row input { width: 18px; height: 18px; cursor: pointer; }
+
+        /* Media */
+        .media-section h3 { color: var(--green); margin: 24px 0 14px; font-size: 17px; }
+        .upload-zone {
+            border: 2px dashed var(--border); border-radius: 10px;
+            padding: 30px; text-align: center; cursor: pointer; transition: all .2s;
+        }
+        .upload-zone:hover { border-color: var(--green); background: rgba(74,222,128,.04); }
+        .upload-zone.dragover { border-color: var(--amber); background: rgba(245,158,11,.06); }
+        .upload-icon { font-size: 40px; margin-bottom: 8px; }
+        .upload-text { color: var(--muted); font-size: 14px; }
+        .media-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(130px,1fr));
+            gap: 12px; margin-top: 14px;
+        }
+        .media-thumb {
+            position: relative; border-radius: 8px; overflow: hidden;
+            border: 2px solid var(--border); aspect-ratio: 1; cursor: move;
+            transition: all .2s;
+        }
+        .media-thumb:hover { border-color: var(--green); transform: translateY(-3px); }
+        .media-thumb.dragging { opacity: .4; }
+        .media-thumb img, .media-thumb video { width: 100%; height: 100%; object-fit: cover; }
+        .media-thumb .del-btn {
+            position: absolute; top: 5px; right: 5px;
+            background: rgba(0,0,0,.75); color: #fff; border: none;
+            width: 26px; height: 26px; border-radius: 50%; font-size: 14px;
+            cursor: pointer; display: flex; align-items: center; justify-content: center;
+            opacity: 0; transition: opacity .2s;
+        }
+        .media-thumb:hover .del-btn { opacity: 1; }
+        .media-thumb .order-badge {
+            position: absolute; bottom: 4px; left: 4px;
+            background: rgba(0,0,0,.7); color: #fff;
+            padding: 2px 6px; border-radius: 4px; font-size: 11px;
+        }
+
+        /* Action buttons */
+        .action-row {
+            display: flex; gap: 14px; margin-top: 30px;
+            padding-top: 24px; border-top: 1px solid var(--border);
+        }
+        .action-row .btn-save { flex: 1; padding: 14px; font-size: 16px; font-weight: 700; border: none; border-radius: 8px; cursor: pointer; background: var(--green); color: #000; transition: all .2s; }
+        .action-row .btn-save:hover { background: var(--green2); transform: translateY(-2px); }
+        .action-row .btn-del { padding: 14px 24px; font-size: 16px; font-weight: 700; border: none; border-radius: 8px; cursor: pointer; background: var(--red); color: #fff; transition: all .2s; }
+        .action-row .btn-del:hover { background: #dc2626; }
+
+        /* Preview */
+        .preview-panel { position: sticky; top: 0; }
+        .preview-panel h3 { color: var(--green); margin-bottom: 14px; font-size: 17px; }
+        .preview-card {
+            background: var(--bg2); border: 1px solid var(--border);
+            border-radius: 12px; overflow: hidden;
+        }
+        .preview-img {
+            width: 100%; height: 220px; object-fit: cover;
+            background: linear-gradient(135deg,#667eea,#764ba2);
+            display: flex; align-items: center; justify-content: center;
+            color: #fff; font-size: 18px; position: relative;
+        }
+        .preview-img img { width: 100%; height: 100%; object-fit: cover; }
+        .preview-badges { position: absolute; top: 10px; left: 10px; display: flex; flex-direction: column; gap: 5px; }
+        .badge-sale { background: var(--red); color: #fff; padding: 4px 10px; border-radius: 5px; font-size: 12px; font-weight: 700; }
+        .badge-new  { background: var(--green); color: #000; padding: 4px 10px; border-radius: 5px; font-size: 12px; font-weight: 700; }
+        .preview-info { padding: 16px; }
+        .preview-info .p-title { font-size: 18px; font-weight: 700; margin-bottom: 8px; }
+        .preview-info .p-desc  { font-size: 13px; color: var(--muted); margin-bottom: 12px; }
+        .preview-info .p-price { font-size: 22px; font-weight: 700; color: var(--green); }
+        .preview-info .p-old   { font-size: 14px; color: var(--muted); text-decoration: line-through; margin-right: 8px; }
+
+        /* Toast */
+        .toast {
+            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(100px);
+            background: var(--green); color: #000; padding: 14px 28px;
+            border-radius: 10px; font-weight: 700; font-size: 15px;
+            transition: transform .3s; z-index: 9999; pointer-events: none;
+        }
+        .toast.show { transform: translateX(-50%) translateY(0); }
+
+        /* Responsive */
+        @media (max-width: 1100px) { .editor-grid { grid-template-columns: 1fr; } }
+        @media (max-width: 700px) { .sidebar { width: 100%; height: 200px; } .admin-body { flex-direction: column; } }
+    </style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div class="login-overlay" id="loginOverlay">
+    <div class="login-box">
+        <h2>🔐 IKarden Admin</h2>
+        <p>Введіть пароль для доступу</p>
+        <div class="login-error" id="loginErr"></div>
+        <form onsubmit="doLogin(event)">
+            <input class="login-input" type="password" id="passInput" placeholder="Пароль" autocomplete="current-password" required>
+            <button class="login-btn" type="submit">🔓 Увійти</button>
+        </form>
+    </div>
+</div>
+
+<!-- ADMIN WRAP -->
+<div class="admin-wrap" id="adminWrap">
+
+    <!-- HEADER -->
+    <div class="admin-header">
+        <div class="logo">⚙️ IKarden Admin</div>
+        <div class="header-actions">
+            <button class="header-btn btn-green" onclick="exportProducts()">💾 Зберегти на сайт</button>
+            <button class="header-btn btn-amber" onclick="changePass()">🔑 Пароль</button>
+            <a href="index.html" class="header-btn btn-gray" style="text-decoration:none;">← На сайт</a>
+        </div>
+    </div>
+
+    <!-- BODY -->
+    <div class="admin-body">
+
+        <!-- SIDEBAR -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h3>📦 Товари</h3>
+                <button class="btn-add" onclick="addProduct()" title="Додати товар">+</button>
+            </div>
+            <div class="products-list" id="productsList"></div>
+        </div>
+
+        <!-- EDITOR -->
+        <div class="editor" id="editor">
+            <div class="editor-placeholder">
+                <span style="font-size:48px">👈</span>
+                <span>Виберіть товар для редагування</span>
+                <span style="font-size:14px;color:#666">або натисніть + щоб додати новий</span>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script src="js/products-data.js"></script>
+<script>
+// ══════════════════════════════════════════════════════
+// ДАНІ
+// ══════════════════════════════════════════════════════
+
+function getAllProducts() {
+    try {
+        const s = localStorage.getItem('ikarden-products');
+        if (s) { const p = JSON.parse(s); if (p && p.length) return p; }
+    } catch(e) {}
+    if (window.IKARDEN_PRODUCTS && window.IKARDEN_PRODUCTS.length) return JSON.parse(JSON.stringify(window.IKARDEN_PRODUCTS));
+    return [];
+}
+
+function saveAllProducts(prods) {
+    localStorage.setItem('ikarden-products', JSON.stringify(prods));
+}
+
+let products = getAllProducts();
+let currentId = null;
+let mediaItems = [];
+let dragIdx = null;
+
+// ══════════════════════════════════════════════════════
+// ВХІД
+// ══════════════════════════════════════════════════════
+
+window.addEventListener('DOMContentLoaded', () => {
+    const saved = localStorage.getItem('ikarden-admin-password');
+    if (!saved) {
+        document.querySelector('.login-box h2').textContent = '🔐 Створіть пароль';
+        document.querySelector('.login-box p').textContent = 'Введіть новий пароль (мін. 4 символи)';
+    }
+});
+
+function doLogin(e) {
+    e.preventDefault();
+    const pass = document.getElementById('passInput').value;
+    const saved = localStorage.getItem('ikarden-admin-password');
+    const err = document.getElementById('loginErr');
+
+    if (!saved) {
+        if (pass.length < 4) { err.textContent = 'Мін. 4 символи!'; err.classList.add('show'); return; }
+        localStorage.setItem('ikarden-admin-password', pass);
+        showAdmin();
+    } else {
+        if (pass === saved) { showAdmin(); }
+        else { err.textContent = 'Невірний пароль!'; err.classList.add('show'); document.getElementById('passInput').value = ''; }
+    }
+}
+
+function showAdmin() {
+    document.getElementById('loginOverlay').style.display = 'none';
+    document.getElementById('adminWrap').style.display = 'flex';
+    renderSidebar();
+}
+
+function changePass() {
+    const old = prompt('Старий пароль:');
+    if (old !== localStorage.getItem('ikarden-admin-password')) { alert('Невірний пароль!'); return; }
+    const np = prompt('Новий пароль (мін. 4 символи):');
+    if (!np || np.length < 4) { alert('Занадто короткий!'); return; }
+    if (np !== prompt('Підтвердіть новий пароль:')) { alert('Паролі не співпадають!'); return; }
+    localStorage.setItem('ikarden-admin-password', np);
+    toast('✅ Пароль змінено!');
+}
+
+// ══════════════════════════════════════════════════════
+// SIDEBAR
+// ══════════════════════════════════════════════════════
+
+function renderSidebar() {
+    const list = document.getElementById('productsList');
+    list.innerHTML = products.map(p => {
+        const fp = p.discount > 0 ? Math.round(p.price * (1 - p.discount/100)) : p.price;
+        return `
+        <div class="product-item ${currentId===p.id?'active':''}" onclick="selectProduct(${p.id})">
+            <button class="p-delete" onclick="event.stopPropagation();deleteProduct(${p.id})">×</button>
+            <div class="p-name">${p.name}</div>
+            <div class="p-price">${fp.toLocaleString()} Kč${p.discount>0?` <span style="color:var(--red);font-size:11px">-${p.discount}%</span>`:''}</div>
+        </div>`;
+    }).join('');
+}
+
+// ══════════════════════════════════════════════════════
+// ПРОДУКТ
+// ══════════════════════════════════════════════════════
+
+function addProduct() {
+    const newId = Math.max(0, ...products.map(p=>p.id)) + 1;
+    products.push({ id: newId, name: 'Новий товар', description: '', price: 1000, discount: 0, category: 'stoly', isNew: false, images: [], video: '' });
+    saveAllProducts(products);
+    renderSidebar();
+    selectProduct(newId);
+}
+
+function deleteProduct(id) {
+    const p = products.find(x=>x.id===id);
+    if (!confirm(`Видалити "${p?.name}"? Це незворотно!`)) return;
+    products = products.filter(x=>x.id!==id);
+    if (currentId===id) { currentId=null; showPlaceholder(); }
+    saveAllProducts(products);
+    renderSidebar();
+    toast('✅ Товар видалено');
+}
+
+function selectProduct(id) {
+    currentId = id;
+    const p = products.find(x=>x.id===id);
+    if (!p) return;
+    mediaItems = [
+        ...(p.images||[]).map(src=>({type:'image',src})),
+        ...(p.video?[{type:'video',src:p.video}]:[])
+    ];
+    renderSidebar();
+    renderEditor(p);
+}
+
+function showPlaceholder() {
+    document.getElementById('editor').innerHTML = `
+        <div class="editor-placeholder">
+            <span style="font-size:48px">👈</span>
+            <span>Виберіть товар для редагування</span>
+            <span style="font-size:14px;color:#666">або натисніть + щоб додати новий</span>
+        </div>`;
+}
+
+// ══════════════════════════════════════════════════════
+// РЕДАКТОР
+// ══════════════════════════════════════════════════════
+
+function renderEditor(p) {
+    document.getElementById('editor').innerHTML = `
+    <div class="editor-grid">
+        <div class="editor-form">
+            <h2>✏️ Редагування товару</h2>
+            <div class="form-group">
+                <label>Назва товару</label>
+                <input type="text" id="fName" value="${esc(p.name)}" oninput="updatePreview()">
+            </div>
+            <div class="form-group">
+                <label>Опис</label>
+                <textarea id="fDesc" oninput="updatePreview()">${esc(p.description)}</textarea>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Ціна (Kč)</label>
+                    <input type="number" id="fPrice" value="${p.price}" min="0" oninput="updatePreview()">
+                </div>
+                <div class="form-group">
+                    <label>Знижка (%)</label>
+                    <input type="number" id="fDiscount" value="${p.discount||0}" min="0" max="100" oninput="updatePreview()">
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Категорія</label>
+                <select id="fCategory">
+                    <option value="stoly" ${p.category==='stoly'?'selected':''}>Столи та столики</option>
+                    <option value="police" ${p.category==='police'?'selected':''}>Полиці</option>
+                    <option value="skrine" ${p.category==='skrine'?'selected':''}>Шафи та комоди</option>
+                    <option value="kuchyne" ${p.category==='kuchyne'?'selected':''}>Кухні</option>
+                    <option value="ostatni" ${p.category==='ostatni'?'selected':''}>Інше</option>
+                </select>
+            </div>
+            <div class="checkbox-row">
+                <input type="checkbox" id="fIsNew" ${p.isNew?'checked':''} onchange="updatePreview()">
+                <label for="fIsNew">Позначити як НОВИНКА</label>
+            </div>
+
+            <div class="media-section">
+                <h3>🖼️ Фото та відео</h3>
+                <div class="upload-zone" id="uploadZone">
+                    <div class="upload-icon">📁</div>
+                    <div class="upload-text"><strong>Перетягніть файли сюди</strong><br>або клікніть для вибору<br><span style="font-size:12px;color:#666">JPG, PNG, GIF, WEBP, MP4</span></div>
+                    <input type="file" id="fileInput" multiple accept="image/*,video/*" style="display:none">
+                </div>
+                <div class="media-grid" id="mediaGrid"></div>
+            </div>
+
+            <div class="action-row">
+                <button class="btn-save" onclick="saveProduct()">💾 Зберегти</button>
+                <button class="btn-del" onclick="deleteProduct(${p.id})">🗑️ Видалити</button>
+            </div>
+        </div>
+
+        <div class="preview-panel">
+            <h3>👁️ Попередній перегляд</h3>
+            <div class="preview-card">
+                <div class="preview-img" id="prevImg">
+                    <span>📦</span>
+                    <div class="preview-badges" id="prevBadges"></div>
+                </div>
+                <div class="preview-info">
+                    <div class="preview-info p-title" id="prevTitle">${esc(p.name)}</div>
+                    <div class="preview-info p-desc"  id="prevDesc">${esc(p.description)}</div>
+                    <div class="preview-info p-price" id="prevPrice">${p.price.toLocaleString()} Kč</div>
+                </div>
+            </div>
+        </div>
+    </div>`;
+
+    renderMediaGrid();
+    setupUpload();
+    updatePreview();
+}
+
+function esc(s) { return (s||'').replace(/"/g,'&quot;').replace(/</g,'&lt;'); }
+
+// ══════════════════════════════════════════════════════
+// МЕДІА
+// ══════════════════════════════════════════════════════
+
+function renderMediaGrid() {
+    const grid = document.getElementById('mediaGrid');
+    if (!grid) return;
+    if (mediaItems.length === 0) { grid.innerHTML = ''; return; }
+    grid.innerHTML = mediaItems.map((item,i)=>`
+        <div class="media-thumb" draggable="true" data-i="${i}"
+             ondragstart="dragStart(event,${i})"
+             ondragover="dragOver(event)"
+             ondrop="dragDrop(event,${i})"
+             ondragend="dragEnd()">
+            ${item.type==='image'
+                ? `<img src="${item.src}" alt="">`
+                : `<video src="${item.src}" muted></video>`}
+            <button class="del-btn" onclick="removeMedia(${i})" type="button">×</button>
+            <div class="order-badge">${item.type==='image'?'📷':'🎥'} ${i+1}</div>
+        </div>`).join('');
+}
+
+function setupUpload() {
+    const zone = document.getElementById('uploadZone');
+    const input = document.getElementById('fileInput');
+    if (!zone || !input) return;
+    zone.addEventListener('click', ()=>input.click());
+    zone.addEventListener('dragover', e=>{ e.preventDefault(); zone.classList.add('dragover'); });
+    zone.addEventListener('dragleave', ()=>zone.classList.remove('dragover'));
+    zone.addEventListener('drop', e=>{ e.preventDefault(); zone.classList.remove('dragover'); handleFiles(e.dataTransfer.files); });
+    input.addEventListener('change', e=>{ handleFiles(e.target.files); input.value=''; });
+}
+
+function handleFiles(files) {
+    Array.from(files).forEach(f=>{
+        const reader = new FileReader();
+        reader.onload = e => {
+            mediaItems.push({ type: f.type.startsWith('image/')?'image':'video', src: e.target.result });
+            renderMediaGrid();
+            updatePreview();
+        };
+        reader.readAsDataURL(f);
+    });
+}
+
+function removeMedia(i) {
+    if (!confirm('Видалити цей файл?')) return;
+    mediaItems.splice(i,1);
+    renderMediaGrid();
+    updatePreview();
+}
+
+// Drag & drop reorder
+function dragStart(e,i) { dragIdx=i; e.currentTarget.classList.add('dragging'); }
+function dragOver(e) { e.preventDefault(); }
+function dragDrop(e,dropI) {
+    e.preventDefault();
+    if (dragIdx===null||dragIdx===dropI) return;
+    const item = mediaItems.splice(dragIdx,1)[0];
+    mediaItems.splice(dropI,0,item);
+    renderMediaGrid();
+    updatePreview();
+}
+function dragEnd() { dragIdx=null; document.querySelectorAll('.media-thumb').forEach(el=>el.classList.remove('dragging')); }
+
+// ══════════════════════════════════════════════════════
+// PREVIEW
+// ══════════════════════════════════════════════════════
+
+function updatePreview() {
+    const name     = document.getElementById('fName')?.value||'';
+    const desc     = document.getElementById('fDesc')?.value||'';
+    const price    = parseInt(document.getElementById('fPrice')?.value)||0;
+    const discount = parseInt(document.getElementById('fDiscount')?.value)||0;
+    const isNew    = document.getElementById('fIsNew')?.checked||false;
+    const fp       = discount>0 ? Math.round(price*(1-discount/100)) : price;
+
+    const t = document.getElementById('prevTitle');
+    const d = document.getElementById('prevDesc');
+    const pr= document.getElementById('prevPrice');
+    const b = document.getElementById('prevBadges');
+    const img=document.getElementById('prevImg');
+
+    if (t) t.textContent = name;
+    if (d) d.textContent = desc;
+    if (pr) pr.innerHTML = discount>0
+        ? `<span class="p-old">${price.toLocaleString()} Kč</span>${fp.toLocaleString()} Kč`
+        : `${fp.toLocaleString()} Kč`;
+    if (b) b.innerHTML =
+        (discount>0?`<span class="badge-sale">-${discount}% SLEVA</span>`:'') +
+        (isNew     ?`<span class="badge-new">NOVINKA</span>`:'');
+
+    if (img) {
+        const first = mediaItems.find(m=>m.type==='image');
+        const inner = img.querySelector('img,span');
+        if (first) {
+            if (inner && inner.tagName==='IMG') { inner.src=first.src; }
+            else { img.innerHTML=`<img src="${first.src}" alt=""><div class="preview-badges" id="prevBadges"></div>`; document.getElementById('prevBadges').innerHTML=b?b.innerHTML:''; }
+        }
+    }
+}
+
+// ══════════════════════════════════════════════════════
+// ЗБЕРЕЖЕННЯ
+// ══════════════════════════════════════════════════════
+
+function saveProduct() {
+    const name     = document.getElementById('fName')?.value?.trim();
+    const desc     = document.getElementById('fDesc')?.value?.trim();
+    const price    = parseInt(document.getElementById('fPrice')?.value);
+    const discount = parseInt(document.getElementById('fDiscount')?.value)||0;
+    const category = document.getElementById('fCategory')?.value;
+    const isNew    = document.getElementById('fIsNew')?.checked||false;
+
+    if (!name||!desc) { alert('Заповніть назву та опис!'); return; }
+    if (isNaN(price)||price<0) { alert('Введіть коректну ціну!'); return; }
+
+    const images = mediaItems.filter(m=>m.type==='image').map(m=>m.src);
+    const video  = (mediaItems.find(m=>m.type==='video')||{}).src||'';
+
+    const idx = products.findIndex(p=>p.id===currentId);
+    if (idx===-1) return;
+    products[idx] = { ...products[idx], name, description:desc, price, discount, category, isNew, images, video };
+    saveAllProducts(products);
+    renderSidebar();
+    toast('✅ Збережено! Тепер натисніть "Зберегти на сайт"');
+}
+
+// ══════════════════════════════════════════════════════
+// ЕКСПОРТ
+// ══════════════════════════════════════════════════════
+
+function exportProducts() {
+    const content = `// ============================================================
+// IKARDEN - ДАНІ ТОВАРІВ
+// Останнє оновлення: ${new Date().toLocaleString('uk-UA')}
+// ============================================================
+
+window.IKARDEN_PRODUCTS = ${JSON.stringify(products, null, 4)};
+`;
+    const blob = new Blob([content],{type:'text/javascript'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href=url; a.download='products-data.js';
+    document.body.appendChild(a); a.click();
+    document.body.removeChild(a); URL.revokeObjectURL(url);
+
+    alert(`✅ Файл products-data.js завантажено!\n\nЗроби:\n1. Перемісти файл в папку js\\\n2. Відкрий Git Bash:\n   git add .\n   git commit -m "Update products"\n   git push\n\nЧерез 2-3 хвилини сайт оновиться!`);
+}
+
+// ══════════════════════════════════════════════════════
+// TOAST
+// ══════════════════════════════════════════════════════
+
+function toast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent=msg; t.classList.add('show');
+    setTimeout(()=>t.classList.remove('show'), 3000);
+}
+</script>
+</body>
+</html>

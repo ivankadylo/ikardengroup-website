@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Realizace — SIP Domy Arden Group</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--g:#1fbc6b;--gd:#159a55;--gl:rgba(31,188,107,.12);--bg:#0d1f18;--bg2:#0a1710;--bg3:#142a1e;--card:rgba(255,255,255,.04);--brd:rgba(255,255,255,.1);--t2:rgba(255,255,255,.6);--t3:rgba(255,255,255,.35);}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Montserrat',sans-serif;background:var(--bg);color:#fff;min-height:100vh;}
+/* NAV */
+nav{position:sticky;top:0;z-index:100;background:rgba(10,23,16,.97);border-bottom:1px solid var(--brd);padding:0 2rem;display:flex;align-items:center;height:60px;gap:10px;}
+.nl{display:flex;align-items:center;gap:9px;text-decoration:none;margin-right:1.5rem;}
+.nl-box{width:34px;height:34px;border:2px solid var(--g);border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:var(--g);}
+.nl-name{font-size:14px;font-weight:800;letter-spacing:.05em;}
+.nav-links{display:flex;gap:0;flex:1;}
+.nav-links a{padding:0 14px;height:60px;display:flex;align-items:center;font-size:12px;font-weight:500;color:var(--t2);text-decoration:none;border-bottom:2px solid transparent;transition:all .15s;white-space:nowrap;}
+.nav-links a:hover,.nav-links a.active{color:var(--g);border-bottom-color:var(--g);}
+.nav-right{display:flex;align-items:center;gap:8px;margin-left:auto;}
+.nav-btn{display:flex;align-items:center;gap:6px;padding:7px 14px;border-radius:7px;font-size:12px;font-weight:600;font-family:inherit;cursor:pointer;transition:all .15s;border:none;text-decoration:none;white-space:nowrap;}
+.nb-g{background:var(--g);color:#fff;} .nb-g:hover{background:var(--gd);}
+.nb-o{background:linear-gradient(135deg,#e67e22,#d35400);color:#fff;} .nb-o:hover{opacity:.9;}
+
+/* HERO */
+.page-hero{background:linear-gradient(135deg,#0a1e12,#142a1e);padding:4rem 2rem 3rem;text-align:center;border-bottom:1px solid var(--brd);}
+.ph-badge{display:inline-block;background:var(--gl);border:1px solid rgba(31,188,107,.3);color:var(--g);font-size:10px;font-weight:700;padding:3px 14px;border-radius:20px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:12px;}
+.ph-title{font-size:clamp(1.8rem,4vw,3rem);font-weight:800;margin-bottom:.8rem;}
+.ph-title span{color:var(--g);}
+.ph-sub{font-size:15px;color:var(--t2);max-width:580px;margin:0 auto;}
+
+/* FILTERS */
+.filters{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;padding:2rem 2rem 0;}
+.filter-btn{padding:8px 18px;border-radius:24px;border:1px solid var(--brd);background:var(--card);color:var(--t2);font-size:12px;font-weight:600;cursor:pointer;transition:all .15s;font-family:inherit;}
+.filter-btn:hover{border-color:var(--g);color:var(--g);}
+.filter-btn.active{background:var(--g);color:#fff;border-color:var(--g);}
+
+/* STATS BAR */
+.stats-bar{display:flex;gap:0;justify-content:center;padding:2rem 2rem 0;max-width:800px;margin:0 auto;}
+.sbar-item{flex:1;text-align:center;padding:1rem;border-right:1px solid var(--brd);}
+.sbar-item:last-child{border-right:none;}
+.sbar-val{font-size:2rem;font-weight:800;color:var(--g);}
+.sbar-lbl{font-size:11px;color:var(--t2);margin-top:3px;}
+
+/* GRID */
+.real-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px;padding:2rem;max-width:1200px;margin:0 auto;}
+.real-card{background:var(--card);border:1px solid var(--brd);border-radius:14px;overflow:hidden;transition:all .2s;cursor:pointer;}
+.real-card:hover{border-color:var(--g);transform:translateY(-4px);box-shadow:0 8px 32px rgba(31,188,107,.15);}
+.real-card.featured{border:2px solid var(--g);}
+.real-img{height:200px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:60px;}
+.real-img-bg{position:absolute;inset:0;background:linear-gradient(135deg,#0d2e1e,#1a4a2e);display:flex;align-items:center;justify-content:center;}
+.real-tag{position:absolute;top:12px;left:12px;background:var(--g);color:#fff;font-size:10px;font-weight:700;padding:3px 10px;border-radius:20px;}
+.real-new{position:absolute;top:12px;right:12px;background:#e74c3c;color:#fff;font-size:10px;font-weight:700;padding:3px 10px;border-radius:20px;}
+.real-body{padding:18px;}
+.real-loc{font-size:10px;color:var(--t3);font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin-bottom:5px;}
+.real-name{font-size:16px;font-weight:700;margin-bottom:8px;}
+.real-specs{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:12px;}
+.spec-pill{background:var(--gl);border:1px solid rgba(31,188,107,.2);color:var(--g);font-size:10px;font-weight:600;padding:3px 9px;border-radius:12px;}
+.real-params{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:12px;}
+.rp-item{background:rgba(255,255,255,.03);border-radius:6px;padding:8px;}
+.rp-k{font-size:9px;color:var(--t3);text-transform:uppercase;letter-spacing:.06em;}
+.rp-v{font-size:12px;font-weight:600;color:#fff;margin-top:2px;}
+.real-price{font-size:20px;font-weight:800;color:var(--g);}
+.real-sub{font-size:11px;color:var(--t3);}
+.real-cmp{font-size:11px;color:#e74c3c;margin-top:3px;}
+
+/* DETAIL MODAL */
+.modal-ov{position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:500;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .2s;padding:1rem;}
+.modal-ov.open{opacity:1;pointer-events:all;}
+.modal-box{background:#0d2515;border:1px solid var(--brd);border-radius:16px;width:600px;max-width:100%;max-height:90vh;overflow-y:auto;}
+.modal-header{padding:24px 24px 0;display:flex;justify-content:space-between;align-items:flex-start;}
+.modal-close{background:none;border:none;color:var(--t2);font-size:22px;cursor:pointer;line-height:1;}
+.modal-close:hover{color:#fff;}
+.modal-body{padding:16px 24px 24px;}
+.modal-img{height:220px;background:linear-gradient(135deg,#0d2e1e,#1a4a2e);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:72px;margin-bottom:16px;}
+.modal-specs-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:16px;}
+.msp{background:var(--card);border:1px solid var(--brd);border-radius:8px;padding:10px;text-align:center;}
+.msp-v{font-size:16px;font-weight:700;color:var(--g);}
+.msp-k{font-size:9px;color:var(--t3);margin-top:2px;}
+.modal-desc{font-size:13px;color:var(--t2);line-height:1.7;margin-bottom:16px;}
+.modal-incl{display:flex;flex-direction:column;gap:5px;margin-bottom:16px;}
+.mi-row{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--t2);}
+.mi-ck{color:var(--g);font-weight:700;}
+.modal-price-box{background:var(--g);border-radius:10px;padding:14px 16px;display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
+.mpb-l{}
+.mpb-label{font-size:10px;opacity:.8;}
+.mpb-val{font-size:24px;font-weight:800;}
+.mpb-r{text-align:right;}
+.mpb-cmp{font-size:11px;opacity:.75;}
+.mpb-save{font-size:13px;font-weight:700;}
+.modal-btn{display:block;width:100%;padding:12px;background:rgba(31,188,107,.15);border:1px solid rgba(31,188,107,.4);color:var(--g);border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .15s;text-align:center;text-decoration:none;}
+.modal-btn:hover{background:var(--g);color:#fff;}
+
+/* CTA SECTION */
+.cta-section{background:linear-gradient(135deg,#0d2e1e,#1a4a2e);padding:4rem 2rem;text-align:center;border-top:1px solid var(--brd);}
+.cta-section h2{font-size:2rem;font-weight:800;margin-bottom:.8rem;}
+.cta-section h2 span{color:var(--g);}
+.cta-section p{font-size:15px;color:var(--t2);margin-bottom:2rem;}
+.cta-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
+.cta-btn{padding:14px 28px;border-radius:10px;font-size:14px;font-weight:700;text-decoration:none;transition:all .2s;display:inline-flex;align-items:center;gap:8px;font-family:inherit;border:none;cursor:pointer;}
+.cb-g{background:var(--g);color:#fff;} .cb-g:hover{background:var(--gd);}
+.cb-o{background:transparent;border:2px solid var(--g);color:var(--g);} .cb-o:hover{background:var(--g);color:#fff;}
+
+footer{background:var(--bg2);border-top:1px solid var(--brd);padding:2rem;text-align:center;color:var(--t3);font-size:12px;}
+footer a{color:var(--g);text-decoration:none;}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nl" href="index.html">
+    <div class="nl-box">IK</div>
+    <div class="nl-name">ARDEN GROUP</div>
+  </a>
+    <div class="nav-links">
+    <a href="index.html">Domů</a>
+    <a href="sip-domy.html">SIP Domy</a>
+    <a href="realizace.html" class="active">Realizace</a>
+    <a href="faq.html">FAQ</a>
+    <a href="kontakt.html">Kontakt</a>
+  </div>
+  <div class="nav-right">
+    <a class="nav-btn nb-o" href="modelar.html">🏗 Navrhnout dům</a>
+    <a class="nav-btn nb-g" href="kontakt.html">📩 Poptávka</a>
+  </div>
+</nav>
+
+<div class="page-hero">
+  <div class="ph-badge">Reference · 2024–2026</div>
+  <h1 class="ph-title">Naše <span>realizace</span></h1>
+  <p class="ph-sub">Reálné projekty, reálné ceny, reálné úspory. Každý dům byl dokončen za 10 týdnů bez čekací doby.</p>
+</div>
+
+<div class="stats-bar">
+  <div class="sbar-item"><div class="sbar-val">12</div><div class="sbar-lbl">Dokončených projektů</div></div>
+  <div class="sbar-item"><div class="sbar-val">€0</div><div class="sbar-lbl">Skrytých příplatků</div></div>
+  <div class="sbar-item"><div class="sbar-val">10 týd.</div><div class="sbar-lbl">Průměrná doba stavby</div></div>
+  <div class="sbar-item"><div class="sbar-val">−42%</div><div class="sbar-lbl">Úspora vs RD Rýmařov</div></div>
+</div>
+
+<div class="filters">
+  <button class="filter-btn active" onclick="filterCards('all',this)">Vše</button>
+  <button class="filter-btn" onclick="filterCards('bungalov',this)">Bungalovy</button>
+  <button class="filter-btn" onclick="filterCards('patro',this)">Patrové domy</button>
+  <button class="filter-btn" onclick="filterCards('chata',this)">Chaty & rekreace</button>
+  <button class="filter-btn" onclick="filterCards('modular',this)">Modulární</button>
+</div>
+
+<div class="real-grid" id="real-grid"></div>
+
+<!-- DETAIL MODAL -->
+<div class="modal-ov" id="modal-detail" onclick="if(event.target===this)this.classList.remove('open')">
+  <div class="modal-box" id="modal-content"></div>
+</div>
+
+<div class="cta-section">
+  <h2>Chcete <span>takový dům</span>?</h2>
+  <p>Navrhněte si ho v naší aplikaci nebo nás rovnou kontaktujte — nabídku pošleme do 24 hodin.</p>
+  <div class="cta-btns">
+    <a class="cta-btn cb-g" href="modelar.html">🏗 Navrhnout dům</a>
+    <a class="cta-btn cb-o" href="kontakt.html">📩 Kontaktovat nás</a>
+  </div>
+</div>
+
+<footer>
+  <p><strong style="color:#fff;">ARDEN GROUP s.r.o.</strong> · Metylovice 153, PSČ 739 49 ·
+  <a href="sip-domy.html">SIP Domy</a> ·
+  <a href="faq.html">FAQ</a> ·
+  <a href="kontakt.html">Kontakt</a></p>
+</footer>
+
+<script>
+const PROJECTS=[
+  {id:1,tag:'bungalov',icon:'🏡',featured:true,isNew:true,
+   loc:'Frýdek-Místek, ČR',name:'Rodinný bungalov Novákovi',
+   area:112,rooms:5,floors:1,ins:160,uval:'0,17',roof:'Sedlová',
+   variant:'Na klíč',duration:'9 týdnů',
+   price:73000,priceKc:1825000,rdPrice:134400,
+   specs:['112 m²','5+kk','Sedlová střecha','160 mm EPS'],
+   desc:'Moderní bungalov pro čtyřčlennou rodinu s otevřenou obývací částí, třemi ložnicemi a prostornou koupelnou. Zákazník ušetřil oproti RD Rýmařov více než 700 000 Kč.',
+   incl:['SIP panely ECOPAN — CE certifikát','Doprava Rumunsko → Frýdek-Místek','Montáž českou firmou (14 dní)','Projekt + stavební povolení','Základová deska','Okna + dveře','Energetický štítek PENB']},
+  {id:2,tag:'patro',icon:'🏘',featured:false,isNew:false,
+   loc:'Ostrava, ČR',name:'Dvoupodlažní dům Horákovi',
+   area:148,rooms:6,floors:2,ins:200,uval:'0,14',roof:'Sedlová',
+   variant:'Materiál + montáž',duration:'11 týdnů',
+   price:96000,priceKc:2400000,rdPrice:177600,
+   specs:['148 m²','5+kk','2 podlaží','200 mm EPS'],
+   desc:'Prostorný dvoupodlažní dům s garáží. Nízkoenergetický standard díky izolaci 200 mm. Zákazník měl vlastní projekt, my dodali panely a montáž.',
+   incl:['SIP panely ECOPAN 200 mm','Doprava na staveniště','Montáž (12 dní)','Technická dokumentace','Záruka 10 let']},
+  {id:3,tag:'chata',icon:'🌲',featured:false,isNew:false,
+   loc:'Beskydy, ČR',name:'Rekreační chata Beskydy',
+   area:68,rooms:3,floors:1,ins:160,uval:'0,17',roof:'Pultová',
+   variant:'Materiál + montáž',duration:'7 týdnů',
+   price:44000,priceKc:1100000,rdPrice:81600,
+   specs:['68 m²','3+kk','Pultová střecha','Airbnb / rekreace'],
+   desc:'Malá rekreační chata v Beskydech pro pronájem na Airbnb. Návratnost investice do 4 let při obsazenosti 60 %.',
+   incl:['SIP panely 160 mm','Doprava','Montáž (7 dní)','3D vizualizace zdarma']},
+  {id:4,tag:'modular',icon:'📦',featured:false,isNew:true,
+   loc:'Metylovice, ČR',name:'Modulární dům 2+kk',
+   area:48,rooms:2,floors:1,ins:160,uval:'0,17',roof:'Plochá',
+   variant:'Na klíč',duration:'6 týdnů',
+   price:31000,priceKc:775000,rdPrice:57600,
+   specs:['48 m²','2+kk','Plochá střecha','Modulární'],
+   desc:'Kompaktní modulární dům pro jednotlivce nebo pár. Dodán jako kompletní kit, montáž za 6 dní. Ideální jako zahradní dům nebo studio.',
+   incl:['SIP panely + kit','Doprava','Montáž (6 dní)','Okna + dveře','Základová deska']},
+  {id:5,tag:'bungalov',icon:'🏠',featured:false,isNew:false,
+   loc:'Třinec, ČR',name:'Bungalov Svobodovi — 90 m²',
+   area:90,rooms:4,floors:1,ins:160,uval:'0,17',roof:'Sedlová',
+   variant:'Materiál + montáž',duration:'8 týdnů',
+   price:58000,priceKc:1450000,rdPrice:108000,
+   specs:['90 m²','4+kk','Sedlová střecha','Standardní'],
+   desc:'Klasický bungalov s velkou zahradou. Zákazník hodnotí: "Dům jsme měli hotový za 8 týdnů, sousedé čekají na RD Rýmařov už rok."',
+   incl:['SIP panely ECOPAN','Doprava','Montáž','3D vizualizace']},
+  {id:6,tag:'patro',icon:'🏢',featured:false,isNew:false,
+   loc:'Brno-venkov, ČR',name:'Vila Procházkovi — 200 m²',
+   area:200,rooms:7,floors:2,ins:250,uval:'0,11',roof:'Sedlová',
+   variant:'Na klíč',duration:'13 týdnů',
+   price:190000,priceKc:4750000,rdPrice:240000,
+   specs:['200 m²','6+kk','Pasivní standard','250 mm EPS'],
+   desc:'Největší projekt — pasivní vila s garážovým stáním pro dvě auta. Izolace 250 mm, U = 0,11. Roční náklady na vytápění pod 800 EUR.',
+   incl:['SIP 250 mm (pasivní)','Doprava','Montáž (18 dní)','Projekt + povolení','Základová deska','Okna trojsklo','PENB energetický štítek']},
+];
+
+function fmtKc(n){return Math.round(n).toLocaleString('cs-CZ')+' Kč';}
+function fmtEur(n){return '€ '+Math.round(n).toLocaleString('cs-CZ');}
+
+function renderCards(filter){
+  const grid=document.getElementById('real-grid');
+  const list=filter==='all'?PROJECTS:PROJECTS.filter(p=>p.tag===filter);
+  grid.innerHTML=list.map(p=>`
+    <div class="real-card${p.featured?' featured':''}" onclick="openModal(${p.id})">
+      <div class="real-img">
+        <div class="real-img-bg" style="font-size:64px;">${p.icon}</div>
+        <div class="real-tag">${{bungalov:'Bungalov',patro:'Patrový',chata:'Chata',modular:'Modulární'}[p.tag]}</div>
+        ${p.isNew?'<div class="real-new">Nové</div>':''}
+      </div>
+      <div class="real-body">
+        <div class="real-loc">📍 ${p.loc}</div>
+        <div class="real-name">${p.name}</div>
+        <div class="real-specs">${p.specs.map(s=>`<span class="spec-pill">${s}</span>`).join('')}</div>
+        <div class="real-params">
+          <div class="rp-item"><div class="rp-k">Plocha</div><div class="rp-v">${p.area} m²</div></div>
+          <div class="rp-item"><div class="rp-k">Trvání</div><div class="rp-v">${p.duration}</div></div>
+          <div class="rp-item"><div class="rp-k">Izolace</div><div class="rp-v">${p.ins} mm</div></div>
+          <div class="rp-item"><div class="rp-k">U-hodnota</div><div class="rp-v">${p.uval}</div></div>
+        </div>
+        <div class="real-price">${fmtKc(p.priceKc)}</div>
+        <div class="real-sub">${fmtEur(p.price)} · ${p.variant}</div>
+        <div class="real-cmp">RD Rýmařov: ${fmtKc(p.rdPrice)} — úspora ${fmtKc(p.rdPrice-p.priceKc)}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function filterCards(f,btn){
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderCards(f);
+}
+
+function openModal(id){
+  const p=PROJECTS.find(x=>x.id===id);
+  const save=p.rdPrice-p.priceKc;
+  const pct=Math.round(save/p.rdPrice*100);
+  document.getElementById('modal-content').innerHTML=`
+    <div class="modal-header">
+      <div>
+        <div style="font-size:10px;color:var(--g);font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px;">${p.loc}</div>
+        <div style="font-size:18px;font-weight:800;">${p.name}</div>
+      </div>
+      <button class="modal-close" onclick="document.getElementById('modal-detail').classList.remove('open')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-img">${p.icon}</div>
+      <div class="modal-specs-grid">
+        <div class="msp"><div class="msp-v">${p.area} m²</div><div class="msp-k">Plocha</div></div>
+        <div class="msp"><div class="msp-v">${p.ins} mm</div><div class="msp-k">Izolace</div></div>
+        <div class="msp"><div class="msp-v">${p.uval}</div><div class="msp-k">U-hodnota</div></div>
+        <div class="msp"><div class="msp-v">${p.floors}</div><div class="msp-k">Podlaží</div></div>
+        <div class="msp"><div class="msp-v">${p.duration}</div><div class="msp-k">Trvání</div></div>
+        <div class="msp"><div class="msp-v">${p.variant}</div><div class="msp-k">Varianta</div></div>
+      </div>
+      <div class="modal-desc">${p.desc}</div>
+      <div style="font-size:11px;font-weight:700;color:var(--t2);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;">Zahrnuto v ceně:</div>
+      <div class="modal-incl">${p.incl.map(i=>`<div class="mi-row"><span class="mi-ck">✓</span><span>${i}</span></div>`).join('')}</div>
+      <div class="modal-price-box">
+        <div class="mpb-l">
+          <div class="mpb-label">Výsledná cena</div>
+          <div class="mpb-val">${fmtKc(p.priceKc)}</div>
+        </div>
+        <div class="mpb-r">
+          <div class="mpb-cmp">RD Rýmařov: ${fmtKc(p.rdPrice)}</div>
+          <div class="mpb-save">Úspora: ${fmtKc(save)} (−${pct} %)</div>
+        </div>
+      </div>
+      <a class="modal-btn" href="kontakt.html">📩 Chci podobný dům →</a>
+    </div>
+  `;
+  document.getElementById('modal-detail').classList.add('open');
+}
+
+renderCards('all');
+</script>
+</body>
+</html>

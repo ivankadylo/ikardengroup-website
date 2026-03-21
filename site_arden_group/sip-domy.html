@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SIP Domy Metylovice — Stavíme rychle, levněji</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --g:#1a6b47; --gl:#e8f5ee; --gm:#2d9660;
+  --b:#1a3a6b; --a:#b85c00; --al:#fff3e0;
+  --r:#8b1a1a; --rl:#fdecea;
+  --gray:#f5f4f0; --text:#1a1a18; --t2:#5a5a54; --t3:#9a9a90;
+  --brd:#e2e0d8; --w:#fffffe;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:'DM Sans',sans-serif;background:var(--w);color:var(--text);font-size:15px;line-height:1.6;}
+
+/* NAV */
+nav{position:sticky;top:0;z-index:100;background:var(--w);border-bottom:1px solid var(--brd);padding:0 2rem;display:flex;align-items:center;justify-content:space-between;}
+.nav-logo{font-family:'DM Serif Display',serif;font-size:18px;color:var(--g);padding:14px 0;white-space:nowrap;}
+.nav-links{display:flex;gap:0;}
+.nav-links a{display:block;padding:14px 14px;font-size:12px;font-weight:500;color:var(--t2);text-decoration:none;white-space:nowrap;border-bottom:2px solid transparent;transition:all .15s;}
+.nav-links a:hover{color:var(--g);border-bottom-color:var(--g);}
+.nav-cta{background:var(--g);color:#fff;padding:9px 20px;border-radius:8px;font-size:13px;font-weight:600;text-decoration:none;white-space:nowrap;}
+.nav-cta:hover{background:var(--gm);}
+
+/* HERO */
+.hero{background:var(--g);color:#fff;padding:6rem 2rem 5rem;text-align:center;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(45deg,transparent,transparent 40px,rgba(255,255,255,.03) 40px,rgba(255,255,255,.03) 41px);}
+.hero-badge{display:inline-block;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);padding:5px 16px;border-radius:20px;font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;margin-bottom:1.2rem;}
+.hero h1{font-family:'DM Serif Display',serif;font-size:clamp(2rem,5vw,3.6rem);line-height:1.1;margin-bottom:1rem;position:relative;}
+.hero h1 em{font-style:italic;opacity:.85;}
+.hero-sub{font-size:17px;opacity:.82;max-width:580px;margin:0 auto 2rem;position:relative;}
+.hero-pills{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:2.5rem;position:relative;}
+.pill{background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.28);padding:6px 16px;border-radius:20px;font-size:12px;font-weight:500;}
+.hero-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;position:relative;}
+.btn-primary{background:#fff;color:var(--g);padding:13px 28px;border-radius:10px;font-size:14px;font-weight:700;text-decoration:none;transition:all .15s;}
+.btn-primary:hover{background:#e8f5ee;}
+.btn-outline{border:2px solid rgba(255,255,255,.5);color:#fff;padding:11px 28px;border-radius:10px;font-size:14px;font-weight:600;text-decoration:none;transition:all .15s;}
+.btn-outline:hover{background:rgba(255,255,255,.1);}
+
+/* TRUST BAR */
+.trust{background:var(--gray);padding:1.4rem 2rem;display:flex;gap:2rem;justify-content:center;flex-wrap:wrap;border-bottom:1px solid var(--brd);}
+.trust-item{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:500;color:var(--t2);}
+.trust-item span:first-child{color:var(--g);font-size:16px;}
+
+/* SECTIONS */
+section{padding:4.5rem 2rem;max-width:980px;margin:0 auto;}
+section.wide{max-width:none;padding:4.5rem 2rem;}
+section.alt{background:var(--gray);max-width:none;padding:4.5rem 0;}
+section.alt>.inner{max-width:980px;margin:0 auto;padding:0 2rem;}
+.sec-label{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--gm);margin-bottom:.5rem;}
+h2{font-family:'DM Serif Display',serif;font-size:clamp(1.6rem,3vw,2.4rem);margin-bottom:1rem;color:var(--text);}
+.lead{font-size:16px;color:var(--t2);max-width:660px;margin-bottom:2.5rem;line-height:1.7;}
+
+/* SERVICES */
+.services{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;}
+.svc{background:var(--w);border:1px solid var(--brd);border-radius:14px;padding:24px;transition:all .2s;cursor:default;}
+.svc:hover{border-color:var(--g);box-shadow:0 4px 20px rgba(26,107,71,.1);}
+.svc.featured{border:2px solid var(--g);position:relative;}
+.svc-top-badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--g);color:#fff;font-size:10px;font-weight:700;padding:3px 14px;border-radius:20px;white-space:nowrap;}
+.svc-icon{font-size:28px;margin-bottom:12px;display:block;}
+.svc h3{font-size:17px;font-weight:600;margin-bottom:6px;}
+.svc-price{font-size:22px;font-weight:700;color:var(--g);margin:10px 0 4px;}
+.svc-price span{font-size:13px;font-weight:400;color:var(--t2);}
+.svc p{font-size:13px;color:var(--t2);line-height:1.55;margin-bottom:12px;}
+.svc-list{list-style:none;display:flex;flex-direction:column;gap:5px;}
+.svc-list li{font-size:12px;color:var(--t2);display:flex;gap:7px;align-items:flex-start;}
+.svc-list li::before{content:'✓';color:var(--g);font-weight:700;flex-shrink:0;}
+.svc-btn{display:block;text-align:center;margin-top:16px;padding:10px;background:var(--gl);color:var(--g);font-size:13px;font-weight:600;border-radius:8px;text-decoration:none;transition:all .15s;}
+.svc-btn:hover{background:var(--g);color:#fff;}
+.svc.featured .svc-btn{background:var(--g);color:#fff;}
+.svc.featured .svc-btn:hover{background:var(--gm);}
+
+/* CALCULATOR */
+.calc-wrap{background:var(--w);border:1px solid var(--brd);border-radius:16px;padding:2rem;max-width:760px;margin:0 auto;}
+.calc-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;}
+.sl-block{margin-bottom:0;}
+.sl-top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px;}
+.sl-name{font-size:13px;font-weight:500;color:var(--text);}
+.sl-val{font-size:18px;font-weight:700;color:var(--g);}
+input[type=range]{width:100%;accent-color:var(--g);margin-bottom:3px;}
+.sl-minmax{display:flex;justify-content:space-between;font-size:10px;color:var(--t3);}
+.calc-select{width:100%;padding:9px 12px;border:1px solid var(--brd);border-radius:8px;font-size:13px;font-family:inherit;color:var(--text);background:var(--w);margin-top:4px;accent-color:var(--g);}
+.calc-label{font-size:13px;font-weight:500;color:var(--text);margin-bottom:6px;display:block;}
+
+.calc-result{background:var(--g);color:#fff;border-radius:12px;padding:20px 24px;margin-top:1.5rem;}
+.res-row{display:flex;justify-content:space-between;align-items:baseline;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.15);}
+.res-row:last-child{border-bottom:none;}
+.res-k{font-size:12px;opacity:.75;}
+.res-v{font-size:15px;font-weight:600;}
+.res-total{display:flex;justify-content:space-between;align-items:baseline;margin-top:12px;padding-top:12px;border-top:1px solid rgba(255,255,255,.3);}
+.res-total-k{font-size:14px;font-weight:500;}
+.res-total-v{font-size:28px;font-weight:700;}
+.res-compare{font-size:12px;opacity:.75;margin-top:6px;text-align:right;}
+.res-save{color:#86efac;font-size:13px;font-weight:600;text-align:center;margin-top:8px;}
+
+.calc-note{font-size:11px;color:var(--t3);margin-top:10px;text-align:center;font-style:italic;}
+
+/* INSULATION PICKER */
+.ins-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:6px;}
+.ins-opt{border:1.5px solid var(--brd);border-radius:8px;padding:8px 6px;text-align:center;cursor:pointer;transition:all .15s;}
+.ins-opt:hover{border-color:var(--g);}
+.ins-opt.active{border-color:var(--g);background:var(--gl);}
+.ins-val{font-size:14px;font-weight:700;color:var(--g);}
+.ins-uval{font-size:10px;color:var(--t3);}
+.ins-label{font-size:10px;color:var(--t2);margin-top:2px;}
+
+/* PROCESS */
+.process{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;}
+.proc-item{background:var(--w);border:1px solid var(--brd);border-radius:12px;padding:20px;text-align:center;}
+.proc-num{width:40px;height:40px;background:var(--g);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;margin:0 auto 12px;}
+.proc-item h4{font-size:14px;font-weight:600;margin-bottom:6px;}
+.proc-item p{font-size:12px;color:var(--t2);line-height:1.5;}
+
+/* WHY US */
+.why-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;}
+.why-card{background:var(--w);border:1px solid var(--brd);border-radius:12px;padding:20px;}
+.why-num{font-size:36px;font-weight:700;color:var(--g);line-height:1;}
+.why-card h4{font-size:14px;font-weight:600;margin:6px 0 4px;}
+.why-card p{font-size:12px;color:var(--t2);line-height:1.55;}
+
+/* CONTACT */
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;}
+.contact-form{background:var(--w);border:1px solid var(--brd);border-radius:14px;padding:28px;}
+.contact-form h3{font-size:18px;font-weight:600;margin-bottom:16px;}
+.form-row{margin-bottom:14px;}
+.form-row label{display:block;font-size:12px;font-weight:600;color:var(--t2);margin-bottom:5px;text-transform:uppercase;letter-spacing:.04em;}
+.form-row input,.form-row textarea,.form-row select{width:100%;padding:10px 12px;border:1px solid var(--brd);border-radius:8px;font-size:14px;font-family:inherit;color:var(--text);background:var(--w);transition:border .15s;}
+.form-row input:focus,.form-row textarea:focus,.form-row select:focus{outline:none;border-color:var(--g);}
+.form-row textarea{height:90px;resize:vertical;}
+.form-submit{width:100%;padding:13px;background:var(--g);color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .15s;}
+.form-submit:hover{background:var(--gm);}
+.contact-info{display:flex;flex-direction:column;gap:16px;}
+.ci-card{background:var(--w);border:1px solid var(--brd);border-radius:12px;padding:20px;}
+.ci-card h4{font-size:14px;font-weight:600;margin-bottom:10px;}
+.ci-row{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--t2);margin-bottom:8px;}
+.ci-row:last-child{margin-bottom:0;}
+.ci-ic{width:28px;height:28px;background:var(--gl);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;}
+.cert-row{display:flex;gap:8px;flex-wrap:wrap;}
+.cert{background:var(--gl);color:var(--g);font-size:11px;font-weight:600;padding:4px 12px;border-radius:20px;}
+
+/* INFO BOX */
+.info-box{background:var(--gl);border-left:3px solid var(--g);border-radius:0 8px 8px 0;padding:14px 18px;margin:1.5rem 0;}
+.info-box p{font-size:13px;color:var(--text);line-height:1.6;}
+.info-box strong{color:var(--g);}
+
+/* FOOTER */
+footer{background:var(--text);color:rgba(255,255,255,.6);padding:2.5rem 2rem;text-align:center;font-size:13px;}
+footer strong{color:#fff;}
+footer a{color:rgba(255,255,255,.6);text-decoration:none;}
+
+/* ANCHOR */
+.anchor{display:block;position:relative;top:-80px;visibility:hidden;}
+
+/* DIVIDER */
+.divider{height:1px;background:var(--brd);}
+
+@media(max-width:680px){
+  .calc-grid{grid-template-columns:1fr;}
+  .contact-grid{grid-template-columns:1fr;}
+  .ins-grid{grid-template-columns:repeat(2,1fr);}
+  .nav-links{display:none;}
+}
+
+/* MODE TOGGLE */
+.mode-bar{display:flex;align-items:center;justify-content:center;gap:6px;background:rgba(0,0,0,.3);border:1px solid rgba(255,255,255,.1);border-radius:40px;padding:5px 6px;margin-bottom:2.5rem;width:fit-content;margin-left:auto;margin-right:auto;position:relative;}
+.mode-tab{padding:8px 22px;border-radius:30px;font-size:12px;font-weight:700;cursor:pointer;transition:all .2s;text-decoration:none;color:rgba(255,255,255,.55);white-space:nowrap;}
+.mode-tab:hover{color:#fff;}
+.mode-tab.active{background:#1a6b47;color:#fff;box-shadow:0 2px 12px rgba(26,107,71,.4);}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">SIP Domy Metylovice</div>
+    <div class="nav-links">
+    <a href="index.html">Domů</a>
+    <a href="sip-domy.html" class="active">SIP Domy</a>
+    <a href="realizace.html">Realizace</a>
+    <a href="faq.html">FAQ</a>
+    <a href="kontakt.html">Kontakt</a>
+  </div>
+  <a class="nav-cta" href="modelar.html" style="margin-right:8px;background:linear-gradient(135deg,#1fbc6b,#159a55);">🏗 Navrhnout dům</a><a class="nav-cta" href="#kalkulacka">Spočítat cenu →</a>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-badge">Metylovice · Česká republika · 2026</div>
+  <h1>SIP domy na klíč<br><em>o 40 % levněji</em></h1>
+  <p class="hero-sub">CE-certifikované SIP panely z EU. Montáž českou firmou. Žádná čekací doba. Bydlíte za 10 týdnů.</p>
+  <!-- MODE TOGGLE -->
+  <div class="mode-bar" style="z-index:1;">
+    <a class="mode-tab" href="index.html">🪑 Nábytek</a>
+    <a class="mode-tab active" href="sip-domy.html">🏠 SIP Domy</a>
+  </div>
+  <div class="hero-pills">
+    <span class="pill">✓ CE + ETA certifikát</span>
+    <span class="pill">✓ Montáž za 7–14 dní</span>
+    <span class="pill">✓ Pevná cena bez překvapení</span>
+    <span class="pill">✓ 3D vizualizace zdarma</span>
+  </div>
+  <div class="hero-btns">
+    <a class="btn-primary" href="#kalkulacka">Spočítat cenu zdarma</a>
+    <a class="btn-outline" href="#sluzby">Naše nabídka</a>
+  </div>
+</div>
+
+<!-- TRUST BAR -->
+<div class="trust">
+  <div class="trust-item"><span>🏗️</span><span>EU certifikovaná výroba</span></div>
+  <div class="trust-item"><span>⚡</span><span>Montáž 7–14 dní</span></div>
+  <div class="trust-item"><span>📍</span><span>Metylovice · Frýdek-Místek region</span></div>
+  <div class="trust-item"><span>🔒</span><span>Pevná smluvní cena</span></div>
+  <div class="trust-item"><span>🌿</span><span>Energetická třída A / A+</span></div>
+</div>
+
+<!-- SERVICES -->
+<span class="anchor" id="sluzby"></span>
+<section>
+  <div class="sec-label">Co nabízíme</div>
+  <h2>Tři způsoby spolupráce</h2>
+  <p class="lead">Vyberte si variantu, která vám nejlépe vyhovuje — od pouhého materiálu až po kompletní dům na klíč.</p>
+  <div class="services">
+
+    <div class="svc">
+      <span class="svc-icon">📦</span>
+      <h3>Materiál</h3>
+      <div class="svc-price">od €280<span> / m²</span></div>
+      <p>Dodáme CE-certifikované SIP panely z Rumunska přímo na vaše staveniště. Vy si organizujete montáž sami.</p>
+      <ul class="svc-list">
+        <li>SIP panely OSB + EPS (ECOPAN)</li>
+        <li>CE certifikát + ETA 23/0526</li>
+        <li>Doprava na staveniště</li>
+        <li>Technická dokumentace</li>
+        <li>Technická podpora</li>
+      </ul>
+      <a class="svc-btn" href="#kalkulacka">Spočítat cenu</a>
+    </div>
+
+    <div class="svc featured">
+      <div class="svc-top-badge">⭐ Nejoblíbenější</div>
+      <span class="svc-icon">🏠</span>
+      <h3>Materiál + montáž</h3>
+      <div class="svc-price">od €650<span> / m²</span></div>
+      <p>Panely dodáme a zajistíme montáž prostřednictvím certifikované české firmy. Vy podpisujete smlouvu s námi.</p>
+      <ul class="svc-list">
+        <li>Vše z varianty Materiál</li>
+        <li>Montáž certifikovanou CZ firmou</li>
+        <li>3D vizualizace zdarma</li>
+        <li>Pomoc se stavebním povolením</li>
+        <li>Příprava pro TČ + fotovoltaiku</li>
+        <li>Záruka na konstrukci 10 let</li>
+      </ul>
+      <a class="svc-btn" href="#kalkulacka">Spočítat cenu</a>
+    </div>
+
+    <div class="svc">
+      <span class="svc-icon">🔑</span>
+      <h3>Na klíč</h3>
+      <div class="svc-price">od €950<span> / m²</span></div>
+      <p>Kompletní stavba od projektu po předání klíčů. Vy si vybíráte, my se staráme o vše ostatní.</p>
+      <ul class="svc-list">
+        <li>Vše z varianty Montáž</li>
+        <li>Projekt + stavební povolení</li>
+        <li>Základová deska</li>
+        <li>Okna + dveře</li>
+        <li>Střešní krytina</li>
+        <li>Energetický štítek PENB</li>
+      </ul>
+      <a class="svc-btn" href="#kalkulacka">Spočítat cenu</a>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- KALKULAČKA -->
+<span class="anchor" id="kalkulacka"></span>
+<section class="alt">
+<div class="inner">
+  <div class="sec-label">Cenová kalkulačka</div>
+  <h2>Spočítejte si cenu svého domu</h2>
+  <p class="lead">Pohybujte posuvníky a okamžitě uvidíte orientační cenu. Žádná registrace, žádné závazky.</p>
+
+  <div class="calc-wrap">
+
+    <div class="calc-grid">
+
+      <!-- LEFT COLUMN -->
+      <div>
+        <div class="sl-block" style="margin-bottom:1.4rem;">
+          <div class="sl-top">
+            <span class="sl-name">Plocha domu</span>
+            <span class="sl-val" id="v-sz">100 m²</span>
+          </div>
+          <input type="range" min="40" max="250" value="100" step="5" id="sl-sz" oninput="calc()">
+          <div class="sl-minmax"><span>40 m²</span><span>250 m²</span></div>
+        </div>
+
+        <div style="margin-bottom:1.4rem;">
+          <span class="calc-label">Typ izolace</span>
+          <select class="calc-select" id="sel-type" onchange="calc()">
+            <option value="eps">EPS (expandovaný polystyren)</option>
+            <option value="neopor">Neopor (grafitový EPS, lepší)</option>
+            <option value="pir">PIR / PUR (polyuretan, prémiový)</option>
+          </select>
+        </div>
+
+        <div>
+          <span class="calc-label">Tloušťka izolace</span>
+          <div class="ins-grid" id="ins-grid">
+            <div class="ins-opt" onclick="setIns(100,this)">
+              <div class="ins-val">100 mm</div>
+              <div class="ins-uval">U=0,28</div>
+              <div class="ins-label">Základní</div>
+            </div>
+            <div class="ins-opt active" onclick="setIns(160,this)">
+              <div class="ins-val">160 mm</div>
+              <div class="ins-uval">U=0,17</div>
+              <div class="ins-label">Standard</div>
+            </div>
+            <div class="ins-opt" onclick="setIns(200,this)">
+              <div class="ins-val">200 mm</div>
+              <div class="ins-uval">U=0,14</div>
+              <div class="ins-label">Nízkoenerget.</div>
+            </div>
+            <div class="ins-opt" onclick="setIns(250,this)">
+              <div class="ins-val">250 mm</div>
+              <div class="ins-uval">U=0,11</div>
+              <div class="ins-label">Pasivní</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT COLUMN -->
+      <div>
+        <div class="sl-block" style="margin-bottom:1.4rem;">
+          <div class="sl-top">
+            <span class="sl-name">Počet podlaží</span>
+            <span class="sl-val" id="v-fl">1 podlaží</span>
+          </div>
+          <input type="range" min="1" max="3" value="1" step="1" id="sl-fl" oninput="calc()">
+          <div class="sl-minmax"><span>1</span><span>3</span></div>
+        </div>
+
+        <div style="margin-bottom:1.4rem;">
+          <span class="calc-label">Typ střechy</span>
+          <select class="calc-select" id="sel-roof" onchange="calc()">
+            <option value="sedlo">Sedlová střecha</option>
+            <option value="ploch">Plochá střecha</option>
+            <option value="pultova">Pultová střecha</option>
+          </select>
+        </div>
+
+        <div>
+          <span class="calc-label">Varianta stavby</span>
+          <select class="calc-select" id="sel-variant" onchange="calc()">
+            <option value="material">Pouze materiál</option>
+            <option value="montaz" selected>Materiál + montáž</option>
+            <option class="option" value="klic">Na klíč</option>
+          </select>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- RESULT -->
+    <div class="calc-result" id="calc-result">
+      <div class="res-row">
+        <span class="res-k">SIP panely (materiál)</span>
+        <span class="res-v" id="r-mat">—</span>
+      </div>
+      <div class="res-row">
+        <span class="res-k">Doprava na staveniště</span>
+        <span class="res-v" id="r-dop">—</span>
+      </div>
+      <div class="res-row" id="montaz-row">
+        <span class="res-k">Montáž (česká firma)</span>
+        <span class="res-v" id="r-mon">—</span>
+      </div>
+      <div class="res-row" id="klic-row" style="display:none;">
+        <span class="res-k">Projekt + povolení + finalizace</span>
+        <span class="res-v" id="r-klic">—</span>
+      </div>
+      <div class="res-total">
+        <span class="res-total-k">Orientační cena celkem</span>
+        <span class="res-total-v" id="r-total">—</span>
+      </div>
+      <div class="res-compare" id="r-cmp">—</div>
+      <div class="res-save" id="r-save">—</div>
+    </div>
+
+    <p class="calc-note">Orientační cena · Závisí na konkrétním projektu, terénu a dostupnosti · Přesnou nabídku zašleme do 24 hodin zdarma</p>
+
+    <div style="text-align:center;margin-top:1.2rem;">
+      <a href="#kontakt" class="btn-primary" style="display:inline-block;background:var(--g);color:#fff;padding:13px 28px;border-radius:10px;font-size:14px;font-weight:700;text-decoration:none;">Chci přesnou nabídku →</a>
+    </div>
+
+  </div>
+</div>
+</section>
+
+<div class="divider"></div>
+
+<!-- POSTUP -->
+<span class="anchor" id="postup"></span>
+<section>
+  <div class="sec-label">Jak to funguje</div>
+  <h2>Od poptávky po klíče za 10 týdnů</h2>
+  <p class="lead">Jednoduchý proces bez komplikací — vy se rozhodujete, my se staráme o zbytek.</p>
+  <div class="process">
+    <div class="proc-item">
+      <div class="proc-num">1</div>
+      <h4>Poptávka</h4>
+      <p>Vyplníte formulář nebo zavoláte. Do 24 hodin dostanete přesnou nabídku s 3D vizualizací.</p>
+    </div>
+    <div class="proc-item">
+      <div class="proc-num">2</div>
+      <h4>Projekt + smlouva</h4>
+      <p>Upřesníme dispozice, vyberete výbavu. Podepíšeme smlouvu s pevnou cenou — žádná překvapení.</p>
+    </div>
+    <div class="proc-item">
+      <div class="proc-num">3</div>
+      <h4>Výroba 30–45 dní</h4>
+      <p>ECOPAN v Rumunsku vyrobí panely přesně podle projektu. EU certifikovaná výroba, ISO 9001.</p>
+    </div>
+    <div class="proc-item">
+      <div class="proc-num">4</div>
+      <h4>Doprava TIR</h4>
+      <p>Panely přivezeme přímo na vaše staveniště. Rumunsko → Metylovice ≈ 1 000 km = 2–3 dny.</p>
+    </div>
+    <div class="proc-item">
+      <div class="proc-num">5</div>
+      <h4>Montáž 7–14 dní</h4>
+      <p>Certifikovaná česká montážní firma sestaví hrubou stavbu. Přesně, rychle, čistě.</p>
+    </div>
+    <div class="proc-item">
+      <div class="proc-num">6</div>
+      <h4>Předání klíčů</h4>
+      <p>Dům předáme s dokumentací, certifikáty a zárukou. Celkem ~10 týdnů od podpisu smlouvy.</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- PROC MY -->
+<span class="anchor" id="proc-my"></span>
+<section class="alt">
+<div class="inner">
+  <div class="sec-label">Proč my</div>
+  <h2>Čísla, která rozhodují</h2>
+  <p class="lead">Věříme, že vlastní bydlení by mělo být dostupné každému — i ve 25 letech. Proto stavíme rychle, férově a za rozumnou cenu.</p>
+  <div class="why-grid">
+    <div class="why-card">
+      <div class="why-num">−40 %</div>
+      <h4>Nižší cena</h4>
+      <p>Za dům 100 m² zaplatíte o €30 000–50 000 méně než u klasických stavebních firem — při stejné nebo vyšší kvalitě.</p>
+    </div>
+    <div class="why-card">
+      <div class="why-num">10 týd.</div>
+      <h4>Žádná fronta</h4>
+      <p>Tradiční stavba = 12–24 měsíců čekání. U nás začínáme do 2 týdnů od podpisu smlouvy a bydlíte za 10 týdnů.</p>
+    </div>
+    <div class="why-card">
+      <div class="why-num">CE + ETA</div>
+      <h4>EU certifikáty</h4>
+      <p>ECOPAN má ETA 23/0526, CE a ISO 9001. Splňuje nejvyšší evropské normy pro stavební materiály.</p>
+    </div>
+    <div class="why-card">
+      <div class="why-num">0,11–0,28</div>
+      <h4>U-hodnota stěny</h4>
+      <p>Dle zvolené tloušťky izolace. Pasivní standard splněn při 250 mm EPS / 200 mm PIR.</p>
+    </div>
+    <div class="why-card">
+      <div class="why-num">5 km</div>
+      <h4>Lokální tým</h4>
+      <p>Naše montážní firma sídlí přímo v regionu Frýdek-Místek — zná místní podmínky a je vždy dostupná.</p>
+    </div>
+    <div class="why-card">
+      <div class="why-num">€0</div>
+      <h4>Vizualizace zdarma</h4>
+      <p>3D vizualizace a půdorys domu dostanete zdarma ještě před podpisem smlouvy.</p>
+    </div>
+  </div>
+
+  <div class="info-box" style="margin-top:2rem;">
+    <p><strong>Proč SIP?</strong> Vlastní bydlení by nemělo být výsadou jen těch bohatých. Věříme, že s moderní technologií a férovým přístupem si může dům postavit každý — rychle, kvalitně a za cenu, která dává smysl. <strong>My: €650–780/m² (materiál + montáž)</strong></p>
+  </div>
+</div>
+</section>
+
+<div class="divider"></div>
+
+<!-- KONTAKT -->
+<span class="anchor" id="kontakt"></span>
+<section>
+  <div class="sec-label">Kontakt</div>
+  <h2>Napište nám — odpovíme do 24 hodin</h2>
+  <p class="lead">Poptávka je zcela zdarma a nezávazná. Pošleme vám přesnou nabídku a 3D vizualizaci.</p>
+
+  <div class="contact-grid">
+
+    <div class="contact-form">
+      <h3>Nezávazná poptávka</h3>
+      <div class="form-row">
+        <label>Jméno a příjmení</label>
+        <input type="text" placeholder="Jan Novák">
+      </div>
+      <div class="form-row">
+        <label>Telefon</label>
+        <input type="tel" placeholder="+420 XXX XXX XXX">
+      </div>
+      <div class="form-row">
+        <label>E-mail</label>
+        <input type="email" placeholder="jan@novak.cz">
+      </div>
+      <div class="form-row">
+        <label>Zájem o</label>
+        <select class="calc-select" style="margin-top:0;">
+          <option>Materiál + montáž</option>
+          <option>Pouze materiál</option>
+          <option>Na klíč</option>
+          <option>Pouze konzultace</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <label>Popis projektu (volitelné)</label>
+        <textarea placeholder="Plocha domu, počet pokojů, termín, lokalita..."></textarea>
+      </div>
+      <button class="form-submit" onclick="submitForm()">Odeslat poptávku →</button>
+    </div>
+
+    <div class="contact-info">
+      <div class="ci-card">
+        <h4>Kontaktní údaje</h4>
+        <div class="ci-row"><div class="ci-ic">✆</div><span>+420 XXX XXX XXX</span></div>
+        <div class="ci-row"><div class="ci-ic">@</div><span>info@ardengroup.cz</span></div>
+        <div class="ci-row"><div class="ci-ic">⌖</div><span>Metylovice 153, PSČ 739 49</span></div>
+        <div class="ci-row"><div class="ci-ic">⊕</div><span>www.sipdomymetylovice.cz</span></div>
+      </div>
+      <div class="ci-card">
+        <h4>Certifikace a záruky</h4>
+        <div class="cert-row">
+          <span class="cert">CE certifikát</span>
+          <span class="cert">ETA 23/0526</span>
+          <span class="cert">ISO 9001</span>
+          <span class="cert">ISO 14001</span>
+          <span class="cert">Česká s.r.o.</span>
+        </div>
+        <p style="font-size:12px;color:var(--t2);margin-top:12px;line-height:1.5;">Výrobce panelů: ECOPAN, Rumunsko (EU). Montáž: certifikovaná česká firma. Smlouva dle českého práva.</p>
+      </div>
+      <div class="ci-card" style="background:var(--g);color:#fff;">
+        <h4 style="color:#fff;margin-bottom:8px;">3D vizualizace zdarma</h4>
+        <p style="font-size:13px;color:rgba(255,255,255,.8);line-height:1.55;">Pošlete nám přibližné rozměry a dispozice — do 48 hodin dostanete 3D vizualizaci a půdorys zdarma. Bez závazků.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p><strong>SIP Domy Metylovice s.r.o.</strong> · Metylovice 153, PSČ 739 49 · Česká republika</p>
+  <p style="margin-top:6px;">Ceny jsou orientační · Přesnou nabídku zašleme zdarma do 24 hodin · <a href="#">Ochrana osobních údajů</a></p>
+</footer>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+let insVal = 160;
+
+function setIns(val, el) {
+  insVal = val;
+  document.querySelectorAll('.ins-opt').forEach(o => o.classList.remove('active'));
+  el.classList.add('active');
+  calc();
+}
+
+function fmt(n) {
+  return '€ ' + Math.round(n).toLocaleString('cs-CZ');
+}
+
+function calc() {
+  const sz   = +document.getElementById('sl-sz').value;
+  const fl   = +document.getElementById('sl-fl').value;
+  const type = document.getElementById('sel-type').value;
+  const roof = document.getElementById('sel-roof').value;
+  const vari = document.getElementById('sel-variant').value;
+
+  document.getElementById('v-sz').textContent = sz + ' m²';
+  document.getElementById('v-fl').textContent = fl + (fl === 1 ? ' podlaží' : fl < 5 ? ' podlaží' : ' podlaží');
+
+  // Base price per m² for panels by insulation
+  const insMult = { 100: 0.88, 160: 1.0, 200: 1.12, 250: 1.28 };
+  const typeMult = { eps: 1.0, neopor: 1.08, pir: 1.18 };
+  const roofMult = { sedlo: 1.0, ploch: 0.92, pultova: 0.96 };
+  const flMult = fl === 1 ? 1.0 : fl === 2 ? 1.15 : 1.28;
+
+  const baseMat = 280;
+  const matPriceM2 = baseMat * insMult[insVal] * typeMult[type] * roofMult[roof] * flMult;
+  const matTotal = matPriceM2 * sz;
+
+  const doprava = sz <= 80 ? 1200 : sz <= 150 ? 1500 : 1800;
+  const montaz  = sz * 120;
+  const klicExtra = sz * 180 + 8000;
+
+  let total = matTotal + doprava;
+  if (vari === 'montaz') total += montaz;
+  if (vari === 'klic')   total += montaz + klicExtra;
+
+  // Srovnání s tradiční výstavbou
+  const tradPrice = sz * 1200;
+  const save = tradPrice - total;
+  const pct = Math.round((save / tradPrice) * 100);
+
+  document.getElementById('r-mat').textContent = fmt(matTotal);
+  document.getElementById('r-dop').textContent = fmt(doprava);
+  document.getElementById('r-mon').textContent = vari === 'material' ? 'není zahrnuta' : fmt(montaz);
+  document.getElementById('r-klic').textContent = vari === 'klic' ? fmt(klicExtra) : '—';
+
+  document.getElementById('montaz-row').style.display = '';
+  document.getElementById('klic-row').style.display = vari === 'klic' ? '' : 'none';
+
+  document.getElementById('r-total').textContent = fmt(total);
+  document.getElementById('r-cmp').textContent = 'Tradiční výstavba: ' + fmt(tradPrice) + ' za stejnou plochu';
+  document.getElementById('r-save').textContent = '✓ Ušetříte ' + fmt(save) + ' oproti tradiční výstavbě (' + pct + ' % méně)';
+}
+
+function submitForm() {
+  alert('Děkujeme za poptávku! Ozveme se vám do 24 hodin.\n\n(Toto je demo verze — formulář je potřeba propojit s e-mailem nebo CRM.)');
+}
+
+// Nav active on scroll
+const anchors = document.querySelectorAll('.anchor');
+const navAs   = document.querySelectorAll('.nav-links a');
+window.addEventListener('scroll', () => {
+  let cur = '';
+  anchors.forEach(s => { if (window.scrollY >= s.offsetTop - 120) cur = s.id; });
+  navAs.forEach(a => {
+    a.style.co
