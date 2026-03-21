@@ -149,30 +149,60 @@ function mDraw() {
   M.cvs.style.cursor = cur;
 }
 
+var WALL_T = 0.20; // товщина внутрішньої стіни 0.20m
+
 function mDrawIns(c) {
   if (!M.rooms.length) return;
-  var ins = M.insulation / 1000 * M.sc;
+  var ins = M.insulation / 1000 * M.sc; // товщина ізоляції в px
+  var wt = WALL_T * M.sc; // внутрішня стіна в px
   c.save();
-  c.strokeStyle = 'rgba(74,222,128,.45)';
-  c.lineWidth = Math.max(3, ins);
+
+  // 1. Внутрішні стіни між сусідніми кімнатами
+  c.strokeStyle = 'rgba(255,255,255,.35)';
+  c.lineWidth = wt;
   M.rooms.forEach(function(r) {
-    var h = ins / 2;
-    c.strokeRect(
-      M.ox + r.x*M.sc - h,
-      M.oy + r.y*M.sc - h,
-      r.w*M.sc + ins,
-      r.h*M.sc + ins
-    );
+    M.rooms.forEach(function(other) {
+      if (other.id <= r.id) return;
+      var rx=M.ox+r.x*M.sc, ry=M.oy+r.y*M.sc, rw=r.w*M.sc, rh=r.h*M.sc;
+      var ox=M.ox+other.x*M.sc, oy=M.oy+other.y*M.sc, ow=other.w*M.sc, oh=other.h*M.sc;
+      var TOL = 2; // px tolerance
+      // shared right/left wall
+      if (Math.abs((rx+rw)-ox)<TOL || Math.abs(rx-(ox+ow))<TOL) {
+        var wallX = Math.abs((rx+rw)-ox)<TOL ? rx+rw : rx;
+        var top = Math.max(ry, oy), bot = Math.min(ry+rh, oy+oh);
+        if (bot > top) {
+          c.beginPath(); c.moveTo(wallX,top); c.lineTo(wallX,bot); c.stroke();
+        }
+      }
+      // shared top/bottom wall
+      if (Math.abs((ry+rh)-oy)<TOL || Math.abs(ry-(oy+oh))<TOL) {
+        var wallY = Math.abs((ry+rh)-oy)<TOL ? ry+rh : ry;
+        var left = Math.max(rx,ox), right = Math.min(rx+rw,ox+ow);
+        if (right > left) {
+          c.beginPath(); c.moveTo(left,wallY); c.lineTo(right,wallY); c.stroke();
+        }
+      }
+    });
   });
-  if (M.rooms.length > 0) {
-    var r0 = M.rooms[0];
-    c.fillStyle = 'rgba(74,222,128,.6)';
-    c.font = '9px Arial'; c.textAlign = 'left';
-    c.fillText('izolace ' + M.insulation + ' mm',
-      M.ox + r0.x*M.sc - ins/2 - 2,
-      M.oy + r0.y*M.sc - ins/2 - 6
-    );
-  }
+
+  // 2. Зовнішній контур ізоляції навколо всіх кімнат разом
+  // Спрощена версія: bounding box всіх кімнат + ізоляція
+  var minX=Infinity,minY=Infinity,maxX=-Infinity,maxY=-Infinity;
+  M.rooms.forEach(function(r){
+    minX=Math.min(minX,r.x); minY=Math.min(minY,r.y);
+    maxX=Math.max(maxX,r.x+r.w); maxY=Math.max(maxY,r.y+r.h);
+  });
+  var bx = M.ox+minX*M.sc, by = M.oy+minY*M.sc;
+  var bw = (maxX-minX)*M.sc, bh = (maxY-minY)*M.sc;
+  var h2 = ins/2;
+  c.strokeStyle = 'rgba(74,222,128,.7)';
+  c.lineWidth = Math.max(4, ins);
+  c.strokeRect(bx-h2, by-h2, bw+ins, bh+ins);
+
+  // Label
+  c.fillStyle = 'rgba(74,222,128,.8)';
+  c.font = '9px Arial'; c.textAlign = 'left';
+  c.fillText('izolace '+M.insulation+' mm  |  stěna '+Math.round(WALL_T*100)+' cm', bx-h2, by-h2-6);
   c.restore();
 }
 
@@ -347,6 +377,7 @@ function mMV(e) {
   if (M.drag) {
     M.drag.room.x = mSnap(wx - M.drag.dx);
     M.drag.room.y = mSnap(wy - M.drag.dy);
+    mMagnet(M.drag.room);
     mDraw(); mCalc(); mUpdatePropsLive(M.drag.room.id); return;
   }
 
@@ -393,6 +424,34 @@ function mDbl(e) {
    HELPERS
    ══════════════════════════════════════════════════════════ */
 function mSnap(v) { return Math.round(v * 10) / 10; } // snap to 0.1m = 10cm
+
+// Примагнічування кімнати до сусідніх (поріг = 0.3m)
+var SNAP_DIST = 0.4; // метри
+function mMagnet(room) {
+  M.rooms.forEach(function(other) {
+    if (other.id === room.id) return;
+    var ox = other.x, oy = other.y, ow = other.w, oh = other.h;
+    var rx = room.x, ry = room.y, rw = room.w, rh = room.h;
+    // X-axis snapping
+    var dx1 = Math.abs(rx - (ox+ow));  // left of room to right of other
+    var dx2 = Math.abs((rx+rw) - ox);  // right of room to left of other
+    var dx3 = Math.abs(rx - ox);       // left to left
+    var dx4 = Math.abs((rx+rw) - (ox+ow)); // right to right
+    if (dx1 < SNAP_DIST) room.x = mSnap(ox+ow);
+    else if (dx2 < SNAP_DIST) room.x = mSnap(ox-rw);
+    else if (dx3 < SNAP_DIST) room.x = mSnap(ox);
+    else if (dx4 < SNAP_DIST) room.x = mSnap(ox+ow-rw);
+    // Y-axis snapping
+    var dy1 = Math.abs(ry - (oy+oh));  // top of room to bottom of other
+    var dy2 = Math.abs((ry+rh) - oy);  // bottom of room to top of other
+    var dy3 = Math.abs(ry - oy);       // top to top
+    var dy4 = Math.abs((ry+rh) - (oy+oh)); // bottom to bottom
+    if (dy1 < SNAP_DIST) room.y = mSnap(oy+oh);
+    else if (dy2 < SNAP_DIST) room.y = mSnap(oy-rh);
+    else if (dy3 < SNAP_DIST) room.y = mSnap(oy);
+    else if (dy4 < SNAP_DIST) room.y = mSnap(oy+oh-rh);
+  });
+}
 
 function mHandleAt(room, ex, ey) {
   var px = M.ox+room.x*M.sc, py = M.oy+room.y*M.sc;
