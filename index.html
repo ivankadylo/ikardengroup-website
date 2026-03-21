@@ -1068,78 +1068,7 @@ function sipCalc(){
   s('crtot',sipFmt(tot*C));s('crcmp','');
   s('crsave','');
 }
-var sipMRooms=[],sipMSc=32,sipMOX=50,sipMOY=50,sipMDr=null,sipMDX=0,sipMDY=0,sipMPend=null;
-var sipMCvs,sipMCtx,sipMCW,sipMCH;
-function sipMInit(){
-  sipMCvs=document.getElementById('sipC');
-  if(!sipMCvs||sipMCvs._init)return;
-  sipMCvs._init=true;
-  sipMCtx=sipMCvs.getContext('2d');
-  sipMResize();
-  sipMCvs.addEventListener('mousedown',sipMMD);
-  sipMCvs.addEventListener('mousemove',sipMMV);
-  sipMCvs.addEventListener('mouseup',function(){sipMDr=null;});
-  sipMCvs.addEventListener('wheel',function(e){e.preventDefault();var f=e.deltaY<0?1.1:.91;sipMOX=sipMCW/2+(sipMOX-sipMCW/2)*f;sipMOY=sipMCH/2+(sipMOY-sipMCH/2)*f;sipMSc=Math.max(16,Math.min(100,sipMSc*f));sipMDraw();},{passive:false});
-}
-function sipMResize(){
-  var w=document.getElementById('sipCW');
-  if(!w||!sipMCvs)return;
-  sipMCW=sipMCvs.width=w.clientWidth;sipMCH=sipMCvs.height=w.clientHeight;sipMDraw();
-}
-function sipMDraw(){
-  if(!sipMCtx)return;
-  sipMCtx.clearRect(0,0,sipMCW,sipMCH);
-  sipMCtx.strokeStyle='rgba(255,255,255,.06)';sipMCtx.lineWidth=1;
-  for(var x=sipMOX%sipMSc;x<sipMCW;x+=sipMSc){sipMCtx.beginPath();sipMCtx.moveTo(x,0);sipMCtx.lineTo(x,sipMCH);sipMCtx.stroke();}
-  for(var y=sipMOY%sipMSc;y<sipMCH;y+=sipMSc){sipMCtx.beginPath();sipMCtx.moveTo(0,y);sipMCtx.lineTo(sipMCW,y);sipMCtx.stroke();}
-  sipMCtx.strokeStyle='rgba(31,188,107,.3)';sipMCtx.lineWidth=1.5;
-  sipMCtx.beginPath();sipMCtx.moveTo(sipMOX,0);sipMCtx.lineTo(sipMOX,sipMCH);sipMCtx.stroke();
-  sipMCtx.beginPath();sipMCtx.moveTo(0,sipMOY);sipMCtx.lineTo(sipMCW,sipMOY);sipMCtx.stroke();
-  sipMRooms.forEach(function(r){
-    var px=sipMOX+r.x*sipMSc,py=sipMOY+r.y*sipMSc,pw=r.w*sipMSc,ph=r.h*sipMSc;
-    sipMCtx.globalAlpha=.22;sipMCtx.fillStyle=r.c;sipMCtx.fillRect(px,py,pw,ph);
-    sipMCtx.globalAlpha=1;sipMCtx.strokeStyle=r.c;sipMCtx.lineWidth=2;sipMCtx.strokeRect(px+1,py+1,pw-2,ph-2);
-    sipMCtx.fillStyle='#fff';sipMCtx.textAlign='center';sipMCtx.textBaseline='middle';
-    sipMCtx.font='bold '+(Math.max(9,Math.min(12,pw/r.n.length*1.3)))+'px sans-serif';
-    sipMCtx.fillText(r.n,px+pw/2,py+ph/2-7);
-    sipMCtx.fillStyle=r.c;sipMCtx.font='10px sans-serif';
-    sipMCtx.fillText(r.w+'\u00d7'+r.h+' m',px+pw/2,py+ph/2+7);
-  });
-  sipMCtx.textAlign='left';
-  var h=document.getElementById('sipCH');if(h)h.style.display=sipMRooms.length?'none':'';
-}
-function sipMSnap(v){return Math.round(v*2)/2;}
-function sipMAdd(n,c,w,h){sipMPend={n:n,c:c,w:w,h:h};if(sipMCvs)sipMCvs.style.cursor='crosshair';}
-function sipMMD(e){
-  var wx=(e.offsetX-sipMOX)/sipMSc,wy=(e.offsetY-sipMOY)/sipMSc;
-  if(sipMPend){sipMRooms.push({id:Date.now(),n:sipMPend.n,c:sipMPend.c,x:sipMSnap(wx),y:sipMSnap(wy),w:sipMPend.w,h:sipMPend.h});sipMPend=null;sipMCvs.style.cursor='crosshair';sipMDraw();sipMCalc();return;}
-  var hit=sipMRooms.slice().reverse().find(function(r){return wx>=r.x&&wx<=r.x+r.w&&wy>=r.y&&wy<=r.y+r.h;});
-  if(hit){sipMDr=hit;sipMDX=wx-hit.x;sipMDY=wy-hit.y;}
-}
-function sipMMV(e){
-  if(!sipMDr)return;
-  var wx=(e.offsetX-sipMOX)/sipMSc,wy=(e.offsetY-sipMOY)/sipMSc;
-  sipMDr.x=sipMSnap(wx-sipMDX);sipMDr.y=sipMSnap(wy-sipMDY);sipMDraw();sipMCalc();
-}
-function sipMZoom(f){
-  if(f===0){sipMSc=32;sipMOX=50;sipMOY=50;}
-  else{sipMOX=sipMCW/2+(sipMOX-sipMCW/2)*f;sipMOY=sipMCH/2+(sipMOY-sipMCH/2)*f;sipMSc=Math.max(16,Math.min(100,sipMSc*f));}
-  sipMDraw();
-}
-function sipMCalc(){
-  var tot=sipMRooms.reduce(function(s,r){return s+r.w*r.h;},0);
-  var matE=280*tot;var dopE=tot<=80?1200:tot<=150?1500:1800;var monE=tot*120;var C=25;
-  var totE=matE+dopE+monE;var rdKc=tot*1200*C;var save=rdKc-totE*C;var pct=Math.round(save/rdKc*100);
-  var g=function(id){return document.getElementById(id)||{textContent:''};};  
-  g('mma').textContent=tot.toFixed(1)+' m\u00b2';g('mmr').textContent=sipMRooms.length;
-  g('mmm').textContent=tot>0?sipFmtE(matE):'\u2014';g('mmd').textContent=tot>0?sipFmtE(dopE):'\u2014';
-  g('mmn').textContent=tot>0?sipFmtE(monE):'\u2014';g('mmt').textContent=tot>0?sipFmt(totE*C):'\u2014';
-  g('mms').textContent=tot>0?'vs RD: -'+sipFmt(save)+' (-'+pct+'%)':'';
-  if(sipMRooms.length){g('mmlist').innerHTML=sipMRooms.map(function(r){return '<div style="display:flex;align-items:center;gap:5px;padding:3px 0;border-bottom:1px solid rgba(255,255,255,.05);"><div style="width:7px;height:7px;border-radius:2px;background:'+r.c+'"></div><span style="flex:1;font-size:10px;color:rgba(255,255,255,.65)">'+r.n+'</span><span style="font-size:10px;color:#1fbc6b">'+(r.w*r.h).toFixed(1)+' m\u00b2</span></div>';}).join('');}
-  else g('mmlist').textContent='Zatím pr\u00e1zdn\u00e9';
-}
-window.addEventListener('resize',sipMResize);
-document.addEventListener('DOMContentLoaded',sipCalc);
+// Modeler v3 - see js/modelar.js
 </script>
 <!-- ===== END SIP DOMY SCRIPTS ===== -->
 
