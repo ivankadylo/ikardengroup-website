@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Objednávky — IKarden Admin</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        body { font-family: Arial, sans-serif; background: linear-gradient(135deg,#1a2e1a,#0d1f1f,#1a2520); min-height:100vh; color:#fff; }
+        .page-header { background:#0d1f1a; border-bottom:1px solid #3a3a3a; padding:16px 24px; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:10; box-shadow:0 2px 10px rgba(0,0,0,.3); }
+        .page-header h1 { font-size:20px; font-weight:800; color:#4ade80; letter-spacing:1px; }
+        .back-btn { background:#2a3f38; border:1px solid #3a3a3a; color:#ccc; padding:8px 16px; border-radius:5px; font-size:13px; font-weight:700; cursor:pointer; text-decoration:none; transition:all .3s; }
+        .back-btn:hover { background:#4ade80; color:#000; border-color:#4ade80; }
+        .container { max-width:1200px; margin:0 auto; padding:24px 20px; }
+
+        /* Статистика */
+        .stats-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:16px; margin-bottom:28px; }
+        .stat-card { background:#1f332f; border:1px solid #3a3a3a; border-radius:10px; padding:20px; text-align:center; }
+        .stat-card .val { font-size:2rem; font-weight:800; color:#4ade80; }
+        .stat-card .lbl { font-size:12px; color:#888; margin-top:4px; }
+
+        /* Фільтри */
+        .filters { display:flex; gap:10px; margin-bottom:20px; flex-wrap:wrap; align-items:center; }
+        .filter-btn { background:#1f332f; border:1px solid #3a3a3a; color:#ccc; padding:7px 14px; border-radius:5px; font-size:13px; font-weight:600; cursor:pointer; transition:all .2s; }
+        .filter-btn:hover, .filter-btn.active { background:#4ade80; color:#000; border-color:#4ade80; }
+        .search-box { background:#1f332f; border:2px solid #3a3a3a; border-radius:5px; padding:8px 14px; color:#fff; font-size:13px; font-family:Arial; width:220px; transition:border-color .3s; }
+        .search-box:focus { outline:none; border-color:#4ade80; }
+
+        /* Таблиця замовлень */
+        .orders-table { width:100%; border-collapse:collapse; }
+        .orders-table th { background:#1f332f; color:#4ade80; font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:.06em; padding:12px 16px; text-align:left; border-bottom:2px solid #3a3a3a; }
+        .orders-table td { padding:14px 16px; border-bottom:1px solid #2a3f38; font-size:14px; vertical-align:top; }
+        .orders-table tr:hover td { background:rgba(74,222,128,.05); }
+
+        /* Статус оплати */
+        .badge { display:inline-block; padding:3px 10px; border-radius:5px; font-size:11px; font-weight:700; }
+        .badge-pending { background:rgba(245,158,11,.15); color:#f59e0b; border:1px solid rgba(245,158,11,.3); }
+        .badge-paid { background:rgba(74,222,128,.15); color:#4ade80; border:1px solid rgba(74,222,128,.3); }
+        .badge-cancelled { background:rgba(239,68,68,.15); color:#ef4444; border:1px solid rgba(239,68,68,.3); }
+
+        /* Кнопки дій */
+        .action-btns { display:flex; gap:6px; flex-wrap:wrap; }
+        .btn-detail { background:rgba(74,222,128,.1); border:1px solid rgba(74,222,128,.3); color:#4ade80; padding:5px 10px; border-radius:5px; font-size:12px; font-weight:600; cursor:pointer; transition:all .2s; }
+        .btn-detail:hover { background:#4ade80; color:#000; }
+        .btn-paid { background:rgba(74,222,128,.1); border:1px solid rgba(74,222,128,.3); color:#4ade80; padding:5px 10px; border-radius:5px; font-size:12px; font-weight:600; cursor:pointer; transition:all .2s; }
+        .btn-paid:hover { background:#4ade80; color:#000; }
+        .btn-cancel { background:rgba(239,68,68,.1); border:1px solid rgba(239,68,68,.3); color:#ef4444; padding:5px 10px; border-radius:5px; font-size:12px; font-weight:600; cursor:pointer; transition:all .2s; }
+        .btn-cancel:hover { background:#ef4444; color:#fff; }
+        .btn-delete { background:rgba(239,68,68,.05); border:1px solid rgba(239,68,68,.2); color:#888; padding:5px 10px; border-radius:5px; font-size:12px; cursor:pointer; transition:all .2s; }
+        .btn-delete:hover { background:#ef4444; color:#fff; border-color:#ef4444; }
+
+        /* Модальне вікно деталей */
+        .modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.7); z-index:1000; align-items:center; justify-content:center; }
+        .modal-overlay.open { display:flex; }
+        .modal { background:#1f332f; border:1px solid #3a3a3a; border-radius:10px; padding:28px; max-width:600px; width:90%; max-height:85vh; overflow-y:auto; position:relative; }
+        .modal h2 { color:#4ade80; font-size:20px; margin-bottom:20px; }
+        .modal-close { position:absolute; top:16px; right:16px; background:transparent; border:none; color:#888; font-size:22px; cursor:pointer; transition:color .2s; }
+        .modal-close:hover { color:#ef4444; }
+        .detail-row { display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid #2a3f38; font-size:14px; }
+        .detail-row .key { color:#888; }
+        .detail-row .val { color:#fff; font-weight:600; text-align:right; max-width:60%; }
+        .items-list { background:#1a2520; border-radius:8px; padding:14px; margin-top:12px; }
+        .item-line { display:flex; justify-content:space-between; padding:6px 0; border-bottom:1px solid #2a3f38; font-size:13px; }
+        .item-line:last-child { border:none; }
+        .total-line { display:flex; justify-content:space-between; padding:12px 0 0; font-size:18px; font-weight:800; color:#4ade80; }
+
+        /* Пусто */
+        .empty-state { text-align:center; padding:60px 20px; color:#888; }
+        .empty-state .icon { font-size:48px; margin-bottom:16px; }
+        .empty-state p { font-size:16px; }
+
+        /* Адаптив */
+        @media(max-width:768px){
+            .orders-table { display:block; overflow-x:auto; }
+            .stats-grid { grid-template-columns:1fr 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="page-header">
+    <h1>📋 Správa objednávek</h1>
+    <a href="index.html" class="back-btn">← Zpět na web</a>
+</div>
+
+<div class="container">
+
+    <!-- Статистика -->
+    <div class="stats-grid" id="statsGrid"></div>
+
+    <!-- Фільтри -->
+    <div class="filters">
+        <button class="filter-btn active" onclick="filterOrders('all', this)">Všechny</button>
+        <button class="filter-btn" onclick="filterOrders('pending', this)">⏳ Čeká na platbu</button>
+        <button class="filter-btn" onclick="filterOrders('paid', this)">✅ Zaplaceno</button>
+        <button class="filter-btn" onclick="filterOrders('cancelled', this)">❌ Zrušeno</button>
+        <input type="text" class="search-box" id="searchBox" placeholder="🔍 Hledat jméno / email..." oninput="renderOrders()">
+        <button class="filter-btn" onclick="clearAllOrders()" style="margin-left:auto;border-color:rgba(239,68,68,.3);color:#ef4444;">🗑 Vymazat vše</button>
+    </div>
+
+    <!-- Таблиця -->
+    <div style="background:#1f332f;border:1px solid #3a3a3a;border-radius:10px;overflow:hidden;">
+        <table class="orders-table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Zákazník</th>
+                    <th>Kontakt</th>
+                    <th>Způsob platby</th>
+                    <th>Suma</th>
+                    <th>Datum</th>
+                    <th>Stav</th>
+                    <th>Akce</th>
+                </tr>
+            </thead>
+            <tbody id="ordersBody"></tbody>
+        </table>
+        <div class="empty-state" id="emptyState" style="display:none;">
+            <div class="icon">📭</div>
+            <p>Žádné objednávky zatím</p>
+        </div>
+    </div>
+
+</div>
+
+<!-- Модальне вікно деталей -->
+<div class="modal-overlay" id="detailModal">
+    <div class="modal">
+        <button class="modal-close" onclick="closeModal()">✕</button>
+        <h2>📦 Detail objednávky</h2>
+        <div id="modalContent"></div>
+    </div>
+</div>
+
+<script>
+let allOrders = [];
+let currentFilter = 'all';
+
+// Завантажити замовлення
+function loadOrders() {
+    allOrders = JSON.parse(localStorage.getItem('ikarden-orders') || '[]');
+    // Додаємо статус якщо немає
+    allOrders = allOrders.map((o, i) => ({
+        id: i + 1,
+        status: o.status || 'pending',
+        ...o
+    }));
+    renderStats();
+    renderOrders();
+}
+
+// Статистика
+function renderStats() {
+    const total = allOrders.length;
+    const paid = allOrders.filter(o => o.status === 'paid').length;
+    const pending = allOrders.filter(o => o.status === 'pending').length;
+    const revenue = allOrders
+        .filter(o => o.status === 'paid')
+        .reduce((s, o) => {
+            const num = parseInt((o.total || '0').replace(/\D/g, ''));
+            return s + (isNaN(num) ? 0 : num);
+        }, 0);
+
+    document.getElementById('statsGrid').innerHTML = `
+        <div class="stat-card"><div class="val">${total}</div><div class="lbl">Celkem objednávek</div></div>
+        <div class="stat-card"><div class="val" style="color:#f59e0b">${pending}</div><div class="lbl">Čeká na platbu</div></div>
+        <div class="stat-card"><div class="val">${paid}</div><div class="lbl">Zaplaceno</div></div>
+        <div class="stat-card"><div class="val">${revenue.toLocaleString('cs-CZ')} Kč</div><div class="lbl">Celkový příjem</div></div>
+    `;
+}
+
+// Рендер таблиці
+function renderOrders() {
+    const search = (document.getElementById('searchBox').value || '').toLowerCase();
+    let filtered = allOrders.filter(o => {
+        if (currentFilter !== 'all' && o.status !== currentFilter) return false;
+        if (search) {
+            const name = (o.from_name || '').toLowerCase();
+            const email = (o.from_email || '').toLowerCase();
+            if (!name.includes(search) && !email.includes(search)) return false;
+        }
+        return true;
+    });
+
+    const tbody = document.getElementById('ordersBody');
+    const empty = document.getElementById('emptyState');
+
+    if (filtered.length === 0) {
+        tbody.innerHTML = '';
+        empty.style.display = 'block';
+        return;
+    }
+    empty.style.display = 'none';
+
+    const paymentLabels = {
+        cash: 'Hotově', transfer: 'Převodem', card: 'Kartou',
+        'Наготові при отриманні': 'Hotově',
+        'Банківський переказ': 'Převodem',
+        'Кредитна картка': 'Kartou'
+    };
+
+    tbody.innerHTML = filtered.slice().reverse().map((o, i) => {
+        const statusBadge = {
+            pending: '<span class="badge badge-pending">⏳ Čeká</span>',
+            paid:    '<span class="badge badge-paid">✅ Zaplaceno</span>',
+            cancelled: '<span class="badge badge-cancelled">❌ Zrušeno</span>'
+        }[o.status] || '<span class="badge badge-pending">⏳ Čeká</span>';
+
+        const date = o.order_date || o.date
+            ? new Date(o.order_date || o.date).toLocaleDateString('cs-CZ', {day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'})
+            : '—';
+
+        const payment = paymentLabels[o.payment] || o.payment || '—';
+
+        return `<tr>
+            <td style="color:#888;font-size:13px;">#${o.id}</td>
+            <td><strong>${o.from_name || '—'}</strong><br><span style="color:#888;font-size:12px;">${o.address || ''}</span></td>
+            <td style="font-size:13px;">${o.from_email || '—'}<br><span style="color:#4ade80;">${o.phone || ''}</span></td>
+            <td style="font-size:13px;">${payment}</td>
+            <td style="font-weight:800;color:#4ade80;">${o.total || '—'}</td>
+            <td style="font-size:12px;color:#888;">${date}</td>
+            <td>${statusBadge}</td>
+            <td>
+                <div class="action-btns">
+                    <button class="btn-detail" onclick="showDetail(${o.id - 1})">🔍 Detail</button>
+                    ${o.status !== 'paid' ? `<button class="btn-paid" onclick="setStatus(${o.id - 1},'paid')">✅ Zaplaceno</button>` : ''}
+                    ${o.status !== 'cancelled' ? `<button class="btn-cancel" onclick="setStatus(${o.id - 1},'cancelled')">❌ Zrušit</button>` : ''}
+                    <button class="btn-delete" onclick="deleteOrder(${o.id - 1})">🗑</button>
+                </div>
+            </td>
+        </tr>`;
+    }).join('');
+}
+
+// Фільтр
+function filterOrders(filter, btn) {
+    currentFilter = filter;
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderOrders();
+}
+
+// Деталі
+function showDetail(idx) {
+    const o = allOrders[idx];
+    if (!o) return;
+
+    const paymentLabels = {
+        cash: 'Hotově při převzetí', transfer: 'Bankovní převod', card: 'Kreditní karta',
+        'Наготові при отриманні': 'Hotově při převzetí',
+        'Банківський переказ': 'Bankovní převod',
+        'Кредитна картка': 'Kreditní karta'
+    };
+
+    const date = o.order_date || o.date
+        ? new Date(o.order_date || o.date).toLocaleString('cs-CZ')
+        : '—';
+
+    const itemsHTML = o.items
+        ? (typeof o.items === 'string'
+            ? `<pre style="white-space:pre-wrap;color:#ccc;font-size:13px;">${o.items}</pre>`
+            : o.items.map(i => `
+                <div class="item-line">
+                    <span>${i.name}</span>
+                    <span style="color:#888">${i.quantity}× ${i.price?.toLocaleString()} Kč</span>
+                    <span style="color:#4ade80;font-weight:700">${(i.price*i.quantity)?.toLocaleString()} Kč</span>
+                </div>`).join('')
+          )
+        : '<p style="color:#888">—</p>';
+
+    const statusMap = { pending:'⏳ Čeká na platbu', paid:'✅ Zaplaceno', cancelled:'❌ Zrušeno' };
+
+    document.getElementById('modalContent').innerHTML = `
+        <div class="detail-row"><span class="key">Zákazník</span><span class="val">${o.from_name || '—'}</span></div>
+        <div class="detail-row"><span class="key">Email</span><span class="val">${o.from_email || '—'}</span></div>
+        <div class="detail-row"><span class="key">Telefon</span><span class="val">${o.phone || '—'}</span></div>
+        <div class="detail-row"><span class="key">Adresa</span><span class="val">${o.address || '—'}</span></div>
+        <div class="detail-row"><span class="key">Způsob platby</span><span class="val">${paymentLabels[o.payment] || o.payment || '—'}</span></div>
+        <div class="detail-row"><span class="key">Datum</span><span class="val">${date}</span></div>
+        <div class="detail-row"><span class="key">Stav</span><span class="val">${statusMap[o.status] || '—'}</span></div>
+
+        <div style="margin-top:16px;font-size:13px;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:.06em;">Položky</div>
+        <div class="items-list">${itemsHTML}
+            <div class="total-line"><span>Celkem</span><span>${o.total || '—'}</span></div>
+        </div>
+
+        <div style="display:flex;gap:8px;margin-top:20px;flex-wrap:wrap;">
+            ${o.status !== 'paid' ? `<button class="btn-paid" style="padding:10px 18px;font-size:14px;" onclick="setStatus(${idx},'paid');closeModal()">✅ Označit jako zaplaceno</button>` : ''}
+            ${o.status !== 'cancelled' ? `<button class="btn-cancel" style="padding:10px 18px;font-size:14px;" onclick="setStatus(${idx},'cancelled');closeModal()">❌ Zrušit objednávku</button>` : ''}
+            <button class="btn-detail" style="padding:10px 18px;font-size:14px;" onclick="copyOrder(${idx})">📋 Kopírovat</button>
+        </div>
+    `;
+    document.getElementById('detailModal').classList.add('open');
+}
+
+function closeModal() {
+    document.getElementById('detailModal').classList.remove('open');
+}
+
+// Зміна статусу
+function setStatus(idx, status) {
+    allOrders[idx].status = status;
+    saveOrders();
+    renderStats();
+    renderOrders();
+}
+
+// Видалити
+function deleteOrder(idx) {
+    if (!confirm('Vymazat tuto objednávku?')) return;
+    allOrders.splice(idx, 1);
+    allOrders = allOrders.map((o, i) => ({ ...o, id: i + 1 }));
+    saveOrders();
+    renderStats();
+    renderOrders();
+}
+
+// Видалити всі
+function clearAllOrders() {
+    if (!confirm('Vymazat VŠECHNY objednávky? Tato akce je nevratná!')) return;
+    allOrders = [];
+    saveOrders();
+    renderStats();
+    renderOrders();
+}
+
+// Копіювати
+function copyOrder(idx) {
+    const o = allOrders[idx];
+    const text = `Objednávka #${o.id}\nZákazník: ${o.from_name}\nEmail: ${o.from_email}\nTelefon: ${o.phone}\nAdresa: ${o.address}\nPlatba: ${o.payment}\nCelkem: ${o.total}\nDatum: ${o.order_date || o.date}`;
+    navigator.clipboard.writeText(text).then(() => alert('Zkopírováno do schránky!'));
+}
+
+// Зберегти
+function saveOrders() {
+    localStorage.setItem('ikarden-orders', JSON.stringify(allOrders));
+}
+
+// Закрити модал по кліку поза
+document.getElementById('detailModal').addEventListener('click', function(e) {
+    if (e.target === this) closeModal();
+});
+
+// Ініціалізація
+loadOrders();
+</script>
+</body>
+</html>

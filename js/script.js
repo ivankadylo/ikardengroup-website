@@ -1243,11 +1243,21 @@ function toggleAdminMode() {
         if (adminBtn) adminBtn.innerHTML = '✅ Admin ON <span style="font-size: 12px; margin-left: 5px; cursor: pointer;" onclick="event.stopPropagation(); logoutAdmin();" title="Odhlásit">🚪</span>';
         showNotification('✅ Admin režim aktivován');
         console.log('🔧 Admin mode: ON');
+        // Показати кнопку замовлень
+        const ordersBtn = document.getElementById('ordersBtn');
+        if (ordersBtn) ordersBtn.style.display = 'inline-flex';
+        const sipOrdersBtn = document.getElementById('sipOrdersBtn');
+        if (sipOrdersBtn) sipOrdersBtn.style.display = 'inline-flex';
     } else {
         body.classList.remove('admin-mode');
         if (adminBtn) adminBtn.textContent = '🔧 Admin';
         showNotification('❌ Admin režim deaktivován');
         console.log('🔧 Admin mode: OFF');
+        // Сховати кнопку замовлень
+        const ordersBtn = document.getElementById('ordersBtn');
+        if (ordersBtn) ordersBtn.style.display = 'none';
+        const sipOrdersBtn = document.getElementById('sipOrdersBtn');
+        if (sipOrdersBtn) sipOrdersBtn.style.display = 'none';
     }
     
     // Reload products and gallery to show admin buttons
