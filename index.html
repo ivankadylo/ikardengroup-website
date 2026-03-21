@@ -686,6 +686,7 @@
     <!-- Дані товарів (редагуються через адмін) -->
     <script src="js/products-data.js"></script>
     <script src="js/script.js"></script>
+    <script src="js/modelar.js"></script>
 
 <!-- ===== SIP DOMY STYLES ===== -->
 <style>
@@ -886,38 +887,118 @@ input[type=range]{width:100%;accent-color:#4ade80;}
   </div>
 </div>
 
-<!-- MODELÁŘ -->
-<div class="sip-pg" id="sp-model" style="height:calc(100vh - 60px);">
-  <div style="display:flex;height:100%;overflow:hidden;">
-    <div style="width:190px;flex-shrink:0;background:#0a1710;border-right:1px solid rgba(255,255,255,.1);overflow-y:auto;padding:10px;">
-      <div style="font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:8px;">Přidat místnost</div>
-      <div onclick="sipMAdd('Obývací pokoj','#3b82f6',6,4)" style="display:flex;align-items:center;gap:7px;padding:7px 8px;border-radius:7px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);cursor:pointer;margin-bottom:4px;" onmouseover="this.style.borderColor='#1fbc6b'" onmouseout="this.style.borderColor='rgba(255,255,255,.08)'"><div style="width:8px;height:8px;border-radius:2px;background:#3b82f6;flex-shrink:0;"></div><span style="font-size:11px;font-weight:600;color:#fff;">Obývací pokoj</span><span style="font-size:9px;color:rgba(255,255,255,.35);margin-left:auto;">6×4</span></div>
-      <div onclick="sipMAdd('Kuchyň','#f5a623',3,4)" style="display:flex;align-items:center;gap:7px;padding:7px 8px;border-radius:7px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);cursor:pointer;margin-bottom:4px;" onmouseover="this.style.borderColor='#1fbc6b'" onmouseout="this.style.borderColor='rgba(255,255,255,.08)'"><div style="width:8px;height:8px;border-radius:2px;background:#f5a623;flex-shrink:0;"></div><span style="font-size:11px;font-weight:600;color:#fff;">Kuchyň</span><span style="font-size:9px;color:rgba(255,255,255,.35);margin-left:auto;">3×4</span></div>
-      <div onclick="sipMAdd('Ložnice','#a855f7',4,4)" style="display:flex;align-items:center;gap:7px;padding:7px 8px;border-radius:7px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);cursor:pointer;margin-bottom:4px;" onmouseover="this.style.borderColor='#1fbc6b'" onmouseout="this.style.borderColor='rgba(255,255,255,.08)'"><div style="width:8px;height:8px;border-radius:2px;background:#a855f7;flex-shrink:0;"></div><span style="font-size:11px;font-weight:600;color:#fff;">Ložnice</span><span style="font-size:9px;color:rgba(255,255,255,.35);margin-left:auto;">4×4</span></div>
-      <div onclick="sipMAdd('Dětský pokoj','#06b6d4',3,3)" style="display:flex;align-items:center;gap:7px;padding:7px 8px;border-radius:7px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);cursor:pointer;margin-bottom:4px;" onmouseover="this.style.borderColor='#1fbc6b'" onmouseout="this.style.borderColor='rgba(255,255,255,.08)'"><div style="width:8px;height:8px;border-radius:2px;background:#06b6d4;flex-shrink:0;"></div><span style="font-size:11px;font-weight:600;color:#fff;">Dětský pokoj</span><span style="font-size:9px;color:rgba(255,255,255,.35);margin-left:auto;">3×3</span></div>
-      <div onclick="sipMAdd('Koupelna','#1fbc6b',2.5,2)" style="display:flex;align-items:center;gap:7px;padding:7px 8px;border-radius:7px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);cursor:pointer;margin-bottom:4px;" onmouseover="this.style.borderColor='#1fbc6b'" onmouseout="this.style.borderColor='rgba(255,255,255,.08)'"><div style="width:8px;height:8px;border-radius:2px;background:#1fbc6b;flex-shrink:0;"></div><span style="font-size:11px;font-weight:600;color:#fff;">Koupelna</span><span style="font-size:9px;color:rgba(255,255,255,.35);margin-left:auto;">2.5×2</span></div>
-      <div onclick="sipMAdd('Zádveří','#9ca3af',2,2)" style="display:flex;align-items:center;gap:7px;padding:7px 8px;border-radius:7px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);cursor:pointer;margin-bottom:4px;" onmouseover="this.style.borderColor='#1fbc6b'" onmouseout="this.style.borderColor='rgba(255,255,255,.08)'"><div style="width:8px;height:8px;border-radius:2px;background:#9ca3af;flex-shrink:0;"></div><span style="font-size:11px;font-weight:600;color:#fff;">Zádveří</span><span style="font-size:9px;color:rgba(255,255,255,.35);margin-left:auto;">2×2</span></div>
-      <div onclick="sipMAdd('Garáž','#6b7280',6,3)" style="display:flex;align-items:center;gap:7px;padding:7px 8px;border-radius:7px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);cursor:pointer;margin-bottom:4px;" onmouseover="this.style.borderColor='#1fbc6b'" onmouseout="this.style.borderColor='rgba(255,255,255,.08)'"><div style="width:8px;height:8px;border-radius:2px;background:#6b7280;flex-shrink:0;"></div><span style="font-size:11px;font-weight:600;color:#fff;">Garáž</span><span style="font-size:9px;color:rgba(255,255,255,.35);margin-left:auto;">6×3</span></div>
-      <button onclick="if(confirm('Vymazat plán?')){sipMRooms=[];sipMDraw();sipMCalc();}" style="width:100%;margin-top:8px;padding:7px;background:rgba(231,76,60,.1);border:1px solid rgba(231,76,60,.3);color:#e74c3c;border-radius:7px;font-size:11px;font-weight:600;cursor:pointer;font-family:inherit;">&#128465; Vymazat vše</button>
+<!-- MODELÁŘ v2 -->
+<div class="sip-pg" id="sp-model" style="height:calc(100vh - 64px);">
+<div style="display:flex;height:100%;overflow:hidden;font-family:Arial,sans-serif;">
+
+  <!-- LEVÝ PANEL -->
+  <div style="width:195px;flex-shrink:0;background:#0d1f1a;border-right:1px solid #3a3a3a;overflow-y:auto;padding:10px;display:flex;flex-direction:column;gap:8px;">
+
+    <!-- Nástroje -->
+    <div style="font-size:9px;font-weight:700;color:#4ade80;text-transform:uppercase;letter-spacing:.08em;margin-bottom:2px;">Nástroje</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-bottom:4px;">
+      <button id="mBtnSelect" onclick="mSetMode('select')" style="padding:6px 4px;border-radius:5px;font-size:11px;font-weight:700;cursor:pointer;border:2px solid #4ade80;background:rgba(74,222,128,.2);color:#4ade80;font-family:Arial;">↖ Výběr</button>
+      <button id="mBtnDoor"   onclick="mSetMode('door')"   style="padding:6px 4px;border-radius:5px;font-size:11px;font-weight:700;cursor:pointer;border:2px solid #3a3a3a;background:transparent;color:#ccc;font-family:Arial;">🚪 Dveře</button>
+      <button id="mBtnWin"    onclick="mSetMode('window')" style="padding:6px 4px;border-radius:5px;font-size:11px;font-weight:700;cursor:pointer;border:2px solid #3a3a3a;background:transparent;color:#ccc;font-family:Arial;">🪟 Okno</button>
+      <button id="mBtnDel"    onclick="mSetMode('delete')" style="padding:6px 4px;border-radius:5px;font-size:11px;font-weight:700;cursor:pointer;border:2px solid #3a3a3a;background:transparent;color:#ccc;font-family:Arial;">🗑 Smazat</button>
     </div>
-    <div style="flex:1;position:relative;background:#142a1e;" id="sipCW">
-      <canvas id="sipC" style="display:block;cursor:crosshair;"></canvas>
-      <div id="sipCH" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;opacity:.4;pointer-events:none;"><div style="font-size:36px;">&#9999;&#65039;</div><p style="font-size:13px;font-weight:500;color:#fff;">Klikněte na místnost vlevo<br>a umístěte ji na plán</p></div>
-      <div style="position:absolute;bottom:12px;right:12px;display:flex;flex-direction:column;gap:4px;">
-        <button onclick="sipMZoom(1.12)" style="width:30px;height:30px;background:rgba(0,0,0,.5);border:1px solid rgba(255,255,255,.15);border-radius:6px;color:#fff;font-size:16px;cursor:pointer;">+</button>
-        <button onclick="sipMZoom(.9)" style="width:30px;height:30px;background:rgba(0,0,0,.5);border:1px solid rgba(255,255,255,.15);border-radius:6px;color:#fff;font-size:16px;cursor:pointer;">&#8722;</button>
-        <button onclick="sipMZoom(0)" style="width:30px;height:30px;background:rgba(0,0,0,.5);border:1px solid rgba(255,255,255,.15);border-radius:6px;color:#fff;font-size:13px;cursor:pointer;">&#8859;</button>
-      </div>
+
+    <div style="height:1px;background:#3a3a3a;"></div>
+
+    <!-- Izolace -->
+    <div style="font-size:9px;font-weight:700;color:#4ade80;text-transform:uppercase;letter-spacing:.08em;">Izolace (mm)</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;">
+      <button class="mInsBt" data-mm="100" onclick="mSetInsulation(100)" style="padding:5px 2px;border-radius:5px;font-size:10px;font-weight:700;cursor:pointer;border:2px solid #3a3a3a;background:transparent;color:#888;font-family:Arial;">100 mm</button>
+      <button class="mInsBt" data-mm="160" onclick="mSetInsulation(160)" style="padding:5px 2px;border-radius:5px;font-size:10px;font-weight:700;cursor:pointer;border:2px solid #4ade80;background:#4ade80;color:#000;font-family:Arial;">160 mm ★</button>
+      <button class="mInsBt" data-mm="200" onclick="mSetInsulation(200)" style="padding:5px 2px;border-radius:5px;font-size:10px;font-weight:700;cursor:pointer;border:2px solid #3a3a3a;background:transparent;color:#888;font-family:Arial;">200 mm</button>
+      <button class="mInsBt" data-mm="250" onclick="mSetInsulation(250)" style="padding:5px 2px;border-radius:5px;font-size:10px;font-weight:700;cursor:pointer;border:2px solid #3a3a3a;background:transparent;color:#888;font-family:Arial;">250 mm</button>
     </div>
-    <div style="width:210px;flex-shrink:0;background:#0a1710;border-left:1px solid rgba(255,255,255,.1);overflow-y:auto;">
-      <div style="padding:10px 12px;border-bottom:1px solid rgba(255,255,255,.1);background:linear-gradient(135deg,#0d2e1e,#1a4a2e);"><div style="font-size:12px;font-weight:700;color:#1fbc6b;">&#128200; Kalkulace</div><div style="font-size:10px;color:rgba(255,255,255,.4);">Aktualizuje se živě</div></div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:5px;padding:8px;"><div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:7px;padding:8px;text-align:center;"><div style="font-size:13px;font-weight:700;color:#1fbc6b;" id="mma">0 m²</div><div style="font-size:9px;color:rgba(255,255,255,.4);">Plocha</div></div><div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:7px;padding:8px;text-align:center;"><div style="font-size:13px;font-weight:700;color:#1fbc6b;" id="mmr">0</div><div style="font-size:9px;color:rgba(255,255,255,.4);">Místností</div></div></div>
-      <div style="padding:0 10px 10px;font-size:11px;"><div style="display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px solid rgba(255,255,255,.06);color:rgba(255,255,255,.6);"><span>SIP panely</span><span id="mmm">—</span></div><div style="display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px solid rgba(255,255,255,.06);color:rgba(255,255,255,.6);"><span>Doprava</span><span id="mmd">—</span></div><div style="display:flex;justify-content:space-between;padding:3px 0;color:rgba(255,255,255,.6);"><span>Montáž</span><span id="mmn">—</span></div></div>
-      <div style="background:#1fbc6b;margin:0 10px 10px;border-radius:9px;padding:12px;text-align:center;color:#fff;"><div style="font-size:10px;opacity:.8;margin-bottom:3px;">Celková cena</div><div style="font-size:20px;font-weight:800;" id="mmt">—</div><div style="font-size:10px;opacity:.7;margin-top:3px;" id="mms"></div></div>
-      <div style="padding:0 10px 10px;font-size:10px;color:rgba(255,255,255,.5);"><div style="font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:5px;">Místnosti</div><div id="mmlist">Zatím prázdné</div></div>
-      <div style="padding:0 10px 12px;"><button onclick="sipGo('cnt')" style="width:100%;padding:9px;background:#1fbc6b;color:#fff;border:none;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;">Chci nabídku &#8594;</button></div>
+
+    <div style="height:1px;background:#3a3a3a;"></div>
+
+    <!-- Místnosti -->
+    <div style="font-size:9px;font-weight:700;color:#4ade80;text-transform:uppercase;letter-spacing:.08em;">Přidat místnost</div>
+    <div id="mRoomList"></div>
+
+    <!-- Vlastní místnost -->
+    <div style="height:1px;background:#3a3a3a;"></div>
+    <div style="font-size:9px;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:.08em;">Vlastní místnost</div>
+    <input id="mCustName" placeholder="Název" style="width:100%;background:#1a2520;border:2px solid #3a3a3a;border-radius:5px;padding:5px 8px;color:#fff;font-size:12px;font-family:Arial;box-sizing:border-box;">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;">
+      <input id="mCustW" type="number" placeholder="Šířka m" min="1" max="20" step="0.5" value="3" style="background:#1a2520;border:2px solid #3a3a3a;border-radius:5px;padding:5px 4px;color:#fff;font-size:12px;font-family:Arial;width:100%;">
+      <input id="mCustH" type="number" placeholder="Hloubka m" min="1" max="20" step="0.5" value="3" style="background:#1a2520;border:2px solid #3a3a3a;border-radius:5px;padding:5px 4px;color:#fff;font-size:12px;font-family:Arial;width:100%;">
+    </div>
+    <button onclick="mAddCustomRoom()" style="width:100%;padding:7px;background:rgba(74,222,128,.15);border:1px solid rgba(74,222,128,.4);color:#4ade80;border-radius:5px;font-size:12px;font-weight:700;cursor:pointer;font-family:Arial;">+ Přidat</button>
+
+    <div style="height:1px;background:#3a3a3a;"></div>
+    <button onclick="if(confirm('Vymazat celý plán?')){M.rooms=[];M.elements=[];M.selected=null;M.selEl=null;mDraw();mCalc();mBuildRoomList();mHideProps();}" style="width:100%;padding:7px;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);color:#ef4444;border-radius:5px;font-size:11px;font-weight:600;cursor:pointer;font-family:Arial;">🗑 Vymazat vše</button>
+  </div>
+
+  <!-- CANVAS -->
+  <div style="flex:1;position:relative;background:#0d1f1a;" id="sipCW">
+    <canvas id="sipC" style="display:block;"></canvas>
+    <!-- Zoom -->
+    <div style="position:absolute;bottom:12px;right:12px;display:flex;flex-direction:column;gap:4px;">
+      <button onclick="sipMZoom(1.12)" style="width:30px;height:30px;background:rgba(0,0,0,.6);border:1px solid #3a3a3a;border-radius:5px;color:#fff;font-size:16px;cursor:pointer;">+</button>
+      <button onclick="sipMZoom(.9)"   style="width:30px;height:30px;background:rgba(0,0,0,.6);border:1px solid #3a3a3a;border-radius:5px;color:#fff;font-size:16px;cursor:pointer;">&#8722;</button>
+      <button onclick="sipMZoom(0)"    style="width:30px;height:30px;background:rgba(0,0,0,.6);border:1px solid #3a3a3a;border-radius:5px;color:#fff;font-size:12px;cursor:pointer;">&#8859;</button>
+    </div>
+    <!-- Legenda -->
+    <div style="position:absolute;bottom:12px;left:12px;font-size:10px;color:#666;">
+      <span style="color:#fff;">D</span> = Dveře &nbsp; <span style="color:#60a5fa;">⊞</span> = Okno &nbsp; <span style="color:rgba(74,222,128,.6);">━</span> = Izolace
     </div>
   </div>
+
+  <!-- PRAVÝ PANEL -->
+  <div style="width:220px;flex-shrink:0;background:#0d1f1a;border-left:1px solid #3a3a3a;overflow-y:auto;display:flex;flex-direction:column;">
+
+    <!-- Kalkulace -->
+    <div style="padding:10px 12px;border-bottom:1px solid #3a3a3a;background:#1f332f;">
+      <div style="font-size:11px;font-weight:700;color:#4ade80;">📊 Kalkulace</div>
+      <div style="font-size:9px;color:#888;">Aktualizuje se živě</div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:5px;padding:8px;">
+      <div style="background:#1f332f;border:1px solid #3a3a3a;border-radius:5px;padding:8px;text-align:center;">
+        <div style="font-size:13px;font-weight:700;color:#4ade80;" id="mma">0 m²</div>
+        <div style="font-size:9px;color:#888;">Plocha</div>
+      </div>
+      <div style="background:#1f332f;border:1px solid #3a3a3a;border-radius:5px;padding:8px;text-align:center;">
+        <div style="font-size:13px;font-weight:700;color:#4ade80;" id="mmr">0</div>
+        <div style="font-size:9px;color:#888;">Místností</div>
+      </div>
+    </div>
+    <div style="padding:0 10px 8px;font-size:11px;">
+      <div style="display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px solid #2a3f38;color:#888;"><span>SIP panely</span><span id="mmm">—</span></div>
+      <div style="display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px solid #2a3f38;color:#888;"><span>Doprava</span><span id="mmd">—</span></div>
+      <div style="display:flex;justify-content:space-between;padding:3px 0;color:#888;"><span>Montáž</span><span id="mmn">—</span></div>
+    </div>
+    <div style="background:#4ade80;margin:0 10px 10px;border-radius:5px;padding:12px;text-align:center;color:#000;">
+      <div style="font-size:10px;font-weight:700;margin-bottom:3px;">Celková cena</div>
+      <div style="font-size:20px;font-weight:800;" id="mmt">—</div>
+      <div style="font-size:10px;margin-top:3px;" id="mms"></div>
+    </div>
+
+    <div style="height:1px;background:#3a3a3a;"></div>
+
+    <!-- Vlastnosti vybraného prvku -->
+    <div style="padding:10px;" id="mPropsPanel">
+      <div style="color:#888;font-size:12px;text-align:center;padding:20px 0;">Vyberte místnost nebo prvek</div>
+    </div>
+
+    <div style="height:1px;background:#3a3a3a;"></div>
+
+    <!-- Seznam místností -->
+    <div style="padding:8px 10px;">
+      <div style="font-size:9px;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px;">Místnosti</div>
+      <div id="mmlist" style="font-size:11px;color:#888;">Zatím prázdné</div>
+    </div>
+
+    <div style="padding:8px 10px 12px;margin-top:auto;">
+      <button onclick="sipGo('cnt')" style="width:100%;padding:10px;background:#4ade80;color:#000;border:none;border-radius:5px;font-size:13px;font-weight:700;cursor:pointer;font-family:Arial;">Chci nabídku &#8594;</button>
+    </div>
+  </div>
+
+</div>
 </div>
 
 <!-- KONTAKT -->
