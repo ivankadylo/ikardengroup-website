@@ -212,43 +212,7 @@
             `;
         }
         
-        // Handle form submission
-        document.getElementById('orderForm').addEventListener('submit', (e) => {
-            e.preventDefault();
-            
-            if (cart.length === 0) {
-                alert('Košík je prázdný!');
-                window.location.href = 'index.html';
-                return;
-            }
-            
-            // Get form data
-            const orderData = {
-                firstName: document.getElementById('firstName').value,
-                lastName: document.getElementById('lastName').value,
-                email: document.getElementById('email').value,
-                phone: document.getElementById('phone').value,
-                street: document.getElementById('street').value,
-                city: document.getElementById('city').value,
-                zip: document.getElementById('zip').value,
-                payment: document.getElementById('payment').value,
-                items: cart,
-                total: cart.reduce((sum, item) => sum + (item.price * item.quantity), 0),
-                date: new Date().toISOString()
-            };
-            
-            // Save order to localStorage
-            const orders = JSON.parse(localStorage.getItem('ikarden-orders') || '[]');
-            orders.push(orderData);
-            localStorage.setItem('ikarden-orders', JSON.stringify(orders));
-            
-            // Clear cart
-            localStorage.removeItem('ikarden-cart');
-            
-            // Show success message
-            alert('Děkujeme! Vaše objednávka byla odeslána. Brzy vás budeme kontaktovat.');
-            window.location.href = 'index.html';
-        });
+        // Odeslání formuláře — přes EmailJS
         
         // Render on load
         renderOrderSummary();
@@ -263,9 +227,8 @@
     </script>
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 <script>
-// Ініціалізація EmailJS
 (function(){
-    emailjs.init('YOUR_PUBLIC_KEY'); // ← замінити пізніше
+    emailjs.init('QVKRrPh46BLF8ro-5');
 })();
 
 // Переписуємо функцію відправки
@@ -318,7 +281,7 @@ document.getElementById('orderForm').addEventListener('submit', async (e) => {
     try {
         await emailjs.send(
             'service_2hxrr9l',   // Service ID
-            'template_ikarden',   // Template ID ← створимо зараз
+            'template_0ekd5fd',   // Template ID
             templateParams
         );
 
