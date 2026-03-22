@@ -150,59 +150,138 @@ function mDraw() {
 }
 
 var WALL_T = 0.20; // товщина внутрішньої стіни 0.20m
+var INS_TOL = 0.05; // допуск для "спільної" стіни (м)
 
 function mDrawIns(c) {
   if (!M.rooms.length) return;
-  var ins = M.insulation / 1000 * M.sc; // товщина ізоляції в px
-  var wt = WALL_T * M.sc; // внутрішня стіна в px
+  var ins = M.insulation / 1000 * M.sc;
+  var wt  = WALL_T * M.sc;
+  var off = M.insulation / 1000; // у метрах
   c.save();
 
-  // 1. Внутрішні стіни між сусідніми кімнатами
-  c.strokeStyle = 'rgba(255,255,255,.35)';
+  // ═══ 1. Внутрішні стіни між кімнатами ═══
+  c.strokeStyle = 'rgba(200,200,200,.4)';
   c.lineWidth = wt;
   M.rooms.forEach(function(r) {
-    M.rooms.forEach(function(other) {
-      if (other.id <= r.id) return;
-      var rx=M.ox+r.x*M.sc, ry=M.oy+r.y*M.sc, rw=r.w*M.sc, rh=r.h*M.sc;
-      var ox=M.ox+other.x*M.sc, oy=M.oy+other.y*M.sc, ow=other.w*M.sc, oh=other.h*M.sc;
-      var TOL = 2; // px tolerance
-      // shared right/left wall
-      if (Math.abs((rx+rw)-ox)<TOL || Math.abs(rx-(ox+ow))<TOL) {
-        var wallX = Math.abs((rx+rw)-ox)<TOL ? rx+rw : rx;
-        var top = Math.max(ry, oy), bot = Math.min(ry+rh, oy+oh);
-        if (bot > top) {
-          c.beginPath(); c.moveTo(wallX,top); c.lineTo(wallX,bot); c.stroke();
+    M.rooms.forEach(function(o) {
+      if (o.id <= r.id) return;
+      var TOL = INS_TOL;
+      // вертикальна спільна стіна
+      if (Math.abs((r.x+r.w)-o.x)<TOL || Math.abs(r.x-(o.x+o.w))<TOL) {
+        var wx = Math.abs((r.x+r.w)-o.x)<TOL ? r.x+r.w : r.x;
+        var t = Math.max(r.y,o.y), b = Math.min(r.y+r.h,o.y+o.h);
+        if (b>t) {
+          var px1=M.ox+wx*M.sc, py1=M.oy+t*M.sc, py2=M.oy+b*M.sc;
+          c.beginPath(); c.moveTo(px1,py1); c.lineTo(px1,py2); c.stroke();
         }
       }
-      // shared top/bottom wall
-      if (Math.abs((ry+rh)-oy)<TOL || Math.abs(ry-(oy+oh))<TOL) {
-        var wallY = Math.abs((ry+rh)-oy)<TOL ? ry+rh : ry;
-        var left = Math.max(rx,ox), right = Math.min(rx+rw,ox+ow);
-        if (right > left) {
-          c.beginPath(); c.moveTo(left,wallY); c.lineTo(right,wallY); c.stroke();
+      // горизонтальна спільна стіна
+      if (Math.abs((r.y+r.h)-o.y)<TOL || Math.abs(r.y-(o.y+o.h))<TOL) {
+        var wy = Math.abs((r.y+r.h)-o.y)<TOL ? r.y+r.h : r.y;
+        var l = Math.max(r.x,o.x), rt = Math.min(r.x+r.w,o.x+o.w);
+        if (rt>l) {
+          var px2=M.ox+l*M.sc, px3=M.ox+rt*M.sc, py3=M.oy+wy*M.sc;
+          c.beginPath(); c.moveTo(px2,py3); c.lineTo(px3,py3); c.stroke();
         }
       }
     });
   });
 
-  // 2. Зовнішній контур ізоляції навколо всіх кімнат разом
-  // Спрощена версія: bounding box всіх кімнат + ізоляція
-  var minX=Infinity,minY=Infinity,maxX=-Infinity,maxY=-Infinity;
-  M.rooms.forEach(function(r){
-    minX=Math.min(minX,r.x); minY=Math.min(minY,r.y);
-    maxX=Math.max(maxX,r.x+r.w); maxY=Math.max(maxY,r.y+r.h);
-  });
-  var bx = M.ox+minX*M.sc, by = M.oy+minY*M.sc;
-  var bw = (maxX-minX)*M.sc, bh = (maxY-minY)*M.sc;
-  var h2 = ins/2;
-  c.strokeStyle = 'rgba(74,222,128,.7)';
-  c.lineWidth = Math.max(4, ins);
-  c.strokeRect(bx-h2, by-h2, bw+ins, bh+ins);
+  // ═══ 2. Зовнішній контур ізоляції ═══
+  // Будуємо список зовнішніх відрізків (не перекриті сусідньою кімнатою)
+  // Кожна кімната має 4 сторони; відрізок зовнішній якщо жодна інша кімната
+  // не "закриває" хоча б частину цього відрізка
+  var segs = []; // {x1,y1,x2,y2} у метрах
 
-  // Label
-  c.fillStyle = 'rgba(74,222,128,.8)';
-  c.font = '9px Arial'; c.textAlign = 'left';
-  c.fillText('izolace '+M.insulation+' mm  |  stěna '+Math.round(WALL_T*100)+' cm', bx-h2, by-h2-6);
+  M.rooms.forEach(function(r) {
+    var TOL = INS_TOL;
+    // Чотири сторони кімнати: top, bottom, left, right
+    // top: y=r.y, x від r.x до r.x+r.w
+    // bottom: y=r.y+r.h
+    // left: x=r.x, y від r.y до r.y+r.h
+    // right: x=r.x+r.w
+
+    function splitExternal(coord, from, to, isVertical) {
+      // coord - фіксована координата стіни (x або y)
+      // from/to - змінна координата (y або x)
+      // Повертає масив [від,до] відрізків що НЕ перекриті сусідом
+      var blocked = []; // масив [a,b] перекритих ділянок
+      M.rooms.forEach(function(o) {
+        if (o.id === r.id) return;
+        if (isVertical) {
+          // стіна вертикальна x=coord, перевіряємо чи o закриває x=coord
+          if (Math.abs(o.x - coord) < TOL || Math.abs(o.x+o.w - coord) < TOL) {
+            // o стикається по x
+            var a = Math.max(from, o.y), b = Math.min(to, o.y+o.h);
+            if (b > a) blocked.push([a, b]);
+          }
+          // або o повністю містить x=coord
+          if (o.x < coord-TOL && o.x+o.w > coord+TOL) {
+            var a = Math.max(from, o.y), b = Math.min(to, o.y+o.h);
+            if (b > a) blocked.push([a, b]);
+          }
+        } else {
+          // стіна горизонтальна y=coord
+          if (Math.abs(o.y - coord) < TOL || Math.abs(o.y+o.h - coord) < TOL) {
+            var a = Math.max(from, o.x), b = Math.min(to, o.x+o.w);
+            if (b > a) blocked.push([a, b]);
+          }
+          if (o.y < coord-TOL && o.y+o.h > coord+TOL) {
+            var a = Math.max(from, o.x), b = Math.min(to, o.x+o.w);
+            if (b > a) blocked.push([a, b]);
+          }
+        }
+      });
+      // subtract blocked from [from,to]
+      blocked.sort(function(a,b){return a[0]-b[0];});
+      var result = [], cur = from;
+      blocked.forEach(function(bl) {
+        if (bl[0] > cur + TOL) result.push([cur, bl[0]]);
+        cur = Math.max(cur, bl[1]);
+      });
+      if (cur < to - TOL) result.push([cur, to]);
+      return result;
+    }
+
+    // top wall (y=r.y, x from r.x to r.x+r.w)
+    splitExternal(r.y, r.x, r.x+r.w, false).forEach(function(seg) {
+      segs.push({x1:seg[0], y1:r.y, x2:seg[1], y2:r.y});
+    });
+    // bottom wall
+    splitExternal(r.y+r.h, r.x, r.x+r.w, false).forEach(function(seg) {
+      segs.push({x1:seg[0], y1:r.y+r.h, x2:seg[1], y2:r.y+r.h});
+    });
+    // left wall (x=r.x, y from r.y to r.y+r.h)
+    splitExternal(r.x, r.y, r.y+r.h, true).forEach(function(seg) {
+      segs.push({x1:r.x, y1:seg[0], x2:r.x, y2:seg[1]});
+    });
+    // right wall
+    splitExternal(r.x+r.w, r.y, r.y+r.h, true).forEach(function(seg) {
+      segs.push({x1:r.x+r.w, y1:seg[0], x2:r.x+r.w, y2:seg[1]});
+    });
+  });
+
+  // Малюємо ізоляцію як товсту лінію навколо зовнішніх відрізків
+  c.strokeStyle = 'rgba(74,222,128,.75)';
+  c.lineWidth = Math.max(4, ins);
+  c.lineCap = 'square';
+  c.lineJoin = 'miter';
+  segs.forEach(function(s) {
+    // Зміщуємо відрізок назовні на half-insulation
+    var px1=M.ox+s.x1*M.sc, py1=M.oy+s.y1*M.sc;
+    var px2=M.ox+s.x2*M.sc, py2=M.oy+s.y2*M.sc;
+    c.beginPath(); c.moveTo(px1,py1); c.lineTo(px2,py2); c.stroke();
+  });
+
+  // Підпис
+  if (M.rooms.length) {
+    var minX=Infinity, minY=Infinity;
+    M.rooms.forEach(function(r){minX=Math.min(minX,r.x);minY=Math.min(minY,r.y);});
+    c.fillStyle='rgba(74,222,128,.8)';
+    c.font='9px Arial'; c.textAlign='left';
+    c.fillText('izolace '+M.insulation+' mm  |  stěna '+Math.round(WALL_T*100)+' cm',
+      M.ox+minX*M.sc-ins/2, M.oy+minY*M.sc-ins/2-6);
+  }
   c.restore();
 }
 
