@@ -125,6 +125,17 @@ function mDraw(){
     return;
   }
 
+  // Курсор при наведенні на маркер
+  if(M.selected&&!M.pending&&M.mode==='select'){
+    var hovRoom=M.rooms.find(function(r){return r.id===M.selected;});
+    if(hovRoom){
+      var hh=mHandleAt(hovRoom,M.mouseX,M.mouseY);
+      if(hh){
+        var hDef=HANDLES.find(function(h2){return h2.id===hh;});
+        if(hDef){M.cvs.style.cursor=hDef.cur;return;}
+      }
+    }
+  }
   var cur='default';
   if(M.mode==='delete') cur='not-allowed';
   else if(M.pan) cur='grabbing';
@@ -203,10 +214,24 @@ function mDrawIns(c){
   c.restore();
 }
 
+// 8 маркерів: кути + середини стін
+var HANDLES = [
+  {id:'nw', cx:0,   cy:0,   cur:'nwse-resize'},
+  {id:'n',  cx:.5,  cy:0,   cur:'ns-resize'},
+  {id:'ne', cx:1,   cy:0,   cur:'nesw-resize'},
+  {id:'e',  cx:1,   cy:.5,  cur:'ew-resize'},
+  {id:'se', cx:1,   cy:1,   cur:'nwse-resize'},
+  {id:'s',  cx:.5,  cy:1,   cur:'ns-resize'},
+  {id:'sw', cx:0,   cy:1,   cur:'nesw-resize'},
+  {id:'w',  cx:0,   cy:.5,  cur:'ew-resize'},
+];
 function mDrawHandles(c,px,py,pw,ph){
   var hs=8;
-  [[px+pw-hs/2,py+ph-hs/2],[px+pw/2-hs/2,py+ph-hs/2],[px+pw-hs/2,py+ph/2-hs/2]].forEach(function(h){
-    c.fillStyle='#4ade80'; c.fillRect(h[0],h[1],hs,hs);
+  HANDLES.forEach(function(h){
+    var hx=px+h.cx*pw-hs/2, hy=py+h.cy*ph-hs/2;
+    c.fillStyle='#4ade80'; c.fillRect(hx,hy,hs,hs);
+    c.strokeStyle='#0d1f1a'; c.lineWidth=1;
+    c.strokeRect(hx+.5,hy+.5,hs-1,hs-1);
   });
 }
 
@@ -302,7 +327,8 @@ function mMD(e){
   if(M.selected){
     var room2=M.rooms.find(function(r){return r.id===M.selected;});
     if(room2){var h=mHandleAt(room2,e.offsetX,e.offsetY);
-      if(h){M.resize={room:room2,handle:h,startX:wx,startY:wy,origW:room2.w,origH:room2.h};return;}
+      if(h){M.resize={room:room2,handle:h,startX:wx,startY:wy,
+        origW:room2.w,origH:room2.h,origX:room2.x,origY:room2.y};return;}
     }
   }
   var hit=null;
@@ -326,10 +352,24 @@ function mMV(e){
     mMagnet(M.drag.room); mDraw(); mCalc(); mUpdatePropsLive(M.drag.room.id); return;
   }
   if(M.resize){
-    var r=M.resize.room, dw=wx-M.resize.startX, dh=wy-M.resize.startY;
-    if(M.resize.handle==='se'){r.w=Math.max(.5,mSnap(M.resize.origW+dw));r.h=Math.max(.5,mSnap(M.resize.origH+dh));}
-    else if(M.resize.handle==='s'){r.h=Math.max(.5,mSnap(M.resize.origH+dh));}
-    else if(M.resize.handle==='e'){r.w=Math.max(.5,mSnap(M.resize.origW+dw));}
+    var r=M.resize.room;
+    var dw=wx-M.resize.startX, dh=wy-M.resize.startY;
+    var h=M.resize.handle;
+    // Права/низ: збільшують ширину/висоту
+    if(h==='e'||h==='se'||h==='ne') r.w=Math.max(.5,mSnap(M.resize.origW+dw));
+    if(h==='s'||h==='se'||h==='sw') r.h=Math.max(.5,mSnap(M.resize.origH+dh));
+    // Ліво: зсувають x і зменшують ширину
+    if(h==='w'||h==='nw'||h==='sw'){
+      var newW=Math.max(.5,mSnap(M.resize.origW-dw));
+      r.x=mSnap(M.resize.origX+(M.resize.origW-newW));
+      r.w=newW;
+    }
+    // Верх: зсувають y і зменшують висоту
+    if(h==='n'||h==='nw'||h==='ne'){
+      var newH=Math.max(.5,mSnap(M.resize.origH-dh));
+      r.y=mSnap(M.resize.origY+(M.resize.origH-newH));
+      r.h=newH;
+    }
     mDraw(); mCalc(); mUpdatePropsLive(r.id);
   }
 }
@@ -372,9 +412,11 @@ function mMagnet(room){
 function mHandleAt(room,ex,ey){
   var px=M.ox+room.x*M.sc, py=M.oy+room.y*M.sc;
   var pw=room.w*M.sc, ph=room.h*M.sc, hs=12;
-  if(Math.abs(ex-(px+pw))<hs&&Math.abs(ey-(py+ph))<hs)return 'se';
-  if(Math.abs(ex-(px+pw/2))<hs&&Math.abs(ey-(py+ph))<hs)return 's';
-  if(Math.abs(ex-(px+pw))<hs&&Math.abs(ey-(py+ph/2))<hs)return 'e';
+  for(var i=0;i<HANDLES.length;i++){
+    var h=HANDLES[i];
+    var hx=px+h.cx*pw, hy=py+h.cy*ph;
+    if(Math.abs(ex-hx)<hs&&Math.abs(ey-hy)<hs)return h.id;
+  }
   return null;
 }
 
