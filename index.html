@@ -686,7 +686,7 @@
     <!-- Дані товарів (редагуються через адмін) -->
     <script src="js/products-data.js"></script>
     <script src="js/script.js"></script>
-    <script src="js/modelar.js"></script>
+    <script src="js/modelar.js?v=5"></script>
 
 <!-- ===== SIP DOMY STYLES ===== -->
 <style>
@@ -957,16 +957,45 @@ input[type=range]{width:100%;accent-color:#4ade80;}
       <div style="font-size:11px;font-weight:700;color:#4ade80;">📊 Kalkulace</div>
       <div style="font-size:9px;color:#888;">Aktualizuje se živě</div>
     </div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:5px;padding:8px;">
-      <div style="background:#1f332f;border:1px solid #3a3a3a;border-radius:5px;padding:8px;text-align:center;">
-        <div style="font-size:13px;font-weight:700;color:#4ade80;" id="mma">0 m²</div>
-        <div style="font-size:9px;color:#888;">Plocha</div>
+
+    <!-- Plochy -->
+    <div style="padding:8px 10px;border-bottom:1px solid #3a3a3a;">
+
+      <!-- Hlavní číslo -->
+      <div style="background:#1a2a24;border:1px solid #4ade80;border-radius:6px;padding:8px 10px;margin-bottom:8px;">
+        <div style="font-size:9px;font-weight:700;color:#4ade80;text-transform:uppercase;letter-spacing:.07em;margin-bottom:2px;">🏠 Plocha domu (vnější rozměry)</div>
+        <div style="font-size:20px;font-weight:800;color:#4ade80;" id="mma">—</div>
+        <div style="font-size:10px;color:#888;margin-top:1px;" id="mmaDim"></div>
       </div>
+
+      <!-- Rozpad plochy -->
+      <div style="font-size:11px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:4px 0;border-bottom:1px solid #2a3a30;">
+          <span style="color:#ccc;">Obytná plocha</span>
+          <span style="color:#4ade80;font-weight:700;" id="mmaRooms">—</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:4px 0;border-bottom:1px solid #2a3a30;">
+          <span style="color:#888;">Vnitřní stěny (<span id="mmWallT">20</span>&nbsp;cm)</span>
+          <span style="color:#aaa;" id="mmaWalls">—</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:4px 0;">
+          <span style="color:#888;">Vnější stěny + izolace (<span id="mmInsT">160</span>&nbsp;mm)</span>
+          <span style="color:#aaa;" id="mmaExt">—</span>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:5px;padding:8px;">
       <div style="background:#1f332f;border:1px solid #3a3a3a;border-radius:5px;padding:8px;text-align:center;">
         <div style="font-size:13px;font-weight:700;color:#4ade80;" id="mmr">0</div>
         <div style="font-size:9px;color:#888;">Místností</div>
       </div>
+      <div style="background:#1f332f;border:1px solid #3a3a3a;border-radius:5px;padding:8px;text-align:center;">
+        <div style="font-size:11px;font-weight:700;color:#888;" id="mmDims">—</div>
+        <div style="font-size:9px;color:#888;">Vnítří š×h</div>
+      </div>
     </div>
+
     <div style="padding:0 10px 8px;font-size:11px;">
       <div style="display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px solid #2a3f38;color:#888;"><span>SIP panely</span><span id="mmm">—</span></div>
       <div style="display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px solid #2a3f38;color:#888;"><span>Doprava</span><span id="mmd">—</span></div>

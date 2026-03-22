@@ -788,8 +788,36 @@ function mSetInsulation(mm) {
 /* ══════════════════════════════════════════════════════════
    KALKULACE
    ══════════════════════════════════════════════════════════ */
+function mCalcBuildingArea() {
+  if (!M.rooms.length) return {rooms:0, building:0, walls:0, ext:0, innerW:0, innerH:0, outerW:0, outerH:0};
+  var minX=Infinity, minY=Infinity, maxX=-Infinity, maxY=-Infinity;
+  M.rooms.forEach(function(r){
+    minX=Math.min(minX,r.x); minY=Math.min(minY,r.y);
+    maxX=Math.max(maxX,r.x+r.w); maxY=Math.max(maxY,r.y+r.h);
+  });
+  var roomsArea = M.rooms.reduce(function(s,r){ return s+r.w*r.h; }, 0);
+  // Площа bounding box (внутрішні стіни вже входять)
+  var innerW = maxX - minX;
+  var innerH = maxY - minY;
+  var innerArea = innerW * innerH; // площа всередини будінку
+  // Зовнішня стіна = ізоляція
+  var extWall = M.insulation / 1000; // м
+  var outerW = innerW + extWall * 2;
+  var outerH = innerH + extWall * 2;
+  var buildingArea = outerW * outerH;
+  var wallsArea = innerArea - roomsArea;   // внутрішні стіни
+  var extArea   = buildingArea - innerArea; // зовнішні стіни+ізол.
+  return {
+    rooms: roomsArea, walls: wallsArea, ext: extArea,
+    building: buildingArea,
+    innerW: innerW, innerH: innerH,
+    outerW: outerW, outerH: outerH
+  };
+}
+
 function mCalc() {
   var tot = M.rooms.reduce(function(s,r){ return s+r.w*r.h; }, 0);
+  var ba  = mCalcBuildingArea();
   var im = {100:.88, 160:1, 200:1.12, 250:1.28};
   var matE = 280*(im[M.insulation]||1)*tot;
   var dopE = tot<=80?1200:tot<=150?1500:1800;
@@ -800,13 +828,22 @@ function mCalc() {
   var save = rdKc-totE*C;
 
   function s(id,v){ var e=document.getElementById(id); if(e) e.textContent=v; }
-  s('mma', tot.toFixed(1)+' m²');
+  var hasR = M.rooms.length > 0;
+  // Площі
+  s('mma',     hasR ? ba.building.toFixed(1)+' m²' : '—');
+  s('mmaDim',  hasR ? ba.outerW.toFixed(2)+' × '+ba.outerH.toFixed(2)+' m' : '');
+  s('mmaRooms',hasR ? ba.rooms.toFixed(1)+' m²' : '—');
+  s('mmaWalls',hasR ? ba.walls.toFixed(1)+' m²' : '—');
+  s('mmaExt',  hasR ? ba.ext.toFixed(1)+' m²' : '—');
+  s('mmWallT', Math.round(WALL_T*100));
+  s('mmInsT',  M.insulation);
+  s('mmDims',  hasR ? ba.innerW.toFixed(1)+'×'+ba.innerH.toFixed(1)+' m' : '—');
   s('mmr', M.rooms.length);
-  s('mmm', tot>0 ? '€ '+Math.round(matE).toLocaleString('cs-CZ') : '—');
-  s('mmd', tot>0 ? '€ '+Math.round(dopE).toLocaleString('cs-CZ') : '—');
-  s('mmn', tot>0 ? '€ '+Math.round(monE).toLocaleString('cs-CZ') : '—');
-  s('mmt', tot>0 ? Math.round(totE*C).toLocaleString('cs-CZ')+' Kč' : '—');
-  s('mms', tot>0 ? 'vs RD: -'+Math.round(save).toLocaleString('cs-CZ')+' Kč' : '');
+  s('mmm', hasR ? '€ '+Math.round(matE).toLocaleString('cs-CZ') : '—');
+  s('mmd', hasR ? '€ '+Math.round(dopE).toLocaleString('cs-CZ') : '—');
+  s('mmn', hasR ? '€ '+Math.round(monE).toLocaleString('cs-CZ') : '—');
+  s('mmt', hasR ? Math.round(totE*C).toLocaleString('cs-CZ')+' Kč' : '—');
+  s('mms', hasR ? 'vs RD: -'+Math.round(save).toLocaleString('cs-CZ')+' Kč' : '');
 
   var list = document.getElementById('mmlist');
   if (list) {
